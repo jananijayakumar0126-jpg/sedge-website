@@ -28,7 +28,9 @@
   #nav.stuck { background:rgba(255,255,255,.92); backdrop-filter:blur(22px); border-color:rgba(0,0,0,.07); }
   .nav-dropdown { position:relative; }
   .nav-dropdown-menu { position:absolute; top:calc(100% + 16px); left:50%; transform:translateX(-50%) translateY(-6px); background:#fff; border:1px solid rgba(0,0,0,.08); box-shadow:0 16px 48px rgba(0,0,0,.1); min-width:220px; padding:8px 0; opacity:0; pointer-events:none; transition:opacity .25s ease,transform .25s ease; }
-  .nav-dropdown:hover .nav-dropdown-menu, .nav-dropdown-menu:hover { opacity:1; pointer-events:all; transform:translateX(-50%) translateY(0); }
+  .nav-dropdown:hover .nav-dropdown-menu,
+  .nav-dropdown-menu:hover,
+  .nav-dropdown.open .nav-dropdown-menu { opacity:1; pointer-events:all; transform:translateX(-50%) translateY(0); }
   .nav-dropdown-menu a { display:flex; align-items:center; gap:10px; padding:11px 20px; font-size:11px; letter-spacing:.13em; text-transform:uppercase; font-weight:500; color:var(--muted); text-decoration:none; transition:background .2s,color .2s; }
   .nav-dropdown-menu a:hover { background:#fafafa; color:var(--ink); }
   .nav-dropdown-menu a.active { color:var(--gold); }
@@ -80,7 +82,7 @@
     </div>
     <div class="flex items-center gap-9">
       <a href="index.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">Strategies</a>
-      <div class="nav-dropdown">
+      <div class="nav-dropdown" id="productsDropdown">
         <span class="nav-link-btn text-[11px] tracking-[.14em] uppercase font-medium cursor-pointer select-none" style="color:var(--gold);">Products</span>
         <div class="nav-dropdown-menu">
           <a href="pharma.html" class="active"><span class="dd-dot"></span>Pharma Research</a>
@@ -543,6 +545,15 @@ ScrollTrigger.create({ trigger:'#ph-graph', start:'top 74%', onEnter(){
     TICKERS.forEach((tk,i)=>{ const nodeIdx=highlightIdx[i]; if(!nodes[nodeIdx]) return; const pos=nodes[nodeIdx].userData.finalPos.clone(); pos.applyEuler(new THREE.Euler(nodeGroup.rotation.x,nodeGroup.rotation.y,nodeGroup.rotation.z)); pos.y+=.22; const proj=pos.clone().project(camera); const rect=canvas.getBoundingClientRect(); const px=(proj.x*.5+.5)*rect.width,py=(-proj.y*.5+.5)*rect.height; const el=labelEls[i]; el.style.left=(px-14)+'px'; el.style.top=(py-16)+'px'; el.style.opacity=proj.z<1?'0.7':'0'; });
     renderer.render(scene,camera);
   })();
+})();
+</script>
+<script>
+(function(){
+  var d=document.getElementById('productsDropdown'); if(!d) return;
+  var t=null;
+  d.addEventListener('mouseenter',function(){ if(t){clearTimeout(t);t=null;} d.classList.add('open'); });
+  d.addEventListener('mouseleave',function(){ t=setTimeout(function(){ d.classList.remove('open');t=null; },5000); });
+  d.querySelectorAll('.nav-dropdown-menu a').forEach(function(a){ a.addEventListener('click',function(){ if(t){clearTimeout(t);t=null;} d.classList.remove('open'); }); });
 })();
 </script>
 </body>
