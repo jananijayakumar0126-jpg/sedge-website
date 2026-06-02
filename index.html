@@ -1,0 +1,1927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SEDGE Ventures — Your Edge in Every Market</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          display: ['Cormorant Garamond','serif'],
+          sans: ['Inter','sans-serif'],
+        }
+      }
+    }
+  }
+</script>
+<style>
+  :root {
+    --gold: #c9a462;
+    --gold-l: #e2bc79;
+    --cyan: #00d4c8;
+    --em: #4dbb77;
+    --ink: #0a0a0a;
+    --muted: #5a5a5a;
+  }
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  html { height:auto; }
+  html.lenis { height:auto; }
+  .lenis.lenis-smooth { scroll-behavior:auto; }
+  body {
+    font-family:'Inter',sans-serif;
+    background:#fff;
+    color:var(--ink);
+    overflow-x:hidden;
+  }
+
+  /* Mathematical grid */
+  body::before {
+    content:'';
+    position:fixed;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    background-image:
+      linear-gradient(rgba(0,0,0,0.038) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,0,0,0.038) 1px, transparent 1px);
+    background-size:44px 44px;
+  }
+
+  /* Nav */
+  #nav {
+    position:fixed; top:0; left:0; right:0; z-index:900;
+    transition: background .45s ease, border-color .45s ease, backdrop-filter .45s ease;
+    border-bottom: 1px solid transparent;
+  }
+  #nav.stuck {
+    background:rgba(255,255,255,.92);
+    backdrop-filter:blur(22px);
+    border-color:rgba(0,0,0,.07);
+  }
+
+  /* Gold gradient text */
+  .gold-text { color: var(--gold); }
+
+  /* Thin gold rule */
+  .g-rule { display:block; height:1px; background:linear-gradient(90deg, var(--gold), transparent); }
+
+  /* Reveal lines */
+  .rline { display:block; overflow:hidden; }
+  .rinner, .omni-rinner { display:block; }
+
+  /* Pillar card */
+  .pcard {
+    padding:2.5rem;
+    border:1px solid rgba(0,0,0,.07);
+    background:#fff;
+    position:relative;
+    transition: border-color .35s, transform .35s, box-shadow .35s;
+    overflow:hidden;
+  }
+  .pcard::before {
+    content:'';
+    position:absolute; bottom:0; left:0;
+    width:0; height:2px;
+    background:linear-gradient(90deg,var(--gold),var(--gold-l));
+    transition:width .55s ease;
+  }
+  .pcard:hover { border-color:rgba(201,164,98,.35); transform:translateY(-3px); box-shadow:0 18px 48px rgba(0,0,0,.06); }
+  .pcard:hover::before { width:100%; }
+
+  /* Sector card */
+  .scard {
+    border:1px solid rgba(0,0,0,.07);
+    background:#fff;
+    overflow:hidden;
+    transition: border-color .35s, box-shadow .35s, transform .35s;
+  }
+  .scard:hover { border-color:rgba(201,164,98,.4); box-shadow:0 20px 60px rgba(0,0,0,.08); transform:translateY(-4px); }
+  .scard canvas { display:block; }
+
+  /* Scroll cue */
+  @keyframes nudge { 0%,100%{transform:translateY(0)} 55%{transform:translateY(7px)} }
+  .scroll-cue { animation:nudge 2.2s ease-in-out infinite; }
+
+  /* Section fade helpers — set by GSAP */
+
+  /* ── Pharma Proof Bar ──────────────────────────────────────────────────────── */
+  .stat-num { font-family:'Cormorant Garamond',serif; font-weight:300; font-size:clamp(40px,4.8vw,66px); color:var(--ink); line-height:1; letter-spacing:-0.03em; }
+  .stat-sub  { font-size:10.5px; letter-spacing:.2em; text-transform:uppercase; font-weight:500; color:var(--muted); margin-top:9px; }
+  .stat-desc { font-size:11px; letter-spacing:.06em; color:#9a9a9a; margin-top:3px; font-weight:300; }
+  .stat-divider { width:1px; align-self:stretch; background:linear-gradient(to bottom, transparent 0%, rgba(201,164,98,.45) 50%, transparent 100%); flex-shrink:0; }
+
+  /* ── Knowledge Graph ──────────────────────────────────────────────────────── */
+  .therapy-badge { display:inline-flex; align-items:center; gap:5px; padding:4px 14px; border-radius:99px; font-size:10px; letter-spacing:.12em; text-transform:uppercase; font-weight:500; border:1px solid; }
+
+  /* ── FDA Calendar ────────────────────────────────────────────────────────── */
+  .fda-card {
+    border:1px solid rgba(0,0,0,.07); background:#fff;
+    padding:1.8rem 1.5rem 1.5rem; overflow:hidden; position:relative;
+    transition:border-color .35s, transform .35s, box-shadow .35s;
+  }
+  .fda-card:hover { border-color:rgba(201,164,98,.35); transform:translateY(-4px); box-shadow:0 20px 52px rgba(0,0,0,.07); }
+  .fda-card::before { content:''; position:absolute; bottom:0; left:0; width:0; height:2px; background:linear-gradient(90deg,var(--gold),var(--gold-l)); transition:width .55s ease; }
+  .fda-card:hover::before { width:100%; }
+
+  /* ── Research Browser Frame ──────────────────────────────────────────────── */
+  .browser-frame {
+    border-radius:13px; overflow:hidden; background:#141418;
+    border:1px solid rgba(255,255,255,.07);
+    box-shadow:0 48px 96px rgba(0,0,0,.24), 0 8px 24px rgba(0,0,0,.16);
+    transform-style:preserve-3d;
+  }
+  .browser-chrome {
+    display:flex; align-items:center; gap:8px;
+    padding:12px 18px; background:#0e0e11;
+    border-bottom:1px solid rgba(255,255,255,.06);
+  }
+  .phr-tab {
+    padding:5px 16px; border-radius:6px 6px 0 0; font-size:11px; font-weight:500;
+    letter-spacing:.04em; color:rgba(255,255,255,.36); background:transparent; cursor:default;
+    opacity:0; transform:translateY(6px);
+  }
+  .phr-tab-active { background:#1c1c22; color:rgba(255,255,255,.82); border:1px solid rgba(255,255,255,.07); border-bottom-color:#1c1c22; }
+  .phr-tag {
+    display:inline-flex; align-items:center; gap:6px; padding:5px 14px; border-radius:99px;
+    font-size:10px; letter-spacing:.12em; text-transform:uppercase; font-weight:600;
+    border:1px solid rgba(201,164,98,.38); color:var(--gold); background:rgba(201,164,98,.07);
+  }
+
+  /* ── Pharma intro section ─────────────────────────────────────────────────── */
+  .ph-feature-tab {
+    display:inline-flex; align-items:center; gap:8px; padding:10px 18px;
+    border:1px solid rgba(0,0,0,.08); background:#fff; border-radius:8px;
+    font-size:11px; font-weight:500; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--muted); cursor:default; transition:border-color .3s, color .3s, background .3s;
+  }
+  .ph-feature-tab:hover { border-color:rgba(201,164,98,.4); color:var(--gold); background:rgba(201,164,98,.04); }
+  .ph-feature-dot { width:6px; height:6px; border-radius:50%; background:var(--gold); flex-shrink:0; }
+
+  /* ── Diamond Hunter (white theme) ─────────────────────────────────────────── */
+  .dark-section { background:#080c14; color:#e8e4dc; } /* kept for compat, not used */
+  .diamond-card {
+    border:1px solid rgba(77,187,119,.18);
+    background:#fff;
+    padding:1.5rem 1.6rem;
+    border-left:3px solid #4dbb77;
+    position:relative; overflow:hidden;
+    box-shadow:0 4px 20px rgba(77,187,119,.06);
+    transition:border-color .3s, box-shadow .3s, transform .3s;
+  }
+  .diamond-card:hover { border-color:rgba(77,187,119,.4); box-shadow:0 12px 40px rgba(77,187,119,.10); transform:translateY(-2px); }
+  .diamond-card::after {
+    content:''; position:absolute; top:-80%; left:-10%; width:120%; height:40%;
+    background:linear-gradient(180deg, transparent 0%, rgba(77,187,119,.04) 50%, transparent 100%);
+    animation:scan 3.6s ease-in-out infinite;
+    pointer-events:none;
+  }
+  @keyframes scan { 0%{top:-80%} 100%{top:160%} }
+  .score-bar-track { height:4px; background:rgba(0,0,0,.06); border-radius:2px; overflow:hidden; }
+  .score-bar-fill  { height:100%; border-radius:2px; background:linear-gradient(90deg,#4dbb77,var(--gold)); width:0; transition:width 1.4s cubic-bezier(.22,1,.36,1); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="max-w-screen-xl mx-auto px-8 py-5 flex items-center justify-between relative z-10">
+    <div class="flex items-center gap-1">
+      <span class="font-display font-light tracking-[.22em] text-[17px] uppercase">SEDGE</span>
+      <span class="font-display font-light tracking-[.22em] text-[17px] uppercase gold-text ml-2">Ventures</span>
+    </div>
+    <div class="flex items-center gap-9">
+      <a href="#" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">Strategies</a>
+      <a href="#" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">Research</a>
+      <a href="#" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">Sectors</a>
+      <a href="#" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">About</a>
+      <button class="border border-[var(--ink)] text-[var(--ink)] text-[11px] tracking-[.14em] uppercase px-5 py-2.5 font-medium hover:bg-[var(--ink)] hover:text-white transition-all duration-300">Log In</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════════════════════════
+     SECTION 1 — HERO (SEDGE AI TERMINAL)
+═══════════════════════════════════════════════════════════ -->
+<section id="omni" class="relative z-10 overflow-hidden" style="background:#fff;min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:7rem 2rem 5rem;">
+
+  <!-- WebGL canvas -->
+  <canvas id="omni-cv" style="position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;"></canvas>
+
+  <div class="relative z-10 max-w-screen-xl mx-auto w-full">
+
+    <!-- Centered header -->
+    <div class="text-center mb-20">
+      <div id="omni-eyebrow" class="inline-flex items-center gap-4 mb-8">
+        <span style="display:block;height:1px;width:32px;background:linear-gradient(90deg,transparent,var(--gold));"></span>
+        <span class="text-[11px] tracking-[.28em] uppercase font-medium gold-text">Institutional Research Intelligence</span>
+        <span style="display:block;height:1px;width:32px;background:linear-gradient(90deg,var(--gold),transparent);"></span>
+      </div>
+      <h2 id="omni-h2" class="font-display font-light text-[clamp(44px,5vw,76px)] leading-[1.05] tracking-[-0.025em] mb-7">
+        <span class="rline"><span class="omni-rinner">From FDA Catalysts</span></span>
+        <span class="rline"><span class="omni-rinner gold-text">to Global Alpha.</span></span>
+      </h2>
+      <p id="omni-p" class="text-[15px] leading-[1.9] text-[var(--muted)] max-w-[580px] mx-auto font-light tracking-[0.01em]">
+        FDA catalyst screening. Phase&nbsp;III pipeline analysis. Currency momentum signals. Equity value ranking — precision research, systematically delivered.
+      </p>
+    </div>
+
+    <!-- Terminal + pills -->
+    <div class="max-w-[820px] mx-auto" id="omni-wrap">
+
+      <!-- Frosted glass terminal -->
+      <div id="omni-term" style="border-radius:14px;overflow:hidden;background:rgba(255,255,255,.75);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);border:1px solid rgba(255,255,255,.95);box-shadow:0 40px 100px rgba(0,0,0,.09),0 8px 28px rgba(0,0,0,.05),inset 0 1px 0 rgba(255,255,255,.9);">
+
+        <!-- macOS title bar -->
+        <div style="display:flex;align-items:center;gap:8px;padding:12px 20px;border-bottom:1px solid rgba(0,0,0,.055);background:rgba(248,248,248,.88);">
+          <div style="width:12px;height:12px;border-radius:50%;background:#FF5F57;flex-shrink:0;"></div>
+          <div style="width:12px;height:12px;border-radius:50%;background:#FEBC2E;flex-shrink:0;"></div>
+          <div style="width:12px;height:12px;border-radius:50%;background:#28C840;flex-shrink:0;"></div>
+          <span style="margin-left:auto;font-size:11px;letter-spacing:.13em;text-transform:uppercase;font-weight:500;color:#bbb;">SEDGE AI Terminal</span>
+        </div>
+
+        <!-- Input row -->
+        <div style="display:flex;align-items:center;gap:16px;padding:26px 32px;">
+          <svg width="17" height="17" viewBox="0 0 15 15" fill="none" style="flex-shrink:0;opacity:.38;">
+            <circle cx="6.5" cy="6.5" r="5" stroke="#0a0a0a" stroke-width="1.5"/>
+            <path d="M10.5 10.5L13.5 13.5" stroke="#0a0a0a" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <div style="flex:1;min-height:26px;display:flex;align-items:center;">
+            <span id="omni-typed" style="font-family:'Fira Mono','Courier New',monospace;font-size:16px;font-weight:500;color:#0a0a0a;letter-spacing:0.01em;"></span>
+            <span id="omni-cur" style="display:inline-block;width:2px;height:18px;background:var(--gold);margin-left:2px;vertical-align:middle;border-radius:1px;"></span>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;opacity:.25;flex-shrink:0;">
+            <span style="border:1px solid rgba(0,0,0,.25);border-radius:4px;padding:1px 7px;font-size:10px;font-family:monospace;color:#555;">⏎</span>
+            <span style="font-size:11px;font-weight:500;color:#555;">Execute</span>
+          </div>
+        </div>
+
+        <!-- Status bar -->
+        <div style="display:flex;align-items:center;gap:20px;padding:10px 28px;border-top:1px solid rgba(0,0,0,.05);background:rgba(248,248,248,.72);">
+          <div style="display:flex;align-items:center;gap:7px;">
+            <div style="width:6px;height:6px;border-radius:50%;background:#28C840;"></div>
+            <span style="font-size:11px;font-weight:500;color:#0a0a0a;opacity:.4;letter-spacing:.04em;">Engine Ready</span>
+          </div>
+          <div id="omni-mode" style="font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);transition:color .5s ease;">Biotech</div>
+        </div>
+      </div>
+
+      <!-- Step pills -->
+      <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:26px;">
+        <div class="omni-pill" data-pi="0" style="display:flex;align-items:center;gap:7px;padding:7px 16px;border-radius:99px;border:1px solid rgba(201,164,98,.38);background:rgba(201,164,98,.08);transition:all .45s ease;cursor:default;">
+          <span class="pill-dot" style="width:5px;height:5px;border-radius:50%;background:var(--gold);display:inline-block;transition:background .45s;"></span>
+          <span class="pill-lbl" style="font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:500;color:var(--gold);transition:color .45s;">Drug Discovery</span>
+        </div>
+        <div style="width:18px;height:1px;background:rgba(0,0,0,.1);"></div>
+        <div class="omni-pill" data-pi="1" style="display:flex;align-items:center;gap:7px;padding:7px 16px;border-radius:99px;border:1px solid rgba(0,0,0,.07);background:transparent;transition:all .45s ease;cursor:default;">
+          <span class="pill-dot" style="width:5px;height:5px;border-radius:50%;background:#ccc;display:inline-block;transition:background .45s;"></span>
+          <span class="pill-lbl" style="font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:500;color:#bbb;transition:color .45s;">Forex Trading</span>
+        </div>
+        <div style="width:18px;height:1px;background:rgba(0,0,0,.1);"></div>
+        <div class="omni-pill" data-pi="2" style="display:flex;align-items:center;gap:7px;padding:7px 16px;border-radius:99px;border:1px solid rgba(0,0,0,.07);background:transparent;transition:all .45s ease;cursor:default;">
+          <span class="pill-dot" style="width:5px;height:5px;border-radius:50%;background:#ccc;display:inline-block;transition:background .45s;"></span>
+          <span class="pill-lbl" style="font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:500;color:#bbb;transition:color .45s;">Stock Picks</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Scroll-down cue -->
+  <div id="omni-scroll-cue" style="position:absolute;bottom:2.5rem;left:calc(50% - 12px);opacity:0;" class="scroll-cue">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 4L12 20M6 14l6 6 6-6" stroke="rgba(0,0,0,0.22)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+
+  <!-- Bottom gold accent rule -->
+  <div style="position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 0%,rgba(201,164,98,.28) 50%,transparent 100%);pointer-events:none;"></div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════
+     PH-INTRO — PHARMA INTELLIGENCE HEADER
+═══════════════════════════════════════════════════════════ -->
+<section id="ph-intro" class="relative z-10 py-28 px-8" style="background:#fff;border-top:1px solid rgba(0,0,0,.06);">
+  <div class="max-w-screen-xl mx-auto">
+    <div class="max-w-[820px] mx-auto text-center">
+
+      <div id="phi-eye" class="inline-flex items-center gap-4 mb-8" style="opacity:0;">
+        <span style="display:block;height:1px;width:32px;background:linear-gradient(90deg,transparent,var(--gold));"></span>
+        <span class="text-[11px] tracking-[.28em] uppercase font-medium gold-text">Pharmaceutical Intelligence</span>
+        <span style="display:block;height:1px;width:32px;background:linear-gradient(90deg,var(--gold),transparent);"></span>
+      </div>
+
+      <h2 id="phi-title" class="font-display font-light text-[clamp(36px,4.4vw,66px)] leading-[1.06] tracking-[-0.025em] mb-6" style="opacity:0;">
+        The biotech edge institutional<br>desks <em class="gold-text">pay millions for.</em>
+      </h2>
+
+      <p id="phi-body" class="text-[15px] leading-[1.85] text-[var(--muted)] font-light mb-12 max-w-[580px] mx-auto" style="opacity:0;">
+        Four tools. One system. Every signal that moves pharma stocks — from FDA catalysts to trial readouts to diamond-in-the-rough entries.
+      </p>
+
+      <!-- 4 feature tabs -->
+      <div id="phi-tabs" class="flex flex-wrap items-center justify-center gap-3" style="opacity:0;">
+        <div class="ph-feature-tab">
+          <span class="ph-feature-dot" style="background:#4dbb77;"></span>
+          Knowledge Graph
+        </div>
+        <div class="ph-feature-tab">
+          <span class="ph-feature-dot" style="background:#00d4c8;"></span>
+          FDA Calendar
+        </div>
+        <div class="ph-feature-tab">
+          <span class="ph-feature-dot" style="background:var(--gold);"></span>
+          Deep Research
+        </div>
+        <div class="ph-feature-tab">
+          <span class="ph-feature-dot" style="background:var(--gold);"></span>
+          ◆ Diamond Hunter
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════
+     PH-STATS — PROOF BAR
+═══════════════════════════════════════════════════════════ -->
+<section id="ph-stats" class="relative z-10 py-16 px-8" style="background:#fff;border-top:1px solid rgba(0,0,0,.05);border-bottom:1px solid rgba(0,0,0,.05);">
+  <div class="max-w-screen-xl mx-auto">
+    <div class="flex flex-col md:flex-row items-center justify-center gap-0" style="row-gap:2rem;">
+
+      <div class="text-center flex-1 px-6 py-4" data-stat>
+        <div class="stat-num"><span class="stat-count" data-target="2000">0</span>+</div>
+        <div class="stat-sub">Global Pharma Companies</div>
+        <div class="stat-desc">US &amp; International</div>
+      </div>
+
+      <div class="stat-divider hidden md:block" style="min-height:70px;"></div>
+
+      <div class="text-center flex-1 px-6 py-4" data-stat>
+        <div class="stat-num"><span class="stat-count" data-target="15000">0</span>+</div>
+        <div class="stat-sub">Drug Trials Tracked</div>
+        <div class="stat-desc">Phase I–III Pipeline</div>
+      </div>
+
+      <div class="stat-divider hidden md:block" style="min-height:70px;"></div>
+
+      <div class="text-center flex-1 px-6 py-4" data-stat>
+        <div class="stat-num"><span class="stat-count" data-target="500">0</span>+</div>
+        <div class="stat-sub">FDA Events Monitored</div>
+        <div class="stat-desc">PDUFA · BLA · AdCom</div>
+      </div>
+
+      <div class="stat-divider hidden md:block" style="min-height:70px;"></div>
+
+      <div class="text-center flex-1 px-6 py-4" data-stat>
+        <div class="stat-num"><span class="stat-count" data-target="3">0</span> min</div>
+        <div class="stat-sub">Research Reports</div>
+        <div class="stat-desc">Full Analyst-Grade Output</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════
+     PH-GRAPH — KNOWLEDGE GRAPH
+═══════════════════════════════════════════════════════════ -->
+<section id="ph-graph" class="relative z-10 py-32 px-8 overflow-hidden" style="background:#fafafa;">
+  <div class="max-w-screen-xl mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+
+      <!-- Copy left -->
+      <div>
+        <div id="phg-eye" class="flex items-center gap-4 mb-8" style="opacity:0;">
+          <span class="g-rule w-10"></span>
+          <span class="text-[11px] tracking-[.28em] uppercase font-medium gold-text">The Network</span>
+        </div>
+        <h2 id="phg-title" class="font-display font-light text-[clamp(32px,3.6vw,52px)] leading-[1.08] tracking-[-0.02em] mb-6" style="opacity:0;">
+          Every Drug. Every Pipeline.<br><em class="gold-text">Every Connection.</em>
+        </h2>
+        <p id="phg-body" class="text-[15px] leading-[1.85] text-[var(--muted)] font-light mb-10" style="opacity:0;">
+          Our pharmaceutical knowledge graph maps 2,000+ publicly traded biotech and pharma companies — US and global — with live pipeline data, competitive overlaps, trial status, and licensing relationships. When any node changes, every connected path updates in real time.
+        </p>
+        <div id="phg-badges" class="flex flex-wrap gap-2" style="opacity:0;">
+          <span class="therapy-badge" style="color:#4dbb77;border-color:rgba(77,187,119,.3);background:rgba(77,187,119,.06);">Medical Oncology</span>
+          <span class="therapy-badge" style="color:#00d4c8;border-color:rgba(0,212,200,.3);background:rgba(0,212,200,.06);">Immunology</span>
+          <span class="therapy-badge" style="color:#c9a462;border-color:rgba(201,164,98,.3);background:rgba(201,164,98,.06);">Gene Therapy</span>
+          <span class="therapy-badge" style="color:#a78bfa;border-color:rgba(167,139,250,.3);background:rgba(167,139,250,.06);">Rare Disease</span>
+          <span class="therapy-badge" style="color:#fb923c;border-color:rgba(251,146,60,.3);background:rgba(251,146,60,.06);">Neurology</span>
+        </div>
+      </div>
+
+      <!-- Canvas right -->
+      <div style="position:relative;height:520px;border-radius:12px;overflow:hidden;background:#0d1117;border:1px solid rgba(255,255,255,.06);box-shadow:0 40px 80px rgba(0,0,0,.14);">
+        <canvas id="cv-phgraph" style="display:block;width:100%;height:100%;"></canvas>
+        <!-- Ticker labels overlay (positioned absolute by JS) -->
+        <div id="phg-labels" style="position:absolute;inset:0;pointer-events:none;"></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════
+     PH-FDA — FDA CALENDAR
+═══════════════════════════════════════════════════════════ -->
+<section id="ph-fda" class="relative z-10 py-32 px-8" style="background:#fff;">
+  <div class="max-w-screen-xl mx-auto">
+
+    <div class="mb-16 max-w-[700px]">
+      <div id="phf-eye" class="flex items-center gap-4 mb-8" style="opacity:0;">
+        <span class="g-rule w-10"></span>
+        <span class="text-[11px] tracking-[.28em] uppercase font-medium gold-text">FDA Intelligence</span>
+      </div>
+      <h2 id="phf-title" class="font-display font-light text-[clamp(32px,3.6vw,52px)] leading-[1.08] tracking-[-0.02em] mb-5" style="opacity:0;">
+        Know Before the<br><em class="gold-text">Market Does.</em>
+      </h2>
+      <p id="phf-body" class="text-[15px] leading-[1.85] text-[var(--muted)] font-light" style="opacity:0;">
+        Every PDUFA decision, BLA filing, and AdCom meeting — tracked and scored. Our probability engine factors drug mechanism, clinical trial design, competitive landscape, management track record, and historical approval rates for the same modality.
+      </p>
+    </div>
+
+    <!-- 5 event cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4" id="phf-grid">
+
+      <!-- Card 1: ALNY 89% -->
+      <div class="fda-card" data-fda data-prob="89" data-arc-color="green">
+        <div class="flex items-start justify-between mb-3">
+          <div>
+            <p class="font-display font-light text-[22px] leading-none tracking-tight">ALNY</p>
+            <p class="text-[12px] font-medium text-[var(--muted)] mt-1">Fitusiran</p>
+          </div>
+          <span style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;padding:3px 9px;border-radius:99px;background:rgba(0,212,200,.08);color:#00d4c8;border:1px solid rgba(0,212,200,.25);">siRNA</span>
+        </div>
+        <p class="text-[11px] text-[var(--muted)] mb-4 font-light">Hemophilia A/B</p>
+
+        <!-- SVG arc -->
+        <div class="flex justify-center mb-3">
+          <svg width="84" height="84" viewBox="0 0 84 84">
+            <circle cx="42" cy="42" r="32" fill="none" stroke="rgba(0,0,0,.07)" stroke-width="5"/>
+            <circle class="fda-arc" cx="42" cy="42" r="32" fill="none" stroke="#4dbb77" stroke-width="5"
+              stroke-linecap="round" stroke-dasharray="201.1" stroke-dashoffset="201.1"
+              transform="rotate(-90 42 42)" style="transition:stroke-dashoffset 1.2s cubic-bezier(.22,1,.36,1);"/>
+            <text x="42" y="38" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="17" font-weight="300" fill="#0a0a0a"><tspan class="arc-num">0</tspan>%</text>
+            <text x="42" y="54" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#9a9a9a" letter-spacing="2">APPROVAL</text>
+          </svg>
+        </div>
+        <div class="flex justify-between items-center mt-2">
+          <span class="text-[10px] text-[var(--muted)] tracking-[.08em]">14 days</span>
+          <span class="font-display gold-text text-[13px]">89%</span>
+        </div>
+      </div>
+
+      <!-- Card 2: VRTX 76% -->
+      <div class="fda-card" data-fda data-prob="76" data-arc-color="gold">
+        <div class="flex items-start justify-between mb-3">
+          <div>
+            <p class="font-display font-light text-[22px] leading-none tracking-tight">VRTX</p>
+            <p class="text-[12px] font-medium text-[var(--muted)] mt-1">VX-548</p>
+          </div>
+          <span style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;padding:3px 9px;border-radius:99px;background:rgba(201,164,98,.08);color:var(--gold);border:1px solid rgba(201,164,98,.25);">Small Mol</span>
+        </div>
+        <p class="text-[11px] text-[var(--muted)] mb-4 font-light">Acute Pain NaV1.8</p>
+
+        <div class="flex justify-center mb-3">
+          <svg width="84" height="84" viewBox="0 0 84 84">
+            <circle cx="42" cy="42" r="32" fill="none" stroke="rgba(0,0,0,.07)" stroke-width="5"/>
+            <circle class="fda-arc" cx="42" cy="42" r="32" fill="none" stroke="#c9a462" stroke-width="5"
+              stroke-linecap="round" stroke-dasharray="201.1" stroke-dashoffset="201.1"
+              transform="rotate(-90 42 42)" style="transition:stroke-dashoffset 1.2s cubic-bezier(.22,1,.36,1);"/>
+            <text x="42" y="38" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="17" font-weight="300" fill="#0a0a0a"><tspan class="arc-num">0</tspan>%</text>
+            <text x="42" y="54" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#9a9a9a" letter-spacing="2">APPROVAL</text>
+          </svg>
+        </div>
+        <div class="flex justify-between items-center mt-2">
+          <span class="text-[10px] text-[var(--muted)] tracking-[.08em]">31 days</span>
+          <span class="font-display gold-text text-[13px]">76%</span>
+        </div>
+      </div>
+
+      <!-- Card 3: SRPT 58% -->
+      <div class="fda-card" data-fda data-prob="58" data-arc-color="red">
+        <div class="flex items-start justify-between mb-3">
+          <div>
+            <p class="font-display font-light text-[22px] leading-none tracking-tight">SRPT</p>
+            <p class="text-[12px] font-medium text-[var(--muted)] mt-1">SRP-9001</p>
+          </div>
+          <span style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;padding:3px 9px;border-radius:99px;background:rgba(167,139,250,.07);color:#a78bfa;border:1px solid rgba(167,139,250,.22);">Gene (AAV)</span>
+        </div>
+        <p class="text-[11px] text-[var(--muted)] mb-4 font-light">Duchenne MD</p>
+
+        <div class="flex justify-center mb-3">
+          <svg width="84" height="84" viewBox="0 0 84 84">
+            <circle cx="42" cy="42" r="32" fill="none" stroke="rgba(0,0,0,.07)" stroke-width="5"/>
+            <circle class="fda-arc" cx="42" cy="42" r="32" fill="none" stroke="#e07070" stroke-width="5"
+              stroke-linecap="round" stroke-dasharray="201.1" stroke-dashoffset="201.1"
+              transform="rotate(-90 42 42)" style="transition:stroke-dashoffset 1.2s cubic-bezier(.22,1,.36,1);"/>
+            <text x="42" y="38" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="17" font-weight="300" fill="#0a0a0a"><tspan class="arc-num">0</tspan>%</text>
+            <text x="42" y="54" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#9a9a9a" letter-spacing="2">APPROVAL</text>
+          </svg>
+        </div>
+        <div class="flex justify-between items-center mt-2">
+          <span class="text-[10px] text-[var(--muted)] tracking-[.08em]">47 days</span>
+          <span style="font-family:'Cormorant Garamond',serif;font-weight:300;font-size:13px;color:#e07070;">58%</span>
+        </div>
+      </div>
+
+      <!-- Card 4: REGN 94% -->
+      <div class="fda-card" data-fda data-prob="94" data-arc-color="green">
+        <div class="flex items-start justify-between mb-3">
+          <div>
+            <p class="font-display font-light text-[22px] leading-none tracking-tight">REGN</p>
+            <p class="text-[12px] font-medium text-[var(--muted)] mt-1">Dupixent-new</p>
+          </div>
+          <span style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;padding:3px 9px;border-radius:99px;background:rgba(0,212,200,.08);color:#00d4c8;border:1px solid rgba(0,212,200,.25);">mAb</span>
+        </div>
+        <p class="text-[11px] text-[var(--muted)] mb-4 font-light">COPD Exacerbation</p>
+
+        <div class="flex justify-center mb-3">
+          <svg width="84" height="84" viewBox="0 0 84 84">
+            <circle cx="42" cy="42" r="32" fill="none" stroke="rgba(0,0,0,.07)" stroke-width="5"/>
+            <circle class="fda-arc" cx="42" cy="42" r="32" fill="none" stroke="#4dbb77" stroke-width="5"
+              stroke-linecap="round" stroke-dasharray="201.1" stroke-dashoffset="201.1"
+              transform="rotate(-90 42 42)" style="transition:stroke-dashoffset 1.2s cubic-bezier(.22,1,.36,1);"/>
+            <text x="42" y="38" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="17" font-weight="300" fill="#0a0a0a"><tspan class="arc-num">0</tspan>%</text>
+            <text x="42" y="54" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#9a9a9a" letter-spacing="2">APPROVAL</text>
+          </svg>
+        </div>
+        <div class="flex justify-between items-center mt-2">
+          <span class="text-[10px] text-[var(--muted)] tracking-[.08em]">62 days</span>
+          <span class="font-display gold-text text-[13px]">94%</span>
+        </div>
+      </div>
+
+      <!-- Card 5: CRBU 71% -->
+      <div class="fda-card" data-fda data-prob="71" data-arc-color="gold">
+        <div class="flex items-start justify-between mb-3">
+          <div>
+            <p class="font-display font-light text-[22px] leading-none tracking-tight">CRBU</p>
+            <p class="text-[12px] font-medium text-[var(--muted)] mt-1">CTX001</p>
+          </div>
+          <span style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;padding:3px 9px;border-radius:99px;background:rgba(251,146,60,.07);color:#fb923c;border:1px solid rgba(251,146,60,.22);">CAR-T</span>
+        </div>
+        <p class="text-[11px] text-[var(--muted)] mb-4 font-light">Sickle Cell Disease</p>
+
+        <div class="flex justify-center mb-3">
+          <svg width="84" height="84" viewBox="0 0 84 84">
+            <circle cx="42" cy="42" r="32" fill="none" stroke="rgba(0,0,0,.07)" stroke-width="5"/>
+            <circle class="fda-arc" cx="42" cy="42" r="32" fill="none" stroke="#c9a462" stroke-width="5"
+              stroke-linecap="round" stroke-dasharray="201.1" stroke-dashoffset="201.1"
+              transform="rotate(-90 42 42)" style="transition:stroke-dashoffset 1.2s cubic-bezier(.22,1,.36,1);"/>
+            <text x="42" y="38" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="17" font-weight="300" fill="#0a0a0a"><tspan class="arc-num">0</tspan>%</text>
+            <text x="42" y="54" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#9a9a9a" letter-spacing="2">APPROVAL</text>
+          </svg>
+        </div>
+        <div class="flex justify-between items-center mt-2">
+          <span class="text-[10px] text-[var(--muted)] tracking-[.08em]">91 days</span>
+          <span class="font-display gold-text text-[13px]">71%</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════
+     PH-RESEARCH — DEEP RESEARCH ENGINE
+═══════════════════════════════════════════════════════════ -->
+<section id="ph-research" class="relative z-10 py-32 px-8" style="background:#fafafa;">
+  <div class="max-w-screen-xl mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+
+      <!-- Copy left -->
+      <div>
+        <div id="phr-eye" class="flex items-center gap-4 mb-8" style="opacity:0;">
+          <span class="g-rule w-10"></span>
+          <span class="text-[11px] tracking-[.28em] uppercase font-medium gold-text">Deep Research Engine</span>
+        </div>
+        <h2 id="phr-title" class="font-display font-light text-[clamp(32px,3.6vw,52px)] leading-[1.08] tracking-[-0.02em] mb-6" style="opacity:0;">
+          Research like a<br><em class="gold-text">$10M/yr analyst desk.</em>
+        </h2>
+        <p id="phr-body" class="text-[15px] leading-[1.85] text-[var(--muted)] font-light mb-10" style="opacity:0;">
+          Ask SEDGE to research any pharma company. It returns a structured report covering verdict, price target, mechanism analysis, disease landscape, clinical progress, commercial model, financials, and risk scenarios — in the depth of a full sell-side report. Download as .pptx to present directly.
+        </p>
+        <div id="phr-tags" class="flex flex-wrap gap-2" style="opacity:0;">
+          <span class="phr-tag">Verdict</span>
+          <span class="phr-tag">Price Target</span>
+          <span class="phr-tag">Pipeline NPV</span>
+          <span class="phr-tag">Risk Scenarios</span>
+        </div>
+      </div>
+
+      <!-- Browser mockup right -->
+      <div id="phr-frame-wrap" style="perspective:1100px;opacity:0;">
+        <div class="browser-frame" id="phr-frame">
+
+          <!-- macOS chrome -->
+          <div class="browser-chrome">
+            <div style="width:11px;height:11px;border-radius:50%;background:#FF5F57;flex-shrink:0;"></div>
+            <div style="width:11px;height:11px;border-radius:50%;background:#FEBC2E;flex-shrink:0;"></div>
+            <div style="width:11px;height:11px;border-radius:50%;background:#28C840;flex-shrink:0;"></div>
+            <div style="flex:1;text-align:center;">
+              <span style="font-size:11px;color:rgba(255,255,255,.22);letter-spacing:.06em;">sedge.ventures/research</span>
+            </div>
+          </div>
+
+          <!-- Tab row -->
+          <div style="display:flex;align-items:flex-end;gap:2px;padding:10px 18px 0;background:#111115;border-bottom:1px solid rgba(255,255,255,.06);">
+            <div class="phr-tab phr-tab-active" id="tab0">Overview</div>
+            <div class="phr-tab" id="tab1">Pipeline</div>
+            <div class="phr-tab" id="tab2">Financials</div>
+            <div class="phr-tab" id="tab3">Risk</div>
+            <div class="phr-tab" id="tab4">Download</div>
+          </div>
+
+          <!-- Content area -->
+          <div style="padding:1.5rem 1.6rem;background:#1c1c22;min-height:280px;">
+
+            <!-- Header row -->
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;padding-bottom:1rem;border-bottom:1px solid rgba(255,255,255,.07);">
+              <div style="display:flex;align-items:center;gap:12px;">
+                <span style="font-family:'Cormorant Garamond',serif;font-weight:300;font-size:28px;color:#fff;letter-spacing:-0.02em;">EWTX</span>
+                <span style="padding:3px 10px;border-radius:99px;background:rgba(77,187,119,.15);color:#4dbb77;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;border:1px solid rgba(77,187,119,.3);">BUY</span>
+              </div>
+              <div style="text-align:right;">
+                <div style="font-size:11px;color:rgba(255,255,255,.35);letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px;">Price Target</div>
+                <div style="font-family:'Cormorant Garamond',serif;font-weight:300;font-size:22px;color:var(--gold);letter-spacing:-0.01em;">$35 – $52</div>
+              </div>
+            </div>
+
+            <!-- Verdict card -->
+            <div id="phr-verdict" style="border:1px solid rgba(201,164,98,.18);border-radius:8px;padding:1rem 1.2rem;background:rgba(201,164,98,.05);margin-bottom:1.2rem;opacity:0;">
+              <div style="font-size:10px;color:rgba(255,255,255,.35);letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px;">Analyst Verdict</div>
+              <div style="font-size:14px;color:rgba(255,255,255,.82);font-weight:400;line-height:1.6;">
+                <span style="color:var(--gold);font-weight:600;">Buy · $35–52 · Moderate Risk</span> — Phase II data compelling; pivotal readout Q3. Management execution track record strong. First-in-class mechanism with limited competition.
+              </div>
+            </div>
+
+            <!-- Download buttons -->
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <button style="padding:9px 18px;border-radius:7px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:rgba(255,255,255,.65);font-size:12px;font-weight:500;letter-spacing:.04em;cursor:pointer;position:relative;overflow:hidden;transition:background .25s;">
+                <span style="position:relative;z-index:1;">↓ Download .docx</span>
+              </button>
+              <button style="padding:9px 20px;border-radius:7px;border:1px solid rgba(201,164,98,.4);background:linear-gradient(135deg,rgba(201,164,98,.18),rgba(201,164,98,.06));color:var(--gold);font-size:12px;font-weight:600;letter-spacing:.04em;cursor:pointer;position:relative;overflow:hidden;transition:background .25s;">
+                <span style="position:relative;z-index:1;">↓ Download .pptx</span>
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════
+     PH-DIAMOND — DIAMOND HUNTER
+═══════════════════════════════════════════════════════════ -->
+<section id="ph-diamond" class="relative z-10 py-32 px-8" style="background:#fafafa;">
+  <div class="max-w-screen-xl mx-auto">
+
+    <!-- Section header -->
+    <div class="mb-16 max-w-[820px] mx-auto text-center">
+      <div id="phd-eye" class="inline-flex items-center gap-4 mb-8" style="opacity:0;">
+        <span style="display:block;height:1px;width:28px;background:linear-gradient(90deg,transparent,var(--gold));"></span>
+        <span class="text-[11px] tracking-[.28em] uppercase font-medium gold-text">Diamond Hunter</span>
+        <span style="display:block;height:1px;width:28px;background:linear-gradient(90deg,var(--gold),transparent);"></span>
+      </div>
+      <h2 id="phd-title" class="font-display font-light text-[clamp(36px,4.4vw,62px)] leading-[1.06] tracking-[-0.025em] mb-3" style="opacity:0;">
+        We found <em class="gold-text">MDGL at $8.</em> Before anyone else.
+      </h2>
+      <h2 id="phd-title2" class="font-display font-light text-[clamp(22px,2.4vw,34px)] leading-[1.2] tracking-[-0.015em] mb-8 text-[var(--muted)]" style="opacity:0;">CRNX at $12. CYTX at $3. Identified before they moved.</h2>
+      <p id="phd-body" class="text-[15px] leading-[1.85] text-[var(--muted)] font-light max-w-[600px] mx-auto" style="opacity:0;">
+        We backtested hundreds of biotech multi-baggers and reverse-engineered the exact signals — drug science milestones, management inflections, modality shifts. Diamond Hunter screens every company in our network for those same patterns, in real-time.
+      </p>
+    </div>
+
+    <!-- 3-col signal cards -->
+    <div id="phd-cards-wrap" class="grid grid-cols-1 md:grid-cols-3 gap-5" style="opacity:0;">
+
+      <!-- Card A: RVMD -->
+      <div class="diamond-card" data-dcard>
+        <div class="flex items-start justify-between mb-3">
+          <div>
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+              <span class="font-display font-light text-[22px] leading-none tracking-tight">RVMD</span>
+              <span style="padding:2px 9px;border-radius:99px;background:rgba(201,164,98,.09);color:var(--gold);font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;border:1px solid rgba(201,164,98,.28);">◆ Signal Forming</span>
+            </div>
+            <p class="text-[11px] text-[var(--muted)] mt-1.5 font-light">Revolution Medicines · PI3K · Oncology · mAb</p>
+          </div>
+          <span class="text-[10px] text-[var(--muted)] tracking-[.06em] whitespace-nowrap flex-shrink-0 ml-2">44 days</span>
+        </div>
+        <div class="flex gap-5 mb-4 text-[12px]">
+          <span class="text-[var(--muted)]">Entry: <strong class="text-[var(--ink)]">$14.20–$17.80</strong></span>
+          <span class="text-[var(--muted)]">Exit: <strong class="gold-text">$52–$74</strong></span>
+        </div>
+        <div class="mb-3">
+          <div class="flex justify-between mb-1.5 text-[10px] text-[var(--muted)] tracking-[.06em]">
+            <span>Drug Science Score</span><span class="score-val-a">0%</span>
+          </div>
+          <div class="score-bar-track"><div class="score-bar-fill" data-score="82"></div></div>
+        </div>
+        <div>
+          <div class="flex justify-between mb-1.5 text-[10px] text-[var(--muted)] tracking-[.06em]">
+            <span>Trial Success Probability</span><span class="score-val-b">0%</span>
+          </div>
+          <div class="score-bar-track"><div class="score-bar-fill" data-score="74"></div></div>
+        </div>
+      </div>
+
+      <!-- Card B: FULC -->
+      <div class="diamond-card" data-dcard>
+        <div class="flex items-start justify-between mb-3">
+          <div>
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+              <span class="font-display font-light text-[22px] leading-none tracking-tight">FULC</span>
+              <span style="padding:2px 9px;border-radius:99px;background:rgba(201,164,98,.09);color:var(--gold);font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;border:1px solid rgba(201,164,98,.28);">◆ Signal Forming</span>
+            </div>
+            <p class="text-[11px] text-[var(--muted)] mt-1.5 font-light">Fulcrum Therapeutics · Losmapimod · FSHD · Small Mol</p>
+          </div>
+          <span class="text-[10px] text-[var(--muted)] tracking-[.06em] whitespace-nowrap flex-shrink-0 ml-2">67 days</span>
+        </div>
+        <div class="flex gap-5 mb-4 text-[12px]">
+          <span class="text-[var(--muted)]">Entry: <strong class="text-[var(--ink)]">$4.80–$6.20</strong></span>
+          <span class="text-[var(--muted)]">Exit: <strong class="gold-text">$18–$28</strong></span>
+        </div>
+        <div class="mb-3">
+          <div class="flex justify-between mb-1.5 text-[10px] text-[var(--muted)] tracking-[.06em]">
+            <span>Drug Science Score</span><span class="score-val-a">0%</span>
+          </div>
+          <div class="score-bar-track"><div class="score-bar-fill" data-score="78"></div></div>
+        </div>
+        <div>
+          <div class="flex justify-between mb-1.5 text-[10px] text-[var(--muted)] tracking-[.06em]">
+            <span>Trial Success Probability</span><span class="score-val-b">0%</span>
+          </div>
+          <div class="score-bar-track"><div class="score-bar-fill" data-score="68"></div></div>
+        </div>
+      </div>
+
+      <!-- Card C: NUVB -->
+      <div class="diamond-card" data-dcard>
+        <div class="flex items-start justify-between mb-3">
+          <div>
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+              <span class="font-display font-light text-[22px] leading-none tracking-tight">NUVB</span>
+              <span style="padding:2px 9px;border-radius:99px;background:rgba(201,164,98,.09);color:var(--gold);font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;border:1px solid rgba(201,164,98,.28);">◆ Signal Forming</span>
+            </div>
+            <p class="text-[11px] text-[var(--muted)] mt-1.5 font-light">Nuvation Bio · NUV-868 · Prostate · BET Inhibitor</p>
+          </div>
+          <span class="text-[10px] text-[var(--muted)] tracking-[.06em] whitespace-nowrap flex-shrink-0 ml-2">29 days</span>
+        </div>
+        <div class="flex gap-5 mb-4 text-[12px]">
+          <span class="text-[var(--muted)]">Entry: <strong class="text-[var(--ink)]">$2.90–$3.80</strong></span>
+          <span class="text-[var(--muted)]">Exit: <strong class="gold-text">$11–$18</strong></span>
+        </div>
+        <div class="mb-3">
+          <div class="flex justify-between mb-1.5 text-[10px] text-[var(--muted)] tracking-[.06em]">
+            <span>Drug Science Score</span><span class="score-val-a">0%</span>
+          </div>
+          <div class="score-bar-track"><div class="score-bar-fill" data-score="85"></div></div>
+        </div>
+        <div>
+          <div class="flex justify-between mb-1.5 text-[10px] text-[var(--muted)] tracking-[.06em]">
+            <span>Trial Success Probability</span><span class="score-val-b">0%</span>
+          </div>
+          <div class="score-bar-track"><div class="score-bar-fill" data-score="71"></div></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Proof line at bottom -->
+    <div id="phd-proof" class="mt-12 text-center" style="opacity:0;">
+      <p class="text-[12px] text-[var(--muted)] font-light tracking-[.06em]">
+        Based on backtested patterns across 200+ biotech multi-baggers ·
+        <span class="gold-text font-medium">MDGL ×8.2 &nbsp;·&nbsp; CRNX ×6.4 &nbsp;·&nbsp; CYTX ×11.1</span>
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════
+     SECTION 2 — CORE PILLARS
+═══════════════════════════════════════════════════════════ -->
+<section id="pillars" class="relative z-10 py-40 px-8">
+  <div class="max-w-screen-xl mx-auto">
+
+    <!-- Header -->
+    <div class="mb-24 max-w-[780px]">
+      <div id="p-eye" class="flex items-center gap-4 mb-8">
+        <span class="g-rule w-10"></span>
+        <span class="text-[11px] tracking-[.28em] uppercase font-medium gold-text">About SEDGE Ventures</span>
+      </div>
+      <h2 id="p-title" class="font-display font-light text-[clamp(34px,3.8vw,54px)] leading-[1.1] tracking-[-0.02em]">
+        Professional investment management through <em class="gold-text">systematic analysis</em>, disciplined risk management, and institutional-grade technology infrastructure.
+      </h2>
+    </div>
+
+    <!-- 2-col pillar grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-gray-100">
+      <!-- 01 -->
+      <div class="pcard" data-pillar>
+        <p class="font-display gold-text text-[11px] tracking-[.22em] mb-4">01</p>
+        <span class="g-rule w-8 mb-6 block"></span>
+        <h3 class="font-display font-light text-[26px] leading-tight tracking-[-0.01em] mb-4">Systematic Approach</h3>
+        <p class="text-[14px] leading-[1.8] text-[var(--muted)] font-light">Quantitative screening frameworks combining fundamental analysis with technical indicators to identify high-conviction opportunities across global markets.</p>
+      </div>
+      <!-- 02 -->
+      <div class="pcard" data-pillar>
+        <p class="font-display gold-text text-[11px] tracking-[.22em] mb-4">02</p>
+        <span class="g-rule w-8 mb-6 block"></span>
+        <h3 class="font-display font-light text-[26px] leading-tight tracking-[-0.01em] mb-4">Risk-First Philosophy</h3>
+        <p class="text-[14px] leading-[1.8] text-[var(--muted)] font-light">Rigorous position sizing, Value-at-Risk monitoring, and portfolio loss limits ensure capital preservation is never compromised for return potential.</p>
+      </div>
+      <!-- 03 -->
+      <div class="pcard" data-pillar>
+        <p class="font-display gold-text text-[11px] tracking-[.22em] mb-4">03</p>
+        <span class="g-rule w-8 mb-6 block"></span>
+        <h3 class="font-display font-light text-[26px] leading-tight tracking-[-0.01em] mb-4">Technology-Driven Edge</h3>
+        <p class="text-[14px] leading-[1.8] text-[var(--muted)] font-light">Proprietary analytics tools, AI-powered screeners, and real-time risk dashboards deliver the infrastructure of a tier-1 institutional investment operation.</p>
+      </div>
+      <!-- 04 -->
+      <div class="pcard" data-pillar>
+        <p class="font-display gold-text text-[11px] tracking-[.22em] mb-4">04</p>
+        <span class="g-rule w-8 mb-6 block"></span>
+        <h3 class="font-display font-light text-[26px] leading-tight tracking-[-0.01em] mb-4">Disciplined Execution</h3>
+        <p class="text-[14px] leading-[1.8] text-[var(--muted)] font-light">Every trade is documented and measured against predefined criteria. Emotional bias is structurally eliminated through systematic, rule-based processes.</p>
+      </div>
+      <!-- 05 -->
+      <div class="pcard" data-pillar>
+        <p class="font-display gold-text text-[11px] tracking-[.22em] mb-4">05</p>
+        <span class="g-rule w-8 mb-6 block"></span>
+        <h3 class="font-display font-light text-[26px] leading-tight tracking-[-0.01em] mb-4">Continuous Research</h3>
+        <p class="text-[14px] leading-[1.8] text-[var(--muted)] font-light">Daily monitoring of earnings, sector trends, macroeconomic indicators, and global catalysts keeps the portfolio aligned with structural market forces.</p>
+      </div>
+      <!-- 06 -->
+      <div class="pcard" data-pillar>
+        <p class="font-display gold-text text-[11px] tracking-[.22em] mb-4">06</p>
+        <span class="g-rule w-8 mb-6 block"></span>
+        <h3 class="font-display font-light text-[26px] leading-tight tracking-[-0.01em] mb-4">Performance Accountability</h3>
+        <p class="text-[14px] leading-[1.8] text-[var(--muted)] font-light">Comprehensive reporting including risk-adjusted returns, Sharpe ratio analysis, drawdown metrics, and detailed attribution analysis for full transparency.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════
+     SECTION 3 — TARGET SECTORS
+═══════════════════════════════════════════════════════════ -->
+<section id="sectors" class="relative z-10 py-40 px-8 bg-[#fafafa]">
+  <div class="max-w-screen-xl mx-auto">
+
+    <!-- Header -->
+    <div class="mb-20 max-w-[700px]">
+      <div id="s-eye" class="flex items-center gap-4 mb-8">
+        <span class="g-rule w-10"></span>
+        <span class="text-[11px] tracking-[.28em] uppercase font-medium gold-text">Structural Innovation</span>
+      </div>
+      <h2 id="s-title" class="font-display font-light text-[clamp(34px,3.8vw,54px)] leading-[1.1] tracking-[-0.02em]">
+        Target Sectors — <em class="gold-text">high-growth areas</em> driven by technological innovation and structural trends.
+      </h2>
+    </div>
+
+    <!-- 3×2 grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="s-grid">
+
+      <div class="scard" data-sc="ai">
+        <div style="height:160px;position:relative;overflow:hidden;background:#fafafa;">
+          <canvas id="cv-ai" style="display:block;width:100%;height:160px;"></canvas>
+        </div>
+        <div class="p-7">
+          <p class="text-[10px] tracking-[.24em] uppercase gold-text font-medium mb-3">01 — Artificial Intelligence</p>
+          <h3 class="font-display font-light text-[22px] leading-tight mb-3">AI &amp; Machine Learning</h3>
+          <p class="text-[13px] leading-[1.75] text-[var(--muted)] font-light">Machine learning, generative AI, and enterprise automation platforms reshaping global productivity curves.</p>
+        </div>
+      </div>
+
+      <div class="scard" data-sc="health">
+        <div style="height:160px;position:relative;overflow:hidden;background:#fafafa;">
+          <canvas id="cv-health" style="display:block;width:100%;height:160px;"></canvas>
+        </div>
+        <div class="p-7">
+          <p class="text-[10px] tracking-[.24em] uppercase gold-text font-medium mb-3">02 — Healthcare &amp; Biotech</p>
+          <h3 class="font-display font-light text-[22px] leading-tight mb-3">Healthcare &amp; Biotech</h3>
+          <p class="text-[13px] leading-[1.75] text-[var(--muted)] font-light">Drug discovery, gene therapy, and innovative treatment modalities at the frontier of modern medicine.</p>
+        </div>
+      </div>
+
+      <div class="scard" data-sc="semi">
+        <div style="height:160px;position:relative;overflow:hidden;background:#fafafa;">
+          <canvas id="cv-semi" style="display:block;width:100%;height:160px;"></canvas>
+        </div>
+        <div class="p-7">
+          <p class="text-[10px] tracking-[.24em] uppercase gold-text font-medium mb-3">03 — Semiconductors</p>
+          <h3 class="font-display font-light text-[22px] leading-tight mb-3">Semiconductors</h3>
+          <p class="text-[13px] leading-[1.75] text-[var(--muted)] font-light">Chipmakers and equipment manufacturers enabling next-generation computing and AI infrastructure.</p>
+        </div>
+      </div>
+
+      <div class="scard" data-sc="cyber">
+        <div style="height:160px;position:relative;overflow:hidden;background:#fafafa;">
+          <canvas id="cv-cyber" style="display:block;width:100%;height:160px;"></canvas>
+        </div>
+        <div class="p-7">
+          <p class="text-[10px] tracking-[.24em] uppercase gold-text font-medium mb-3">04 — Cybersecurity</p>
+          <h3 class="font-display font-light text-[22px] leading-tight mb-3">Cybersecurity</h3>
+          <p class="text-[13px] leading-[1.75] text-[var(--muted)] font-light">Cloud security, identity management, and threat intelligence protecting the digital economy at scale.</p>
+        </div>
+      </div>
+
+      <div class="scard" data-sc="energy">
+        <div style="height:160px;position:relative;overflow:hidden;background:#fafafa;">
+          <canvas id="cv-energy" style="display:block;width:100%;height:160px;"></canvas>
+        </div>
+        <div class="p-7">
+          <p class="text-[10px] tracking-[.24em] uppercase gold-text font-medium mb-3">05 — Clean Energy</p>
+          <h3 class="font-display font-light text-[22px] leading-tight mb-3">Clean Energy</h3>
+          <p class="text-[13px] leading-[1.75] text-[var(--muted)] font-light">Battery technology, renewable infrastructure, and grid modernization driving the energy transition.</p>
+        </div>
+      </div>
+
+      <div class="scard" data-sc="space">
+        <div style="height:160px;position:relative;overflow:hidden;background:#fafafa;">
+          <canvas id="cv-space" style="display:block;width:100%;height:160px;"></canvas>
+        </div>
+        <div class="p-7">
+          <p class="text-[10px] tracking-[.24em] uppercase gold-text font-medium mb-3">06 — Space &amp; Aerospace</p>
+          <h3 class="font-display font-light text-[22px] leading-tight mb-3">Space &amp; Aerospace</h3>
+          <p class="text-[13px] leading-[1.75] text-[var(--muted)] font-light">Commercial space, satellite technology, and defense contractors pioneering humanity's next frontier.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="relative z-10 border-t border-gray-100 py-14 px-8">
+  <div class="max-w-screen-xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+    <div>
+      <div class="flex items-center gap-2 mb-2">
+        <span class="font-display font-light tracking-[.22em] text-[16px] uppercase">SEDGE</span>
+        <span class="font-display font-light tracking-[.22em] text-[16px] uppercase gold-text">Ventures</span>
+      </div>
+      <p class="text-[12px] text-[var(--muted)] font-light tracking-[.06em]">Systematic Equity Investment Management</p>
+    </div>
+    <p class="text-[11px] text-[var(--muted)] font-light tracking-[.08em]">© 2025 SEDGE Ventures. All rights reserved.</p>
+  </div>
+</footer>
+
+<!-- ══════════════════════════════════════════════════════════
+     SCRIPTS
+═══════════════════════════════════════════════════════════ -->
+<script>
+'use strict';
+gsap.registerPlugin(ScrollTrigger);
+
+// ─── LENIS ────────────────────────────────────────────────────────────────────
+const lenis = new Lenis({ duration: 1.4, easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
+lenis.on('scroll', ScrollTrigger.update);
+gsap.ticker.add(t => lenis.raf(t * 1000));
+gsap.ticker.lagSmoothing(0);
+
+// Nav stuck state
+lenis.on('scroll', ({ scroll }) => {
+  document.getElementById('nav').classList.toggle('stuck', scroll > 50);
+});
+
+// ─── SECTOR SCENES (shared setup helper) ─────────────────────────────────────
+function makeSector(id, setupFn) {
+  const canvas = document.getElementById(id);
+  const wrap   = canvas.parentElement;
+
+  function sizeCanvas() {
+    const W = wrap.clientWidth;
+    const H = 160;
+    const dpr = Math.min(devicePixelRatio, 2);
+    canvas.width  = W * dpr;
+    canvas.height = H * dpr;
+    canvas.style.width  = W + 'px';
+    canvas.style.height = H + 'px';
+    return { W, H };
+  }
+
+  const { W, H } = sizeCanvas();
+
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.setSize(W, H);
+  renderer.setClearColor(0xfafafa, 1);
+
+  const scene = new THREE.Scene();
+  const cam = new THREE.PerspectiveCamera(48, W / H, 0.1, 100);
+  cam.position.z = 5;
+
+  scene.add(new THREE.AmbientLight(0xffffff, 0.65));
+  const d1 = new THREE.DirectionalLight(0xc9a462, 1.1); d1.position.set(3, 5, 4); scene.add(d1);
+  const d2 = new THREE.DirectionalLight(0x00d4c8, 0.5); d2.position.set(-3, -2, 2); scene.add(d2);
+
+  const card = canvas.closest('[data-sc]');
+  let hovered = false;
+  card.addEventListener('mouseenter', () => hovered = true);
+  card.addEventListener('mouseleave', () => hovered = false);
+
+  const clk = new THREE.Clock();
+  const { update } = setupFn(scene, cam, renderer);
+
+  (function loop() {
+    requestAnimationFrame(loop);
+    update(clk.getElapsedTime(), hovered);
+    renderer.render(scene, cam);
+  })();
+}
+
+// ── 01 AI — Neural Node Cluster ───────────────────────────────────────────────
+makeSector('cv-ai', (scene, cam) => {
+  const G = new THREE.Group(); scene.add(G);
+  const nodeG = new THREE.SphereGeometry(.075, 8, 8);
+  const nodes = [];
+
+  for (let i = 0; i < 20; i++) {
+    const r = .7 + Math.random() * 1.5;
+    const th = Math.random() * Math.PI * 2;
+    const phi = Math.acos(2 * Math.random() - 1);
+    const m = new THREE.Mesh(nodeG, new THREE.MeshPhongMaterial({ color: 0xc9a462, shininess: 90, transparent: true }));
+    m.position.set(r * Math.sin(phi) * Math.cos(th), r * Math.sin(phi) * Math.sin(th), r * Math.cos(phi));
+    m.userData.ph = Math.random() * Math.PI * 2;
+    G.add(m); nodes.push(m);
+  }
+
+  const lm = new THREE.LineBasicMaterial({ color: 0xc9a462, transparent: true, opacity: 0.22 });
+  nodes.forEach((a, i) => nodes.forEach((b, j) => {
+    if (j <= i) return;
+    if (a.position.distanceTo(b.position) < 1.3) {
+      G.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([a.position, b.position]), lm.clone()));
+    }
+  }));
+
+  const core = new THREE.Mesh(new THREE.IcosahedronGeometry(.3, 1),
+    new THREE.MeshPhongMaterial({ color: 0xc9a462, transparent: true, opacity: 0.35, shininess: 120 }));
+  G.add(core);
+
+  return { update(t, hov) {
+    G.rotation.y = t * (hov ? .75 : .28);
+    G.rotation.x = Math.sin(t * .22) * .18;
+    nodes.forEach(n => { n.material.opacity = .4 + .55 * Math.abs(Math.sin(n.userData.ph + t * (hov ? 2.8 : 1.1))); });
+  }};
+});
+
+// ── 02 Healthcare — Double Helix ──────────────────────────────────────────────
+makeSector('cv-health', (scene) => {
+  const G = new THREE.Group(); scene.add(G);
+  const S = 60, hH = 3.0, amp = .85;
+
+  for (let s = 0; s < 2; s++) {
+    const pts = [], ph = s * Math.PI;
+    for (let i = 0; i <= S; i++) {
+      const t = i / S;
+      pts.push(new THREE.Vector3(
+        Math.cos(t * Math.PI * 4 + ph) * amp,
+        -hH/2 + t * hH,
+        Math.sin(t * Math.PI * 4 + ph) * amp * .35
+      ));
+    }
+    const tube = new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), S * 2, .052, 8, false);
+    G.add(new THREE.Mesh(tube, new THREE.MeshPhongMaterial({
+      color: s === 0 ? 0xc9a462 : 0x00d4c8, shininess: 100, transparent: true, opacity: .88
+    })));
+  }
+
+  for (let i = 0; i <= S; i += 4) {
+    const t = i / S;
+    const y = -hH/2 + t * hH;
+    const x1 = Math.cos(t * Math.PI * 4) * amp, z1 = Math.sin(t * Math.PI * 4) * amp * .35;
+    const rG = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(x1, y, z1), new THREE.Vector3(-x1, y, -z1)]);
+    G.add(new THREE.Line(rG, new THREE.LineBasicMaterial({ color: 0x4dbb77, transparent: true, opacity: .38 })));
+  }
+
+  return { update(t, hov) {
+    G.rotation.y = t * (hov ? .9 : .32);
+    G.rotation.x = Math.sin(t * .28) * .12;
+  }};
+});
+
+// ── 03 Semiconductors — Silicon Wafer ────────────────────────────────────────
+makeSector('cv-semi', (scene, cam) => {
+  cam.position.set(2, 3.8, 4.2); cam.lookAt(0, 0, 0);
+  const G = new THREE.Group(); scene.add(G);
+  const bG = new THREE.BoxGeometry(.30, .08, .30);
+  const items = [];
+  const R = 4;
+
+  for (let x = -R; x <= R; x++) {
+    for (let z = -R; z <= R; z++) {
+      const d = Math.sqrt(x*x + z*z);
+      if (d > R) continue;
+      const mat = new THREE.MeshPhongMaterial({ color: 0xc9a462, shininess: 120, transparent: true, opacity: .2 + .65 * (1 - d / R) });
+      const m = new THREE.Mesh(bG, mat);
+      m.position.set(x * .38, 0, z * .38);
+      m.userData.ph = Math.random() * Math.PI * 2;
+      m.userData.d = d;
+      G.add(m); items.push(m);
+
+      if ((x + z) % 3 === 0 && d < R - 1) {
+        const dir = Math.random() > .5 ? 1 : 0;
+        const lG = new THREE.BufferGeometry().setFromPoints([
+          new THREE.Vector3(x * .38, .04, z * .38),
+          new THREE.Vector3((x + dir) * .38, .04, (z + (1 - dir)) * .38),
+        ]);
+        G.add(new THREE.Line(lG, new THREE.LineBasicMaterial({ color: 0x00d4c8, transparent: true, opacity: .28 })));
+      }
+    }
+  }
+
+  return { update(t, hov) {
+    G.rotation.y = t * (hov ? .45 : .13);
+    items.forEach(m => {
+      m.material.opacity = .15 + .65 * Math.abs(Math.sin(m.userData.ph + t * .7 + m.userData.d * .35));
+      m.position.y = Math.sin(m.userData.ph + t * .55 + m.userData.d * .3) * .05;
+    });
+  }};
+});
+
+// ── 04 Cybersecurity — Interlocking Rings ─────────────────────────────────────
+makeSector('cv-cyber', (scene) => {
+  const G = new THREE.Group(); scene.add(G);
+  const defs = [
+    { r: 1.5,  tube: .038, col: 0xc9a462, rx: 0,           spd:  .4 },
+    { r: 1.15, tube: .038, col: 0x00d4c8, rx: Math.PI/2,   spd: -.6 },
+    { r: .85,  tube: .034, col: 0x4dbb77, rx: Math.PI/4,   spd:  .85 },
+    { r: .5,   tube: .030, col: 0xc9a462, rx: -Math.PI/3,  spd: -1.2 },
+  ];
+  const rings = defs.map(d => {
+    const m = new THREE.Mesh(
+      new THREE.TorusGeometry(d.r, d.tube, 12, 90),
+      new THREE.MeshPhongMaterial({ color: d.col, shininess: 110, transparent: true, opacity: .82 })
+    );
+    m.rotation.x = d.rx; m.userData.spd = d.spd; m.userData.brx = d.rx;
+    G.add(m); return m;
+  });
+  G.add(new THREE.Mesh(new THREE.SphereGeometry(.16, 16, 16),
+    new THREE.MeshPhongMaterial({ color: 0xc9a462, shininess: 140, transparent: true, opacity: .7 })));
+
+  return { update(t, hov) {
+    const s = hov ? 2.2 : 1.0;
+    rings.forEach(r => {
+      r.rotation.y = r.userData.brx + t * r.userData.spd * s;
+      r.rotation.z = t * r.userData.spd * .28 * s;
+    });
+    G.rotation.y = t * .09;
+  }};
+});
+
+// ── 05 Clean Energy — Wave Landscape ─────────────────────────────────────────
+makeSector('cv-energy', (scene, cam) => {
+  cam.position.set(0, 3.2, 4.5); cam.lookAt(0, 0, 0);
+  const G = new THREE.Group(); scene.add(G);
+  const WS = 42, HS = 42;
+  const geo = new THREE.PlaneGeometry(5.5, 3.8, WS, HS);
+  geo.rotateX(-Math.PI / 2);
+  const mat = new THREE.MeshPhongMaterial({ color: 0xc9a462, wireframe: true, transparent: true, opacity: .48 });
+  const plane = new THREE.Mesh(geo, mat);
+  G.add(plane);
+  G.add(new THREE.Mesh(new THREE.PlaneGeometry(5.5, 3.8).rotateX(-Math.PI / 2),
+    new THREE.MeshPhongMaterial({ color: 0xc9a462, transparent: true, opacity: .05 })));
+
+  const pos = geo.getAttribute('position');
+
+  return { update(t, hov) {
+    const amp = hov ? .38 : .22, freq = hov ? 2.6 : 1.3;
+    for (let i = 0; i < pos.count; i++) {
+      const x = pos.getX(i), z = pos.getZ(i);
+      pos.setY(i, Math.sin(x * 1.6 + t * freq) * amp + Math.cos(z * 2.1 + t * freq * .68) * amp * .5);
+    }
+    pos.needsUpdate = true;
+    geo.computeVertexNormals();
+    G.rotation.y = t * .08;
+  }};
+});
+
+// ── 06 Space & Aerospace — Orbital Constellation ──────────────────────────────
+makeSector('cv-space', (scene) => {
+  const G = new THREE.Group(); scene.add(G);
+  const orbs = [
+    { r: 1.65, inc: 0,           spd:  .5,  col: 0xc9a462 },
+    { r: 1.15, inc: Math.PI/3.2, spd: -.7,  col: 0x00d4c8 },
+    { r: .75,  inc: Math.PI/5,   spd:  .95, col: 0x4dbb77 },
+  ];
+  const sats = [];
+  orbs.forEach(o => {
+    const ring = new THREE.Mesh(
+      new THREE.TorusGeometry(o.r, .007, 6, 100),
+      new THREE.MeshBasicMaterial({ color: o.col, transparent: true, opacity: .32 })
+    );
+    ring.rotation.x = o.inc; G.add(ring);
+    const sat = new THREE.Mesh(new THREE.SphereGeometry(.065, 8, 8),
+      new THREE.MeshPhongMaterial({ color: o.col, shininess: 130 }));
+    sat.userData = { r: o.r, inc: o.inc, spd: o.spd, a: Math.random() * Math.PI * 2 };
+    G.add(sat); sats.push(sat);
+  });
+
+  G.add(new THREE.Mesh(new THREE.SphereGeometry(.28, 24, 24),
+    new THREE.MeshPhongMaterial({ color: 0xffffff, specular: 0xc9a462, shininess: 100, transparent: true, opacity: .9 })));
+
+  const stN = 70; const stP = new Float32Array(stN * 3);
+  for (let i = 0; i < stN; i++) {
+    stP[i*3] = (Math.random()-.5)*10; stP[i*3+1] = (Math.random()-.5)*8; stP[i*3+2] = (Math.random()-.5)*6-2;
+  }
+  const stG = new THREE.BufferGeometry(); stG.setAttribute('position', new THREE.BufferAttribute(stP, 3));
+  scene.add(new THREE.Points(stG, new THREE.PointsMaterial({ color: 0xc9a462, size: .04, transparent: true, opacity: .55 })));
+
+  return { update(t, hov) {
+    const s = hov ? 2.4 : 1.0;
+    sats.forEach(sat => {
+      sat.userData.a += sat.userData.spd * .015 * s;
+      const { r, inc, a } = sat.userData;
+      sat.position.set(r * Math.cos(a), r * Math.sin(a) * Math.sin(inc), r * Math.sin(a) * Math.cos(inc));
+    });
+    G.rotation.y = t * .1;
+  }};
+});
+
+// ─── GSAP ENTRANCE ANIMATIONS ─────────────────────────────────────────────────
+
+// Omni hero entrance is handled inside the omni console script (immediate on load)
+
+// Pillars
+gsap.set(['#p-eye', '#p-title'], { opacity: 0, y: 36 });
+gsap.set('[data-pillar]', { opacity: 0, y: 30 });
+
+ScrollTrigger.create({
+  trigger: '#pillars',
+  start: 'top 76%',
+  onEnter() {
+    gsap.to(['#p-eye', '#p-title'], { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out', stagger: .14 });
+    gsap.to('[data-pillar]', { opacity: 1, y: 0, duration: .85, ease: 'power3.out', stagger: .1, delay: .2 });
+  }
+});
+
+// Sectors
+gsap.set(['#s-eye', '#s-title'], { opacity: 0, y: 36 });
+gsap.set('[data-sc]', { opacity: 0, y: 40 });
+
+ScrollTrigger.create({
+  trigger: '#sectors',
+  start: 'top 76%',
+  onEnter() {
+    gsap.to(['#s-eye', '#s-title'], { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out', stagger: .14 });
+    gsap.to('[data-sc]', { opacity: 1, y: 0, duration: .85, ease: 'power3.out', stagger: .09, delay: .22 });
+  }
+});
+
+// ─── PHARMA SECTION ANIMATIONS ────────────────────────────────────────────────
+
+// PH-INTRO — pharma title entrance
+(function() {
+  gsap.set(['#phi-title','#phi-body','#phi-tabs'], { y: 22 });
+  ScrollTrigger.create({
+    trigger: '#ph-intro',
+    start: 'top 76%',
+    onEnter() {
+      gsap.to('#phi-eye',  { opacity:1, duration:.9, ease:'power2.out' });
+      gsap.to('#phi-title',{ opacity:1, y:0, duration:1.1, ease:'power4.out', delay:.1 });
+      gsap.to('#phi-body', { opacity:1, y:0, duration:1.0, ease:'power3.out', delay:.24 });
+      gsap.to('#phi-tabs', { opacity:1, y:0, duration:.9, ease:'power3.out', delay:.38 });
+    }
+  });
+})();
+
+// PH-STATS — count-up numbers
+(function() {
+  function animateCount(el, target, duration) {
+    const start = performance.now();
+    function tick(now) {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const ease = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.round(ease * target).toLocaleString();
+      if (progress < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+  let statsTriggered = false;
+  ScrollTrigger.create({
+    trigger: '#ph-stats',
+    start: 'top 80%',
+    onEnter() {
+      if (statsTriggered) return;
+      statsTriggered = true;
+      document.querySelectorAll('.stat-count').forEach(el => {
+        const target = parseInt(el.dataset.target, 10);
+        animateCount(el, target, target > 100 ? 1600 : 900);
+      });
+      gsap.from('[data-stat]', { opacity: 0, y: 24, duration: .9, ease: 'power3.out', stagger: .12 });
+    }
+  });
+})();
+
+// PH-GRAPH — knowledge graph section entrance
+ScrollTrigger.create({
+  trigger: '#ph-graph',
+  start: 'top 74%',
+  onEnter() {
+    gsap.to('#phg-eye',    { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out' });
+    gsap.to('#phg-title',  { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out', delay: .12 });
+    gsap.to('#phg-body',   { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out', delay: .24 });
+    gsap.to('#phg-badges', { opacity: 1, y: 0, duration: .9,  ease: 'power3.out', delay: .38 });
+  }
+});
+gsap.set(['#phg-title','#phg-body','#phg-badges'], { y: 20 });
+
+// PH-FDA — card stagger + arc animations
+(function() {
+  let fdaTriggered = false;
+  ScrollTrigger.create({
+    trigger: '#ph-fda',
+    start: 'top 74%',
+    onEnter() {
+      if (fdaTriggered) return;
+      fdaTriggered = true;
+
+      // Header text
+      gsap.to('#phf-eye',   { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out' });
+      gsap.to('#phf-title', { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out', delay: .12 });
+      gsap.to('#phf-body',  { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out', delay: .24 });
+      gsap.set(['#phf-title','#phf-body'], { y: 18 });
+
+      // Card stagger
+      gsap.from('[data-fda]', {
+        opacity: 0, y: 44, duration: .9, ease: 'power3.out', stagger: .12, delay: .35
+      });
+
+      // Arcs + number count-up after card entrance
+      setTimeout(() => {
+        document.querySelectorAll('[data-fda]').forEach(card => {
+          const prob = parseInt(card.dataset.prob, 10);
+          const circ = 201.1;
+          const arc  = card.querySelector('.fda-arc');
+          const numEl = card.querySelector('.arc-num');
+          // Animate dashoffset
+          const offset = circ - (circ * prob / 100);
+          arc.style.strokeDashoffset = offset;
+          // Count-up number
+          let current = 0;
+          const step = () => {
+            current = Math.min(current + 2, prob);
+            numEl.textContent = current;
+            if (current < prob) requestAnimationFrame(step);
+          };
+          requestAnimationFrame(step);
+        });
+      }, 600);
+    }
+  });
+  gsap.set(['#phf-eye'], { y: 0 });
+})();
+
+// PH-RESEARCH — mockup entrance + mouse tilt + tab stagger
+(function() {
+  let researchTriggered = false;
+  ScrollTrigger.create({
+    trigger: '#ph-research',
+    start: 'top 74%',
+    onEnter() {
+      if (researchTriggered) return;
+      researchTriggered = true;
+
+      gsap.to('#phr-eye',        { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out' });
+      gsap.to('#phr-title',      { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out', delay: .12 });
+      gsap.to('#phr-body',       { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out', delay: .24 });
+      gsap.to('#phr-tags',       { opacity: 1, y: 0, duration: .9,  ease: 'power3.out', delay: .36 });
+      gsap.to('#phr-frame-wrap', { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out', delay: .22 });
+      gsap.set(['#phr-title','#phr-body','#phr-tags'], { y: 18 });
+      gsap.set('#phr-frame-wrap', { y: 28 });
+
+      // Tab stagger
+      const tabs = ['#tab0','#tab1','#tab2','#tab3','#tab4'];
+      gsap.to(tabs, { opacity: 1, y: 0, duration: .6, ease: 'power3.out', stagger: .1, delay: .55 });
+
+      // Verdict card
+      setTimeout(() => {
+        gsap.to('#phr-verdict', { opacity: 1, duration: .7, ease: 'power2.out' });
+      }, 1100);
+    }
+  });
+
+  // Perspective tilt on hover
+  const wrap = document.getElementById('phr-frame-wrap');
+  const frame = document.getElementById('phr-frame');
+  if (wrap && frame) {
+    wrap.addEventListener('mousemove', e => {
+      const r = wrap.getBoundingClientRect();
+      const mx = (e.clientX - r.left) / r.width  - 0.5;
+      const my = (e.clientY - r.top)  / r.height - 0.5;
+      frame.style.transform = `rotateY(${mx * 8}deg) rotateX(${-my * 5}deg)`;
+    });
+    wrap.addEventListener('mouseleave', () => {
+      frame.style.transform = 'rotateY(0deg) rotateX(0deg)';
+    });
+  }
+})();
+
+// PH-DIAMOND — white section entrance + score bars
+(function() {
+  let diamondTriggered = false;
+  gsap.set(['#phd-title','#phd-title2','#phd-body'], { y: 22 });
+
+  ScrollTrigger.create({
+    trigger: '#ph-diamond',
+    start: 'top 74%',
+    onEnter() {
+      if (diamondTriggered) return;
+      diamondTriggered = true;
+
+      // Header
+      gsap.to('#phd-eye',    { opacity: 1, duration: .9, ease: 'power2.out' });
+      gsap.to('#phd-title',  { opacity: 1, y: 0, duration: 1.1, ease: 'power4.out', delay: .1 });
+      gsap.to('#phd-title2', { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out', delay: .2 });
+      gsap.to('#phd-body',   { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out', delay: .3 });
+
+      // Cards stagger in
+      gsap.to('#phd-cards-wrap', { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out', delay: .44 });
+      gsap.set('#phd-cards-wrap', { y: 28 });
+      gsap.from('[data-dcard]', { opacity: 0, y: 32, duration: .85, ease: 'power3.out', stagger: .12, delay: .5 });
+
+      // Proof line
+      gsap.to('#phd-proof', { opacity: 1, duration: .9, ease: 'power2.out', delay: .9 });
+
+      // Score bars + count-up
+      setTimeout(() => {
+        document.querySelectorAll('.score-bar-fill').forEach(bar => {
+          bar.style.width = bar.dataset.score + '%';
+        });
+        document.querySelectorAll('[data-dcard]').forEach(card => {
+          const bars = card.querySelectorAll('.score-bar-fill');
+          const aEl = card.querySelector('.score-val-a');
+          const bEl = card.querySelector('.score-val-b');
+          if (bars[0] && aEl) {
+            const target = parseInt(bars[0].dataset.score);
+            let v = 0;
+            const tick = () => { v = Math.min(v+2,target); aEl.textContent=v+'%'; if(v<target) requestAnimationFrame(tick); };
+            requestAnimationFrame(tick);
+          }
+          if (bars[1] && bEl) {
+            const target = parseInt(bars[1].dataset.score);
+            let v = 0;
+            const tick = () => { v = Math.min(v+2,target); bEl.textContent=v+'%'; if(v<target) requestAnimationFrame(tick); };
+            requestAnimationFrame(tick);
+          }
+        });
+      }, 800);
+    }
+  });
+})();
+</script>
+
+<!-- ── PHARMA THREE.JS SCENES ──────────────────────────────────────────────── -->
+<script>
+// ─── KNOWLEDGE GRAPH (cv-phgraph) ────────────────────────────────────────────
+(function knowledgeGraph() {
+  'use strict';
+  const canvas = document.getElementById('cv-phgraph');
+  if (!canvas) return;
+  const wrap = canvas.parentElement;
+
+  function resize() {
+    const W = wrap.clientWidth, H = wrap.clientHeight;
+    renderer.setSize(W, H);
+    camera.aspect = W / H;
+    camera.updateProjectionMatrix();
+  }
+
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.setClearColor(0x0d1117, 1);
+
+  const scene  = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(48, 1, 0.1, 100);
+  camera.position.z = 8;
+  resize();
+  window.addEventListener('resize', resize);
+
+  // Therapy areas: emerald, cyan, gold, purple, orange
+  const AREAS = [
+    { color: 0x4dbb77, name: 'oncology'   },
+    { color: 0x00d4c8, name: 'immuno'     },
+    { color: 0xc9a462, name: 'gene'       },
+    { color: 0xa78bfa, name: 'rare'       },
+    { color: 0xfb923c, name: 'neuro'      },
+  ];
+
+  const TICKERS = ['MRNA', 'NVO', 'BMY', 'REGN', 'ABBV', 'PFE'];
+  const N = 55;
+  const nodes = [];
+  const nodeGroup = new THREE.Group();
+  scene.add(nodeGroup);
+
+  // Highlighted node indices
+  const highlightIdx = [2, 9, 17, 28, 36, 48];
+
+  // Build nodes
+  for (let i = 0; i < N; i++) {
+    const areaIdx = Math.floor(Math.random() * AREAS.length);
+    const area = AREAS[areaIdx];
+    const isHL = highlightIdx.includes(i);
+    const r  = isHL ? 0.11 : 0.065 + Math.random() * 0.035;
+    const geo = new THREE.SphereGeometry(r, 10, 10);
+    const mat = new THREE.MeshBasicMaterial({
+      color: area.color,
+      transparent: true,
+      opacity: isHL ? 1.0 : 0.55 + Math.random() * 0.35
+    });
+    const mesh = new THREE.Mesh(geo, mat);
+
+    // Spread in 3D sphere volume
+    const theta = Math.random() * Math.PI * 2;
+    const phi   = Math.acos(2 * Math.random() - 1);
+    const rad   = 1.8 + Math.random() * 2.4;
+    mesh.position.set(
+      rad * Math.sin(phi) * Math.cos(theta),
+      rad * Math.sin(phi) * Math.sin(theta) * 0.72,
+      rad * Math.cos(phi) * 0.55
+    );
+    mesh.userData = {
+      area: areaIdx, isHL, r,
+      origOpacity: mat.opacity,
+      origColor: area.color,
+      phase: Math.random() * Math.PI * 2,
+    };
+    // Start at origin for entrance animation
+    mesh.userData.finalPos = mesh.position.clone();
+    mesh.position.set(0, 0, 0);
+
+    nodeGroup.add(mesh);
+    nodes.push(mesh);
+  }
+
+  // Build edges between nearby nodes
+  const edgeMat = new THREE.LineBasicMaterial({ color: 0x4dbb77, transparent: true, opacity: 0.10 });
+  const edges = [];
+  for (let i = 0; i < N; i++) {
+    for (let j = i + 1; j < N; j++) {
+      const fp1 = nodes[i].userData.finalPos;
+      const fp2 = nodes[j].userData.finalPos;
+      if (fp1.distanceTo(fp2) < 2.2) {
+        const geo  = new THREE.BufferGeometry().setFromPoints([fp1, fp2]);
+        const mat  = edgeMat.clone();
+        const line = new THREE.Line(geo, mat);
+        nodeGroup.add(line);
+        edges.push({ line, i, j, baseMat: mat });
+      }
+    }
+  }
+
+  // Entrance animation — nodes fly outward
+  nodes.forEach((n, idx) => {
+    gsap.to(n.position, {
+      x: n.userData.finalPos.x,
+      y: n.userData.finalPos.y,
+      z: n.userData.finalPos.z,
+      duration: 1.4 + Math.random() * 0.5,
+      ease: 'power3.out',
+      delay: 0.3 + idx * 0.018,
+    });
+  });
+
+  // Raycasting for hover
+  const raycaster = new THREE.Raycaster();
+  const mouse = new THREE.Vector2(-99, -99);
+  let hoveredIdx = -1;
+
+  canvas.addEventListener('mousemove', e => {
+    const r = canvas.getBoundingClientRect();
+    mouse.x =  ((e.clientX - r.left)  / r.width)  * 2 - 1;
+    mouse.y = -((e.clientY - r.top)   / r.height) * 2 + 1;
+  });
+  canvas.addEventListener('mouseleave', () => { mouse.set(-99, -99); });
+
+  // Ticker label overlay
+  const labelsDiv = document.getElementById('phg-labels');
+  const labelEls = [];
+  TICKERS.forEach((tk, i) => {
+    const div = document.createElement('div');
+    div.style.cssText = `position:absolute;font-family:Inter,sans-serif;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6);pointer-events:none;white-space:nowrap;opacity:0;transition:opacity .5s;`;
+    div.textContent = tk;
+    labelsDiv.appendChild(div);
+    labelEls.push(div);
+  });
+
+  const clk = new THREE.Clock();
+
+  (function loop() {
+    requestAnimationFrame(loop);
+    const t = clk.getElapsedTime();
+
+    // Slow Y-axis rotation
+    nodeGroup.rotation.y = t * 0.08;
+
+    // Hover detection
+    raycaster.setFromCamera(mouse, camera);
+    const meshNodes = nodes.map(n => n);
+    const hits = raycaster.intersectObjects(meshNodes);
+    const newHover = hits.length ? nodes.indexOf(hits[0].object) : -1;
+
+    if (newHover !== hoveredIdx) {
+      // Reset old
+      if (hoveredIdx >= 0) {
+        nodes[hoveredIdx].material.color.setHex(AREAS[nodes[hoveredIdx].userData.area].color);
+        nodes[hoveredIdx].material.opacity = nodes[hoveredIdx].userData.origOpacity;
+        edges.forEach(e => {
+          if (e.i === hoveredIdx || e.j === hoveredIdx) e.baseMat.opacity = 0.10;
+        });
+      }
+      hoveredIdx = newHover;
+      // Highlight new
+      if (hoveredIdx >= 0) {
+        nodes[hoveredIdx].material.color.setHex(0xc9a462);
+        nodes[hoveredIdx].material.opacity = 1.0;
+        edges.forEach(e => {
+          if (e.i === hoveredIdx || e.j === hoveredIdx) e.baseMat.opacity = 0.48;
+        });
+      }
+    }
+
+    // Pulse highlighted nodes
+    highlightIdx.forEach((idx, i) => {
+      const n = nodes[idx];
+      n.material.opacity = 0.82 + Math.sin(t * 1.8 + i * 1.2) * 0.18;
+    });
+
+    // Update ticker label positions
+    TICKERS.forEach((tk, i) => {
+      const nodeIdx = highlightIdx[i];
+      if (!nodes[nodeIdx]) return;
+      const pos = nodes[nodeIdx].userData.finalPos.clone();
+      // Apply group rotation
+      pos.applyEuler(new THREE.Euler(nodeGroup.rotation.x, nodeGroup.rotation.y, nodeGroup.rotation.z));
+      pos.y += 0.22;
+      const projected = pos.clone().project(camera);
+      const rect = canvas.getBoundingClientRect();
+      const px = (projected.x * 0.5 + 0.5) * rect.width;
+      const py = (-projected.y * 0.5 + 0.5) * rect.height;
+      const el = labelEls[i];
+      el.style.left = (px - 14) + 'px';
+      el.style.top  = (py - 16) + 'px';
+      el.style.opacity = projected.z < 1 ? '0.7' : '0';
+    });
+
+    renderer.render(scene, camera);
+  })();
+})();
+
+// Diamond chart removed — section is now all-white HTML/CSS
+</script>
+
+<!-- ── OMNI CONSOLE SCRIPT ─────────────────────────────────────────────────── -->
+<script>
+(function omniConsole() {
+  'use strict';
+
+  const section  = document.getElementById('omni');
+  const canvas   = document.getElementById('omni-cv');
+  const typedEl  = document.getElementById('omni-typed');
+  const cursorEl = document.getElementById('omni-cur');
+  const modeEl   = document.getElementById('omni-mode');
+  const pills    = document.querySelectorAll('.omni-pill');
+  if (!section || !canvas) return;
+
+  // ── Cursor blink ─────────────────────────────────────────────────────────────
+  gsap.to(cursorEl, { opacity: 0, duration: .48, repeat: -1, yoyo: true, ease: 'none' });
+
+  // ── Renderer ─────────────────────────────────────────────────────────────────
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
+  renderer.setClearColor(0xffffff, 1);
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+
+  const scene  = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(50, 2, 0.1, 100);
+  camera.position.z = 9;
+
+  function onResize() {
+    const W = section.clientWidth, H = section.clientHeight;
+    renderer.setSize(W, H);
+    camera.aspect = W / H;
+    camera.updateProjectionMatrix();
+  }
+  onResize();
+  window.addEventListener('resize', onResize);
+
+  // ── Line shape functions ──────────────────────────────────────────────────────
+  // State A — Biotech: complex multi-frequency oscillation (clinical / biological signal)
+  function shapeA(x) {
+    return Math.sin(x * 1.05) * 1.05
+         + Math.sin(x * 2.85) * 0.35
+         + Math.sin(x * 0.50) * 0.55
+         - 0.60;
+  }
+  // State B — Forex: rising trend with short-period corrective bounces
+  function shapeB(x) {
+    return x * 0.20
+         + Math.sin(x * 3.80) * 0.28
+         + Math.cos(x * 7.20) * 0.09
+         - 0.15;
+  }
+  // State C — Equities: gaussian bar-chart silhouette (screening results)
+  function shapeC(x) {
+    const bars = [[-3.8, 1.30], [-2.2, 0.55], [-0.6, 1.65], [1.0, 0.80], [2.4, 1.35], [3.8, 0.45]];
+    let y = -1.75;
+    bars.forEach(([bx, bh]) => { y += bh * Math.exp(-0.5 * Math.pow((x - bx) / 0.36, 2)); });
+    return y;
+  }
+
+  const SHAPE_FNS    = [shapeA, shapeB, shapeC];
+  const SHAPE_COLORS = [0x4dbb77, 0x00d4c8, 0xc9a462];
+
+  // ── Build y-value array ───────────────────────────────────────────────────────
+  const NL = 180;
+  function buildY(fn) {
+    const y = new Float32Array(NL);
+    for (let i = 0; i < NL; i++) y[i] = fn(-8.5 + (i / (NL - 1)) * 17);
+    return y;
+  }
+
+  // ── Line geometry ─────────────────────────────────────────────────────────────
+  let baseY = buildY(shapeA);
+
+  const linePos   = new Float32Array(NL * 3);
+  const shadowPos = new Float32Array(NL * 3);
+
+  for (let i = 0; i < NL; i++) {
+    const x = -8.5 + (i / (NL - 1)) * 17;
+    linePos[i*3]   = x;  linePos[i*3+1]   = baseY[i];        linePos[i*3+2]   = 0;
+    shadowPos[i*3] = x;  shadowPos[i*3+1] = baseY[i] - 0.14; shadowPos[i*3+2] = 0.1;
+  }
+
+  const lineGeo   = new THREE.BufferGeometry();
+  const shadowGeo = new THREE.BufferGeometry();
+  lineGeo.setAttribute(  'position', new THREE.BufferAttribute(linePos,   3));
+  shadowGeo.setAttribute('position', new THREE.BufferAttribute(shadowPos, 3));
+
+  const lineMat   = new THREE.LineBasicMaterial({ color: 0x4dbb77, transparent: true, opacity: 0.20 });
+  const shadowMat = new THREE.LineBasicMaterial({ color: 0x4dbb77, transparent: true, opacity: 0.06 });
+
+  scene.add(new THREE.Line(lineGeo,   lineMat));
+  scene.add(new THREE.Line(shadowGeo, shadowMat));
+
+  // ── Morph between shapes ──────────────────────────────────────────────────────
+  let activeMorph = null;
+  function morphTo(idx) {
+    if (activeMorph) activeMorph.kill();
+    const targetY = buildY(SHAPE_FNS[idx]);
+    const fromY   = baseY.slice();
+    const prx = { t: 0 };
+    activeMorph = gsap.to(prx, {
+      t: 1, duration: 1.90, ease: 'power2.inOut',
+      onUpdate() {
+        const p = prx.t, q = 1 - p;
+        for (let i = 0; i < NL; i++) baseY[i] = fromY[i] * q + targetY[i] * p;
+      },
+      onComplete() { baseY = targetY; }
+    });
+    // Colour cross-fade
+    const newCol = SHAPE_COLORS[idx];
+    gsap.to(lineMat,   { opacity: 0, duration: 0.45, ease: 'power2.in',
+      onComplete() {
+        lineMat.color.setHex(newCol);
+        shadowMat.color.setHex(newCol);
+        gsap.to(lineMat,   { opacity: 0.20, duration: 0.90, ease: 'power2.out' });
+        gsap.to(shadowMat, { opacity: 0.06, duration: 0.90, ease: 'power2.out' });
+      }
+    });
+  }
+
+  // ── Activate state ─────────────────────────────────────────────────────────────
+  const modeLabels = ['Biotech', 'Forex', 'Equities'];
+  const modeColors = ['var(--gold)', '#00d4c8', 'var(--gold)'];
+  const pillAccents = [
+    ['rgba(201,164,98,.38)', 'rgba(201,164,98,.09)', 'var(--gold)', 'var(--gold)'],
+    ['rgba(0,212,200,.28)',  'rgba(0,212,200,.07)',  '#00d4c8',     '#00d4c8'    ],
+    ['rgba(201,164,98,.38)', 'rgba(201,164,98,.09)', 'var(--gold)', 'var(--gold)'],
+  ];
+
+  function activateState(idx) {
+    morphTo(idx);
+    modeEl.textContent = modeLabels[idx];
+    modeEl.style.color  = modeColors[idx];
+    const [ac_border, ac_bg, ac_dot, ac_lbl] = pillAccents[idx];
+    pills.forEach((pill, i) => {
+      const dot = pill.querySelector('.pill-dot');
+      const lbl = pill.querySelector('.pill-lbl');
+      if (i === idx) {
+        pill.style.borderColor = ac_border;
+        pill.style.background  = ac_bg;
+        dot.style.background   = ac_dot;
+        lbl.style.color        = ac_lbl;
+      } else {
+        pill.style.borderColor = 'rgba(0,0,0,.07)';
+        pill.style.background  = 'transparent';
+        dot.style.background   = '#ccc';
+        lbl.style.color        = '#bbb';
+      }
+    });
+  }
+
+  // ── Typing engine ─────────────────────────────────────────────────────────────
+  const QUERIES = [
+    'Screen Phase III immunology trials — PDUFA dates within 90 days',
+    'EUR/USD 60-day momentum breakout: run backtest + signal strength',
+    'Large-cap biotech undervalued vs. pipeline NPV — rank by FCF yield'
+  ];
+  const TSPEED = 42, DSPEED = 22, HOLD = 3400;
+  let typer = '', loopActive = false;
+  const wait = ms => new Promise(r => setTimeout(r, ms));
+
+  async function typeOut(str) {
+    for (const ch of str) {
+      if (!loopActive) return;
+      typer += ch; typedEl.textContent = typer; await wait(TSPEED);
+    }
+  }
+  async function deleteAll() {
+    while (typer.length) {
+      if (!loopActive) return;
+      typer = typer.slice(0, -1); typedEl.textContent = typer; await wait(DSPEED);
+    }
+  }
+  async function runLoop() {
+    loopActive = true;
+    while (loopActive) {
+      for (let qi = 0; qi < QUERIES.length; qi++) {
+        activateState(qi);
+        await typeOut(QUERIES[qi]);
+        await wait(HOLD);
+        await deleteAll();
+        await wait(400);
+      }
+    }
+  }
+
+  // ── Camera tilt on terminal hover ─────────────────────────────────────────────
+  const term = document.getElementById('omni-term');
+  const cam  = { tx: 0, ty: 0, x: 0, y: 0 };
+
+  term.addEventListener('mousemove', e => {
+    const r = term.getBoundingClientRect();
+    cam.tx = ((e.clientX - r.left) / r.width  - .5) *  0.65;
+    cam.ty = -((e.clientY - r.top) / r.height - .5) *  0.40;
+  });
+  term.addEventListener('mouseleave', () => { cam.tx = 0; cam.ty = 0; });
+
+  // ── Render loop ───────────────────────────────────────────────────────────────
+  const clk = new THREE.Clock();
+  (function renderLoop() {
+    requestAnimationFrame(renderLoop);
+    const t = clk.getElapsedTime();
+
+    cam.x += (cam.tx - cam.x) * .042;
+    cam.y += (cam.ty - cam.y) * .042;
+    camera.position.x = cam.x;
+    camera.position.y = cam.y;
+    camera.lookAt(0, 0, 0);
+
+    // Gentle breathing animation on the line
+    for (let i = 0; i < NL; i++) {
+      const x  = linePos[i * 3];
+      const dY = Math.sin(t * 0.60 + x * 0.42) * 0.030;
+      linePos[i*3+1]   = baseY[i] + dY;
+      shadowPos[i*3+1] = baseY[i] + dY - 0.13;
+    }
+    lineGeo.attributes.position.needsUpdate   = true;
+    shadowGeo.attributes.position.needsUpdate = true;
+
+    renderer.render(scene, camera);
+  })();
+
+  // ── Immediate hero entrance ───────────────────────────────────────────────────
+  gsap.set('.omni-rinner', { yPercent: 108 });
+  gsap.set(['#omni-eyebrow', '#omni-p', '#omni-wrap'], { opacity: 0, y: 22 });
+  gsap.set('#omni-scroll-cue', { opacity: 0 });
+
+  const omniTl = gsap.timeline({ delay: 0.22 });
+  omniTl.to('.omni-rinner',     { yPercent: 0, duration: 1.28, ease: 'power4.out', stagger: .14 });
+  omniTl.to('#omni-eyebrow',    { opacity: 1, y: 0, duration: 0.90, ease: 'power3.out' }, 0.08);
+  omniTl.to('#omni-p',          { opacity: 1, y: 0, duration: 0.95, ease: 'power3.out' }, 0.38);
+  omniTl.to('#omni-wrap',       { opacity: 1, y: 0, duration: 0.95, ease: 'power3.out' }, 0.52);
+  omniTl.to('#omni-scroll-cue', { opacity: 1, duration: 0.80, ease: 'power2.out'  }, 1.30);
+
+  setTimeout(runLoop, 700);
+
+})();
+</script>
+</body>
+</html>
