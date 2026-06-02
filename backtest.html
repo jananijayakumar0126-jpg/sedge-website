@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trade Backtest & Algo — SEDGE Ventures</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+<script>
+  tailwind.config = { theme: { extend: { fontFamily: { display: ['Cormorant Garamond','serif'], sans: ['Inter','sans-serif'] } } } }
+</script>
+<style>
+  :root { --gold:#c9a462; --gold-l:#e2bc79; --ink:#0a0a0a; --muted:#5a5a5a; }
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  html { height:auto; } html.lenis { height:auto; } .lenis.lenis-smooth { scroll-behavior:auto; }
+  body { font-family:'Inter',sans-serif; background:#fff; color:var(--ink); overflow-x:hidden; }
+  body::before { content:''; position:fixed; inset:0; z-index:0; pointer-events:none; background-image:linear-gradient(rgba(0,0,0,0.038) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,0.038) 1px,transparent 1px); background-size:44px 44px; }
+  #nav { position:fixed; top:0; left:0; right:0; z-index:900; transition:background .45s,border-color .45s,backdrop-filter .45s; border-bottom:1px solid transparent; }
+  #nav.stuck { background:rgba(255,255,255,.92); backdrop-filter:blur(22px); border-color:rgba(0,0,0,.07); }
+  .nav-dropdown { position:relative; }
+  .nav-dropdown-menu { position:absolute; top:calc(100% + 16px); left:50%; transform:translateX(-50%) translateY(-6px); background:#fff; border:1px solid rgba(0,0,0,.08); box-shadow:0 16px 48px rgba(0,0,0,.1); min-width:220px; padding:8px 0; opacity:0; pointer-events:none; transition:opacity .25s,transform .25s; }
+  .nav-dropdown:hover .nav-dropdown-menu { opacity:1; pointer-events:all; transform:translateX(-50%) translateY(0); }
+  .nav-dropdown-menu a { display:flex; align-items:center; gap:10px; padding:11px 20px; font-size:11px; letter-spacing:.13em; text-transform:uppercase; font-weight:500; color:var(--muted); text-decoration:none; transition:background .2s,color .2s; }
+  .nav-dropdown-menu a:hover { background:#fafafa; color:var(--ink); }
+  .nav-dropdown-menu a.active { color:var(--gold); }
+  .nav-dropdown-menu a .dd-dot { width:5px; height:5px; border-radius:50%; background:var(--gold); flex-shrink:0; }
+  .nav-dropdown > .nav-link-btn::after { content:''; display:inline-block; width:5px; height:5px; border-right:1px solid currentColor; border-bottom:1px solid currentColor; transform:rotate(45deg) translateY(-2px); margin-left:5px; vertical-align:middle; }
+  .gold-text { color:var(--gold); }
+  .g-rule { display:block; height:1px; background:linear-gradient(90deg,var(--gold),transparent); }
+  .pcard { padding:2.5rem; border:1px solid rgba(0,0,0,.07); background:#fff; position:relative; transition:border-color .35s,transform .35s,box-shadow .35s; overflow:hidden; }
+  .pcard::before { content:''; position:absolute; bottom:0; left:0; width:0; height:2px; background:linear-gradient(90deg,var(--gold),var(--gold-l)); transition:width .55s; }
+  .pcard:hover { border-color:rgba(201,164,98,.35); transform:translateY(-3px); box-shadow:0 18px 48px rgba(0,0,0,.06); }
+  .pcard:hover::before { width:100%; }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="max-w-screen-xl mx-auto px-8 py-5 flex items-center justify-between relative z-10">
+    <a href="index.html" style="text-decoration:none;color:inherit;display:flex;align-items:center;gap:.5rem;">
+      <span class="font-display font-light tracking-[.22em] text-[17px] uppercase">SEDGE</span>
+      <span class="font-display font-light tracking-[.22em] text-[17px] uppercase gold-text ml-2">Ventures</span>
+    </a>
+    <div class="flex items-center gap-9">
+      <a href="index.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors font-medium">Strategies</a>
+      <div class="nav-dropdown">
+        <span class="nav-link-btn text-[11px] tracking-[.14em] uppercase font-medium cursor-pointer select-none" style="color:var(--gold);">Products</span>
+        <div class="nav-dropdown-menu">
+          <a href="pharma.html"><span class="dd-dot"></span>Pharma Research</a>
+          <a href="backtest.html" class="active"><span class="dd-dot"></span>Trade Backtest &amp; Algo</a>
+          <a href="forex.html"><span class="dd-dot"></span>Forex</a>
+          <a href="value-picks.html"><span class="dd-dot"></span>Value Picks</a>
+        </div>
+      </div>
+      <a href="index.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors font-medium">Research</a>
+      <a href="index.html#sectors" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors font-medium">Sectors</a>
+      <a href="index.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors font-medium">About</a>
+      <button class="border border-[var(--ink)] text-[var(--ink)] text-[11px] tracking-[.14em] uppercase px-5 py-2.5 font-medium hover:bg-[var(--ink)] hover:text-white transition-all duration-300">Log In</button>
+    </div>
+  </div>
+</nav>
+
+<!-- PAGE HERO -->
+<section class="relative z-10" style="background:#fff;padding:9rem 2rem 5rem;border-bottom:1px solid rgba(0,0,0,.06);">
+  <div class="max-w-screen-xl mx-auto">
+    <a href="index.html#our-products" style="display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;color:var(--muted);text-decoration:none;margin-bottom:2.5rem;transition:color .2s;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--muted)'">← Our Products</a>
+    <div class="flex items-center gap-4 mb-5">
+      <span class="g-rule w-8"></span>
+      <span style="font-size:10px;letter-spacing:.28em;text-transform:uppercase;font-weight:500;color:var(--gold);">Product 02</span>
+    </div>
+    <h1 class="font-display font-light" style="font-size:clamp(3.2rem,7vw,8rem);line-height:1.0;letter-spacing:-0.03em;color:var(--ink);">
+      Trade Backtest<br>&amp; Algo
+    </h1>
+    <div style="height:1px;margin-top:2.5rem;background:linear-gradient(90deg,var(--gold) 0%,rgba(201,164,98,.2) 35%,transparent 65%);max-width:520px;"></div>
+    <p style="margin-top:1.5rem;font-size:15px;color:var(--muted);line-height:1.85;max-width:560px;font-weight:300;">
+      Run institutional-grade strategy backtests across decades of market data. Validate, stress-test, and deploy algo signals with confidence.
+    </p>
+  </div>
+</section>
+
+<!-- INTRO -->
+<section class="relative z-10 py-28 px-8" style="background:#fff;">
+  <div class="max-w-screen-xl mx-auto">
+    <div class="max-w-[820px] mx-auto text-center">
+      <div class="inline-flex items-center gap-4 mb-8">
+        <span style="display:block;height:1px;width:32px;background:linear-gradient(90deg,transparent,var(--gold));"></span>
+        <span class="text-[11px] tracking-[.28em] uppercase font-medium gold-text">Algorithmic Intelligence</span>
+        <span style="display:block;height:1px;width:32px;background:linear-gradient(90deg,var(--gold),transparent);"></span>
+      </div>
+      <h2 class="font-display font-light text-[clamp(2.4rem,4.5vw,4rem)] leading-[1.1] mb-6">
+        Backtest like an<br><em style="font-style:italic;color:var(--gold);">institutional desk.</em>
+      </h2>
+      <p class="text-[15px] text-[var(--muted)] leading-relaxed">
+        Run decades of market data against any strategy in minutes. Our engine stress-tests entries, exits, position sizing, and drawdown scenarios — then surfaces the signals worth deploying.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURE CARDS -->
+<section class="relative z-10 py-16 px-8" style="background:#fafafa;">
+  <div class="max-w-screen-xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+      <div class="pcard" data-card>
+        <div class="text-[10px] tracking-[.28em] uppercase font-medium gold-text mb-4">Strategy Builder</div>
+        <h3 class="font-display font-light text-[1.7rem] mb-3 leading-tight">Build &amp; validate any system</h3>
+        <p class="text-[13px] text-[var(--muted)] leading-relaxed">Define entry/exit rules in plain logic. Test across equities, futures, and crypto with slippage and fee modelling included.</p>
+      </div>
+      <div class="pcard" data-card>
+        <div class="text-[10px] tracking-[.28em] uppercase font-medium gold-text mb-4">Walk-Forward Testing</div>
+        <h3 class="font-display font-light text-[1.7rem] mb-3 leading-tight">Eliminate curve-fitting</h3>
+        <p class="text-[13px] text-[var(--muted)] leading-relaxed">Rolling out-of-sample validation across 20+ years of data. Sharpe, Sortino, max drawdown, and regime breakdown automatically computed.</p>
+      </div>
+      <div class="pcard" data-card>
+        <div class="text-[10px] tracking-[.28em] uppercase font-medium gold-text mb-4">Signal Engine</div>
+        <h3 class="font-display font-light text-[1.7rem] mb-3 leading-tight">Live algo signals, daily</h3>
+        <p class="text-[13px] text-[var(--muted)] leading-relaxed">Pre-built systematic strategies screened every market open. Momentum, mean-reversion, and factor signals delivered with entry ranges and position guidance.</p>
+      </div>
+    </div>
+    <!-- Stats -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-px" style="background:rgba(0,0,0,.07);border:1px solid rgba(0,0,0,.07);">
+      <div class="py-10 px-8 text-center" style="background:#fff;"><div class="font-display font-light text-[2.8rem] gold-text leading-none mb-2">20+</div><div class="text-[11px] tracking-[.18em] uppercase text-[var(--muted)]">Years of data</div></div>
+      <div class="py-10 px-8 text-center" style="background:#fff;"><div class="font-display font-light text-[2.8rem] gold-text leading-none mb-2">50+</div><div class="text-[11px] tracking-[.18em] uppercase text-[var(--muted)]">Pre-built strategies</div></div>
+      <div class="py-10 px-8 text-center" style="background:#fff;"><div class="font-display font-light text-[2.8rem] gold-text leading-none mb-2">8</div><div class="text-[11px] tracking-[.18em] uppercase text-[var(--muted)]">Asset classes</div></div>
+      <div class="py-10 px-8 text-center" style="background:#fff;"><div class="font-display font-light text-[2.8rem] gold-text leading-none mb-2">&lt;2m</div><div class="text-[11px] tracking-[.18em] uppercase text-[var(--muted)]">Full backtest time</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- DEEPER SECTION -->
+<section class="relative z-10 py-32 px-8" style="background:#fff;">
+  <div class="max-w-screen-xl mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+      <div>
+        <div class="flex items-center gap-4 mb-8"><span class="g-rule w-10"></span><span class="text-[11px] tracking-[.28em] uppercase font-medium gold-text">Risk Engine</span></div>
+        <h2 class="font-display font-light text-[clamp(32px,3.6vw,52px)] leading-[1.08] tracking-[-0.02em] mb-6">Know your<br><em class="gold-text">maximum drawdown</em><br>before you deploy.</h2>
+        <p class="text-[15px] leading-[1.85] text-[var(--muted)] font-light mb-8">Every strategy is stress-tested across bear markets, high-volatility regimes, and black swan events. Position sizing recommendations are built from Kelly Criterion and volatility-adjusted frameworks.</p>
+        <div class="flex flex-wrap gap-3">
+          <span style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;padding:8px 16px;border:1px solid rgba(201,164,98,.3);color:var(--gold);">Kelly Criterion</span>
+          <span style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;padding:8px 16px;border:1px solid rgba(201,164,98,.3);color:var(--gold);">VaR Modelling</span>
+          <span style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;padding:8px 16px;border:1px solid rgba(201,164,98,.3);color:var(--gold);">Monte Carlo</span>
+          <span style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;padding:8px 16px;border:1px solid rgba(201,164,98,.3);color:var(--gold);">Regime Detection</span>
+        </div>
+      </div>
+      <div style="border:1px solid rgba(0,0,0,.07);padding:2.5rem;background:#fafafa;">
+        <div class="text-[11px] tracking-[.22em] uppercase font-medium text-[var(--muted)] mb-8">Sample Backtest Output</div>
+        <div class="space-y-5">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;padding-bottom:1rem;border-bottom:1px solid rgba(0,0,0,.06);">
+            <span class="text-[13px] text-[var(--muted)]">Total Return</span>
+            <span class="font-display font-light text-[1.6rem] gold-text">+347%</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;padding-bottom:1rem;border-bottom:1px solid rgba(0,0,0,.06);">
+            <span class="text-[13px] text-[var(--muted)]">Annualised Sharpe</span>
+            <span class="font-display font-light text-[1.6rem] gold-text">2.14</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;padding-bottom:1rem;border-bottom:1px solid rgba(0,0,0,.06);">
+            <span class="text-[13px] text-[var(--muted)]">Max Drawdown</span>
+            <span class="font-display font-light text-[1.6rem]" style="color:#e07070;">-14.2%</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;">
+            <span class="text-[13px] text-[var(--muted)]">Win Rate</span>
+            <span class="font-display font-light text-[1.6rem] gold-text">63.8%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="relative z-10 border-t border-gray-100 py-14 px-8">
+  <div class="max-w-screen-xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+    <div><div class="flex items-center gap-2 mb-2"><span class="font-display font-light tracking-[.22em] text-[16px] uppercase">SEDGE</span><span class="font-display font-light tracking-[.22em] text-[16px] uppercase gold-text">Ventures</span></div><p class="text-[12px] text-[var(--muted)] font-light tracking-[.06em]">Systematic Equity Investment Management</p></div>
+    <p class="text-[11px] text-[var(--muted)] font-light tracking-[.08em]">© 2025 SEDGE Ventures. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+'use strict';
+gsap.registerPlugin(ScrollTrigger);
+const lenis = new Lenis({ duration:1.4, easing:t=>Math.min(1,1.001-Math.pow(2,-10*t)) });
+lenis.on('scroll', ScrollTrigger.update);
+gsap.ticker.add(t=>lenis.raf(t*1000));
+gsap.ticker.lagSmoothing(0);
+lenis.on('scroll', ({scroll})=>{ document.getElementById('nav').classList.toggle('stuck', scroll>50); });
+gsap.set('[data-card]',{opacity:0,y:30});
+ScrollTrigger.create({ trigger:'[data-card]', start:'top 78%', onEnter(){ gsap.to('[data-card]',{opacity:1,y:0,duration:.85,ease:'power3.out',stagger:.12}); }});
+</script>
+</body>
+</html>

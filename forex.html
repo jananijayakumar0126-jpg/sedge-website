@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forex — SEDGE Ventures</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+<script>
+  tailwind.config = { theme: { extend: { fontFamily: { display: ['Cormorant Garamond','serif'], sans: ['Inter','sans-serif'] } } } }
+</script>
+<style>
+  :root { --gold:#c9a462; --gold-l:#e2bc79; --ink:#0a0a0a; --muted:#5a5a5a; }
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  html { height:auto; } html.lenis { height:auto; } .lenis.lenis-smooth { scroll-behavior:auto; }
+  body { font-family:'Inter',sans-serif; background:#fff; color:var(--ink); overflow-x:hidden; }
+  body::before { content:''; position:fixed; inset:0; z-index:0; pointer-events:none; background-image:linear-gradient(rgba(0,0,0,0.038) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,0.038) 1px,transparent 1px); background-size:44px 44px; }
+  #nav { position:fixed; top:0; left:0; right:0; z-index:900; transition:background .45s,border-color .45s,backdrop-filter .45s; border-bottom:1px solid transparent; }
+  #nav.stuck { background:rgba(255,255,255,.92); backdrop-filter:blur(22px); border-color:rgba(0,0,0,.07); }
+  .nav-dropdown { position:relative; }
+  .nav-dropdown-menu { position:absolute; top:calc(100% + 16px); left:50%; transform:translateX(-50%) translateY(-6px); background:#fff; border:1px solid rgba(0,0,0,.08); box-shadow:0 16px 48px rgba(0,0,0,.1); min-width:220px; padding:8px 0; opacity:0; pointer-events:none; transition:opacity .25s,transform .25s; }
+  .nav-dropdown:hover .nav-dropdown-menu { opacity:1; pointer-events:all; transform:translateX(-50%) translateY(0); }
+  .nav-dropdown-menu a { display:flex; align-items:center; gap:10px; padding:11px 20px; font-size:11px; letter-spacing:.13em; text-transform:uppercase; font-weight:500; color:var(--muted); text-decoration:none; transition:background .2s,color .2s; }
+  .nav-dropdown-menu a:hover { background:#fafafa; color:var(--ink); }
+  .nav-dropdown-menu a.active { color:var(--gold); }
+  .nav-dropdown-menu a .dd-dot { width:5px; height:5px; border-radius:50%; background:var(--gold); flex-shrink:0; }
+  .nav-dropdown > .nav-link-btn::after { content:''; display:inline-block; width:5px; height:5px; border-right:1px solid currentColor; border-bottom:1px solid currentColor; transform:rotate(45deg) translateY(-2px); margin-left:5px; vertical-align:middle; }
+  .gold-text { color:var(--gold); }
+  .g-rule { display:block; height:1px; background:linear-gradient(90deg,var(--gold),transparent); }
+  .pcard { padding:2.5rem; border:1px solid rgba(0,0,0,.07); background:#fff; position:relative; transition:border-color .35s,transform .35s,box-shadow .35s; overflow:hidden; }
+  .pcard::before { content:''; position:absolute; bottom:0; left:0; width:0; height:2px; background:linear-gradient(90deg,var(--gold),var(--gold-l)); transition:width .55s; }
+  .pcard:hover { border-color:rgba(201,164,98,.35); transform:translateY(-3px); box-shadow:0 18px 48px rgba(0,0,0,.06); }
+  .pcard:hover::before { width:100%; }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="max-w-screen-xl mx-auto px-8 py-5 flex items-center justify-between relative z-10">
+    <a href="index.html" style="text-decoration:none;color:inherit;display:flex;align-items:center;gap:.5rem;">
+      <span class="font-display font-light tracking-[.22em] text-[17px] uppercase">SEDGE</span>
+      <span class="font-display font-light tracking-[.22em] text-[17px] uppercase gold-text ml-2">Ventures</span>
+    </a>
+    <div class="flex items-center gap-9">
+      <a href="index.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors font-medium">Strategies</a>
+      <div class="nav-dropdown">
+        <span class="nav-link-btn text-[11px] tracking-[.14em] uppercase font-medium cursor-pointer select-none" style="color:var(--gold);">Products</span>
+        <div class="nav-dropdown-menu">
+          <a href="pharma.html"><span class="dd-dot"></span>Pharma Research</a>
+          <a href="backtest.html"><span class="dd-dot"></span>Trade Backtest &amp; Algo</a>
+          <a href="forex.html" class="active"><span class="dd-dot"></span>Forex</a>
+          <a href="value-picks.html"><span class="dd-dot"></span>Value Picks</a>
+        </div>
+      </div>
+      <a href="index.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors font-medium">Research</a>
+      <a href="index.html#sectors" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors font-medium">Sectors</a>
+      <a href="index.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors font-medium">About</a>
+      <button class="border border-[var(--ink)] text-[var(--ink)] text-[11px] tracking-[.14em] uppercase px-5 py-2.5 font-medium hover:bg-[var(--ink)] hover:text-white transition-all duration-300">Log In</button>
+    </div>
+  </div>
+</nav>
+
+<!-- PAGE HERO -->
+<section class="relative z-10" style="background:#fff;padding:9rem 2rem 5rem;border-bottom:1px solid rgba(0,0,0,.06);">
+  <div class="max-w-screen-xl mx-auto">
+    <a href="index.html#our-products" style="display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;color:var(--muted);text-decoration:none;margin-bottom:2.5rem;transition:color .2s;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--muted)'">← Our Products</a>
+    <div class="flex items-center gap-4 mb-5">
+      <span class="g-rule w-8"></span>
+      <span style="font-size:10px;letter-spacing:.28em;text-transform:uppercase;font-weight:500;color:var(--gold);">Product 03</span>
+    </div>
+    <h1 class="font-display font-light" style="font-size:clamp(3.2rem,7vw,8rem);line-height:1.0;letter-spacing:-0.03em;color:var(--ink);">
+      Forex
+    </h1>
+    <div style="height:1px;margin-top:2.5rem;background:linear-gradient(90deg,var(--gold) 0%,rgba(201,164,98,.2) 35%,transparent 65%);max-width:520px;"></div>
+    <p style="margin-top:1.5rem;font-size:15px;color:var(--muted);line-height:1.85;max-width:560px;font-weight:300;">
+      Macro-driven currency momentum signals, central bank divergence tracking, and EUR/USD through EM pair coverage with real-time positioning data.
+    </p>
+  </div>
+</section>
+
+<!-- INTRO -->
+<section class="relative z-10 py-28 px-8" style="background:#fff;">
+  <div class="max-w-screen-xl mx-auto">
+    <div class="max-w-[820px] mx-auto text-center">
+      <div class="inline-flex items-center gap-4 mb-8">
+        <span style="display:block;height:1px;width:32px;background:linear-gradient(90deg,transparent,var(--gold));"></span>
+        <span class="text-[11px] tracking-[.28em] uppercase font-medium gold-text">Currency Intelligence</span>
+        <span style="display:block;height:1px;width:32px;background:linear-gradient(90deg,var(--gold),transparent);"></span>
+      </div>
+      <h2 class="font-display font-light text-[clamp(2.4rem,4.5vw,4rem)] leading-[1.1] mb-6">
+        Macro-driven signals.<br><em style="font-style:italic;color:var(--gold);">Before the move.</em>
+      </h2>
+      <p class="text-[15px] text-[var(--muted)] leading-relaxed">
+        Central bank divergence, real yield spreads, and positioning data — synthesised into actionable FX signals across major, minor, and select EM pairs.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURE CARDS -->
+<section class="relative z-10 py-16 px-8" style="background:#fafafa;">
+  <div class="max-w-screen-xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+      <div class="pcard" data-card>
+        <div class="text-[10px] tracking-[.28em] uppercase font-medium gold-text mb-4">CB Divergence Tracker</div>
+        <h3 class="font-display font-light text-[1.7rem] mb-3 leading-tight">Rate cycle positioning</h3>
+        <p class="text-[13px] text-[var(--muted)] leading-relaxed">Real-time tracking of Fed, ECB, BOJ, and BOE policy paths. Divergence scores updated after every central bank communication.</p>
+      </div>
+      <div class="pcard" data-card>
+        <div class="text-[10px] tracking-[.28em] uppercase font-medium gold-text mb-4">FX Momentum</div>
+        <h3 class="font-display font-light text-[1.7rem] mb-3 leading-tight">Trend before consensus</h3>
+        <p class="text-[13px] text-[var(--muted)] leading-relaxed">Proprietary momentum scoring across 28 pairs. Signals ranked by confluence of technicals, flows, and macro regime — filtered to the highest-conviction setups.</p>
+      </div>
+      <div class="pcard" data-card>
+        <div class="text-[10px] tracking-[.28em] uppercase font-medium gold-text mb-4">Positioning Intelligence</div>
+        <h3 class="font-display font-light text-[1.7rem] mb-3 leading-tight">COT &amp; flow analysis</h3>
+        <p class="text-[13px] text-[var(--muted)] leading-relaxed">COT report synthesis, options market skew, and institutional flow tracking. Know when speculative positioning reaches extremes before reversals occur.</p>
+      </div>
+    </div>
+
+    <!-- Pairs coverage -->
+    <div style="border:1px solid rgba(0,0,0,.07);padding:2.5rem;background:#fff;">
+      <div class="text-[11px] tracking-[.22em] uppercase font-medium text-[var(--muted)] mb-6">Pairs Coverage</div>
+      <div class="flex flex-wrap gap-3">
+        <span class="text-[12px] tracking-[.1em] uppercase px-4 py-2 border border-[rgba(201,164,98,.25)] text-[var(--ink)]">EUR/USD</span>
+        <span class="text-[12px] tracking-[.1em] uppercase px-4 py-2 border border-[rgba(201,164,98,.25)] text-[var(--ink)]">GBP/USD</span>
+        <span class="text-[12px] tracking-[.1em] uppercase px-4 py-2 border border-[rgba(201,164,98,.25)] text-[var(--ink)]">USD/JPY</span>
+        <span class="text-[12px] tracking-[.1em] uppercase px-4 py-2 border border-[rgba(201,164,98,.25)] text-[var(--ink)]">AUD/USD</span>
+        <span class="text-[12px] tracking-[.1em] uppercase px-4 py-2 border border-[rgba(201,164,98,.25)] text-[var(--ink)]">USD/CAD</span>
+        <span class="text-[12px] tracking-[.1em] uppercase px-4 py-2 border border-[rgba(201,164,98,.25)] text-[var(--ink)]">NZD/USD</span>
+        <span class="text-[12px] tracking-[.1em] uppercase px-4 py-2 border border-[rgba(201,164,98,.25)] text-[var(--ink)]">EUR/GBP</span>
+        <span class="text-[12px] tracking-[.1em] uppercase px-4 py-2 border border-[rgba(201,164,98,.25)] text-[var(--ink)]">USD/CHF</span>
+        <span class="text-[12px] tracking-[.1em] uppercase px-4 py-2 border border-[rgba(201,164,98,.3)] text-[var(--gold)]">+ 20 EM pairs</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CB DEEP DIVE -->
+<section class="relative z-10 py-32 px-8" style="background:#fff;">
+  <div class="max-w-screen-xl mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+      <div>
+        <div class="flex items-center gap-4 mb-8"><span class="g-rule w-10"></span><span class="text-[11px] tracking-[.28em] uppercase font-medium gold-text">Macro Framework</span></div>
+        <h2 class="font-display font-light text-[clamp(32px,3.6vw,52px)] leading-[1.08] tracking-[-0.02em] mb-6">The macro edge<br>most traders <em class="gold-text">never see.</em></h2>
+        <p class="text-[15px] leading-[1.85] text-[var(--muted)] font-light mb-8">Currency moves are driven by rate differentials, growth divergence, and capital flows. We track all three in real time — layering them into a single conviction score per pair, updated daily.</p>
+        <div class="flex flex-wrap gap-3">
+          <span style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;padding:8px 16px;border:1px solid rgba(201,164,98,.3);color:var(--gold);">Real Yield Spreads</span>
+          <span style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;padding:8px 16px;border:1px solid rgba(201,164,98,.3);color:var(--gold);">Growth Differentials</span>
+          <span style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;padding:8px 16px;border:1px solid rgba(201,164,98,.3);color:var(--gold);">Current Account</span>
+          <span style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;padding:8px 16px;border:1px solid rgba(201,164,98,.3);color:var(--gold);">Risk Sentiment</span>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <div style="border:1px solid rgba(0,0,0,.07);padding:1.8rem;background:#fafafa;">
+          <div class="text-[10px] tracking-[.2em] uppercase text-[var(--muted)] mb-3">EUR/USD Signal</div>
+          <div class="font-display font-light text-[2.2rem] gold-text leading-none mb-1">Long</div>
+          <div class="text-[12px] text-[var(--muted)]">Conviction: 78%</div>
+        </div>
+        <div style="border:1px solid rgba(0,0,0,.07);padding:1.8rem;background:#fafafa;">
+          <div class="text-[10px] tracking-[.2em] uppercase text-[var(--muted)] mb-3">USD/JPY Signal</div>
+          <div class="font-display font-light text-[2.2rem] leading-none mb-1" style="color:#e07070;">Short</div>
+          <div class="text-[12px] text-[var(--muted)]">Conviction: 64%</div>
+        </div>
+        <div style="border:1px solid rgba(0,0,0,.07);padding:1.8rem;background:#fafafa;">
+          <div class="text-[10px] tracking-[.2em] uppercase text-[var(--muted)] mb-3">GBP/USD Signal</div>
+          <div class="font-display font-light text-[2.2rem] gold-text leading-none mb-1">Long</div>
+          <div class="text-[12px] text-[var(--muted)]">Conviction: 71%</div>
+        </div>
+        <div style="border:1px solid rgba(0,0,0,.07);padding:1.8rem;background:#fafafa;">
+          <div class="text-[10px] tracking-[.2em] uppercase text-[var(--muted)] mb-3">AUD/USD Signal</div>
+          <div class="font-display font-light text-[2.2rem] text-[var(--muted)] leading-none mb-1">Neutral</div>
+          <div class="text-[12px] text-[var(--muted)]">Conviction: 42%</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="relative z-10 border-t border-gray-100 py-14 px-8">
+  <div class="max-w-screen-xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+    <div><div class="flex items-center gap-2 mb-2"><span class="font-display font-light tracking-[.22em] text-[16px] uppercase">SEDGE</span><span class="font-display font-light tracking-[.22em] text-[16px] uppercase gold-text">Ventures</span></div><p class="text-[12px] text-[var(--muted)] font-light tracking-[.06em]">Systematic Equity Investment Management</p></div>
+    <p class="text-[11px] text-[var(--muted)] font-light tracking-[.08em]">© 2025 SEDGE Ventures. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+'use strict';
+gsap.registerPlugin(ScrollTrigger);
+const lenis = new Lenis({ duration:1.4, easing:t=>Math.min(1,1.001-Math.pow(2,-10*t)) });
+lenis.on('scroll', ScrollTrigger.update);
+gsap.ticker.add(t=>lenis.raf(t*1000));
+gsap.ticker.lagSmoothing(0);
+lenis.on('scroll', ({scroll})=>{ document.getElementById('nav').classList.toggle('stuck', scroll>50); });
+gsap.set('[data-card]',{opacity:0,y:30});
+ScrollTrigger.create({ trigger:'[data-card]', start:'top 78%', onEnter(){ gsap.to('[data-card]',{opacity:1,y:0,duration:.85,ease:'power3.out',stagger:.12}); }});
+</script>
+</body>
+</html>

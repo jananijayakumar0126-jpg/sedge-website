@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pharma Research — SEDGE Ventures</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+<script>
+  tailwind.config = {
+    theme: { extend: { fontFamily: { display: ['Cormorant Garamond','serif'], sans: ['Inter','sans-serif'] } } }
+  }
+</script>
+<style>
+  :root { --gold:#c9a462; --gold-l:#e2bc79; --cyan:#00d4c8; --em:#4dbb77; --ink:#0a0a0a; --muted:#5a5a5a; }
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  html { height:auto; }
+  html.lenis { height:auto; }
+  .lenis.lenis-smooth { scroll-behavior:auto; }
+  body { font-family:'Inter',sans-serif; background:#fff; color:var(--ink); overflow-x:hidden; }
+  body::before { content:''; position:fixed; inset:0; z-index:0; pointer-events:none; background-image: linear-gradient(rgba(0,0,0,0.038) 1px,transparent 1px), linear-gradient(90deg,rgba(0,0,0,0.038) 1px,transparent 1px); background-size:44px 44px; }
+  #nav { position:fixed; top:0; left:0; right:0; z-index:900; transition:background .45s ease,border-color .45s ease,backdrop-filter .45s ease; border-bottom:1px solid transparent; }
+  #nav.stuck { background:rgba(255,255,255,.92); backdrop-filter:blur(22px); border-color:rgba(0,0,0,.07); }
+  .nav-dropdown { position:relative; }
+  .nav-dropdown-menu { position:absolute; top:calc(100% + 16px); left:50%; transform:translateX(-50%) translateY(-6px); background:#fff; border:1px solid rgba(0,0,0,.08); box-shadow:0 16px 48px rgba(0,0,0,.1); min-width:220px; padding:8px 0; opacity:0; pointer-events:none; transition:opacity .25s ease,transform .25s ease; }
+  .nav-dropdown:hover .nav-dropdown-menu, .nav-dropdown-menu:hover { opacity:1; pointer-events:all; transform:translateX(-50%) translateY(0); }
+  .nav-dropdown-menu a { display:flex; align-items:center; gap:10px; padding:11px 20px; font-size:11px; letter-spacing:.13em; text-transform:uppercase; font-weight:500; color:var(--muted); text-decoration:none; transition:background .2s,color .2s; }
+  .nav-dropdown-menu a:hover { background:#fafafa; color:var(--ink); }
+  .nav-dropdown-menu a.active { color:var(--gold); }
+  .nav-dropdown-menu a .dd-dot { width:5px; height:5px; border-radius:50%; background:var(--gold); flex-shrink:0; }
+  .nav-dropdown > .nav-link-btn::after { content:''; display:inline-block; width:5px; height:5px; border-right:1px solid currentColor; border-bottom:1px solid currentColor; transform:rotate(45deg) translateY(-2px); margin-left:5px; vertical-align:middle; }
+  .gold-text { color:var(--gold); }
+  .g-rule { display:block; height:1px; background:linear-gradient(90deg,var(--gold),transparent); }
+  .rline { display:block; overflow:hidden; }
+  .rinner { display:block; }
+  .pcard { padding:2.5rem; border:1px solid rgba(0,0,0,.07); background:#fff; position:relative; transition:border-color .35s,transform .35s,box-shadow .35s; overflow:hidden; }
+  .pcard::before { content:''; position:absolute; bottom:0; left:0; width:0; height:2px; background:linear-gradient(90deg,var(--gold),var(--gold-l)); transition:width .55s ease; }
+  .pcard:hover { border-color:rgba(201,164,98,.35); transform:translateY(-3px); box-shadow:0 18px 48px rgba(0,0,0,.06); }
+  .pcard:hover::before { width:100%; }
+  .stat-num { font-family:'Cormorant Garamond',serif; font-weight:300; font-size:clamp(40px,4.8vw,66px); color:var(--ink); line-height:1; letter-spacing:-0.03em; }
+  .stat-sub  { font-size:10.5px; letter-spacing:.2em; text-transform:uppercase; font-weight:500; color:var(--muted); margin-top:9px; }
+  .stat-desc { font-size:11px; letter-spacing:.06em; color:#9a9a9a; margin-top:3px; font-weight:300; }
+  .stat-divider { width:1px; align-self:stretch; background:linear-gradient(to bottom,transparent 0%,rgba(201,164,98,.45) 50%,transparent 100%); flex-shrink:0; }
+  .therapy-badge { display:inline-flex; align-items:center; gap:5px; padding:4px 14px; border-radius:99px; font-size:10px; letter-spacing:.12em; text-transform:uppercase; font-weight:500; border:1px solid; }
+  .fda-card { border:1px solid rgba(0,0,0,.07); background:#fff; padding:1.8rem 1.5rem 1.5rem; overflow:hidden; position:relative; transition:border-color .35s,transform .35s,box-shadow .35s; }
+  .fda-card:hover { border-color:rgba(201,164,98,.35); transform:translateY(-4px); box-shadow:0 20px 52px rgba(0,0,0,.07); }
+  .fda-card::before { content:''; position:absolute; bottom:0; left:0; width:0; height:2px; background:linear-gradient(90deg,var(--gold),var(--gold-l)); transition:width .55s ease; }
+  .fda-card:hover::before { width:100%; }
+  .browser-frame { border-radius:13px; overflow:hidden; background:#141418; border:1px solid rgba(255,255,255,.07); box-shadow:0 48px 96px rgba(0,0,0,.24),0 8px 24px rgba(0,0,0,.16); transform-style:preserve-3d; }
+  .browser-chrome { display:flex; align-items:center; gap:8px; padding:12px 18px; background:#0e0e11; border-bottom:1px solid rgba(255,255,255,.06); }
+  .phr-tab { padding:5px 16px; border-radius:6px 6px 0 0; font-size:11px; font-weight:500; letter-spacing:.04em; color:rgba(255,255,255,.36); background:transparent; cursor:default; opacity:0; transform:translateY(6px); }
+  .phr-tab-active { background:#1c1c22; color:rgba(255,255,255,.82); border:1px solid rgba(255,255,255,.07); border-bottom-color:#1c1c22; }
+  .phr-tag { display:inline-flex; align-items:center; gap:6px; padding:5px 14px; border-radius:99px; font-size:10px; letter-spacing:.12em; text-transform:uppercase; font-weight:600; border:1px solid rgba(201,164,98,.38); color:var(--gold); background:rgba(201,164,98,.07); }
+  .ph-feature-tab { display:inline-flex; align-items:center; gap:8px; padding:10px 18px; border:1px solid rgba(0,0,0,.08); background:#fff; border-radius:8px; font-size:11px; font-weight:500; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); cursor:default; transition:border-color .3s,color .3s,background .3s; }
+  .ph-feature-tab:hover { border-color:rgba(201,164,98,.4); color:var(--gold); background:rgba(201,164,98,.04); }
+  .ph-feature-dot { width:6px; height:6px; border-radius:50%; background:var(--gold); flex-shrink:0; }
+  .diamond-card { border:1px solid rgba(77,187,119,.18); background:#fff; padding:1.5rem 1.6rem; border-left:3px solid #4dbb77; position:relative; overflow:hidden; box-shadow:0 4px 20px rgba(77,187,119,.06); transition:border-color .3s,box-shadow .3s,transform .3s; }
+  .diamond-card:hover { border-color:rgba(77,187,119,.4); box-shadow:0 12px 40px rgba(77,187,119,.10); transform:translateY(-2px); }
+  .diamond-card::after { content:''; position:absolute; top:-80%; left:-10%; width:120%; height:40%; background:linear-gradient(180deg,transparent 0%,rgba(77,187,119,.04) 50%,transparent 100%); animation:scan 3.6s ease-in-out infinite; pointer-events:none; }
+  @keyframes scan { 0%{top:-80%} 100%{top:160%} }
+  .score-bar-track { height:4px; background:rgba(0,0,0,.06); border-radius:2px; overflow:hidden; }
+  .score-bar-fill  { height:100%; border-radius:2px; background:linear-gradient(90deg,#4dbb77,var(--gold)); width:0; transition:width 1.4s cubic-bezier(.22,1,.36,1); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="max-w-screen-xl mx-auto px-8 py-5 flex items-center justify-between relative z-10">
+    <div class="flex items-center gap-1">
+      <a href="index.html" style="text-decoration:none;color:inherit;display:flex;align-items:center;gap:0.5rem;">
+        <span class="font-display font-light tracking-[.22em] text-[17px] uppercase">SEDGE</span>
+        <span class="font-display font-light tracking-[.22em] text-[17px] uppercase gold-text ml-2">Ventures</span>
+      </a>
+    </div>
+    <div class="flex items-center gap-9">
+      <a href="index.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">Strategies</a>
+      <div class="nav-dropdown">
+        <span class="nav-link-btn text-[11px] tracking-[.14em] uppercase font-medium cursor-pointer select-none" style="color:var(--gold);">Products</span>
+        <div class="nav-dropdown-menu">
+          <a href="pharma.html" class="active"><span class="dd-dot"></span>Pharma Research</a>
+          <a href="backtest.html"><span class="dd-dot"></span>Trade Backtest &amp; Algo</a>
+          <a href="forex.html"><span class="dd-dot"></span>Forex</a>
+          <a href="value-picks.html"><span class="dd-dot"></span>Value Picks</a>
+        </div>
+      </div>
+      <a href="index.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">Research</a>
+      <a href="index.html#sectors" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">Sectors</a>
+      <a href="index.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">About</a>
+      <button class="border border-[var(--ink)] text-[var(--ink)] text-[11px] tracking-[.14em] uppercase px-5 py-2.5 font-medium hover:bg-[var(--ink)] hover:text-white transition-all duration-300">Log In</button>
+    </div>
+  </div>
+</nav>
+
+<!-- PAGE HERO — WHITE ON THEME -->
+<section class="relative z-10" style="background:#fff;padding:9rem 2rem 5rem;border-bottom:1px solid rgba(0,0,0,.06);">
+  <div class="max-w-screen-xl mx-auto">
+    <a href="index.html#our-products" style="display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;color:var(--muted);text-decoration:none;margin-bottom:2.5rem;transition:color .2s;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--muted)'">← Our Products</a>
+    <div class="flex items-center gap-4 mb-5">
+      <span class="g-rule w-8"></span>
+      <span style="font-size:10px;letter-spacing:.28em;text-transform:uppercase;font-weight:500;color:var(--gold);">Product 01</span>
+    </div>
+    <h1 class="font-display font-light" style="font-size:clamp(3.2rem,7vw,8rem);line-height:1.0;letter-spacing:-0.03em;color:var(--ink);">
+      Pharma<br>Research
+    </h1>
+    <div style="height:1px;margin-top:2.5rem;background:linear-gradient(90deg,var(--gold) 0%,rgba(201,164,98,.2) 35%,transparent 65%);max-width:520px;"></div>
+    <p style="margin-top:1.5rem;font-size:15px;color:var(--muted);line-height:1.85;max-width:560px;font-weight:300;">
+      FDA catalysts, knowledge graphs, clinical trial intelligence and the Diamond Hunter signal engine for biotech multi-baggers.
+    </p>
+  </div>
+</section>
+
+<!-- PH-INTRO -->
+<section id="ph-intro" class="relative z-10 py-28 px-8" style="background:#fff;border-top:1px solid rgba(0,0,0,.06);">
+  <div class="max-w-screen-xl mx-auto">
+    <div class="max-w-[820px] mx-auto text-center">
+      <div id="phi-eye" class="inline-flex items-center gap-4 mb-8" style="opacity:0;">
+        <span style="display:block;height:1px;width:32px;background:linear-gradient(90deg,transparent,var(--gold));"></span>
+        <span class="text-[11px] tracking-[.28em] uppercase font-medium gold-text">Pharmaceutical Intelligence</span>
+        <span style="display:block;height:1px;width:32px;background:linear-gradient(90deg,var(--gold),transparent);"></span>
+      </div>
+      <h2 id="phi-title" class="font-display font-light text-[clamp(36px,4.4vw,66px)] leading-[1.06] tracking-[-0.025em] mb-6" style="opacity:0;">
+        The biotech edge institutional<br>desks <em class="gold-text">pay millions for.</em>
+      </h2>
+      <p id="phi-body" class="text-[15px] leading-[1.85] text-[var(--muted)] font-light mb-12 max-w-[580px] mx-auto" style="opacity:0;">
+        Four tools. One system. Every signal that moves pharma stocks — from FDA catalysts to trial readouts to diamond-in-the-rough entries.
+      </p>
+      <div id="phi-tabs" class="flex flex-wrap items-center justify-center gap-3" style="opacity:0;">
+        <div class="ph-feature-tab"><span class="ph-feature-dot" style="background:#4dbb77;"></span>Knowledge Graph</div>
+        <div class="ph-feature-tab"><span class="ph-feature-dot" style="background:#00d4c8;"></span>FDA Calendar</div>
+        <div class="ph-feature-tab"><span class="ph-feature-dot" style="background:var(--gold);"></span>Deep Research</div>
+        <div class="ph-feature-tab"><span class="ph-feature-dot" style="background:var(--gold);"></span>◆ Diamond Hunter</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PH-STATS -->
+<section id="ph-stats" class="relative z-10 py-16 px-8" style="background:#fff;border-top:1px solid rgba(0,0,0,.05);border-bottom:1px solid rgba(0,0,0,.05);">
+  <div class="max-w-screen-xl mx-auto">
+    <div class="flex flex-col md:flex-row items-center justify-center gap-0" style="row-gap:2rem;">
+      <div class="text-center flex-1 px-6 py-4" data-stat>
+        <div class="stat-num"><span class="stat-count" data-target="2000">0</span>+</div>
+        <div class="stat-sub">Global Pharma Companies</div>
+        <div class="stat-desc">US &amp; International</div>
+      </div>
+      <div class="stat-divider hidden md:block" style="min-height:70px;"></div>
+      <div class="text-center flex-1 px-6 py-4" data-stat>
+        <div class="stat-num"><span class="stat-count" data-target="15000">0</span>+</div>
+        <div class="stat-sub">Drug Trials Tracked</div>
+        <div class="stat-desc">Phase I–III Pipeline</div>
+      </div>
+      <div class="stat-divider hidden md:block" style="min-height:70px;"></div>
+      <div class="text-center flex-1 px-6 py-4" data-stat>
+        <div class="stat-num"><span class="stat-count" data-target="500">0</span>+</div>
+        <div class="stat-sub">FDA Events Monitored</div>
+        <div class="stat-desc">PDUFA · BLA · AdCom</div>
+      </div>
+      <div class="stat-divider hidden md:block" style="min-height:70px;"></div>
+      <div class="text-center flex-1 px-6 py-4" data-stat>
+        <div class="stat-num"><span class="stat-count" data-target="3">0</span> min</div>
+        <div class="stat-sub">Research Reports</div>
+        <div class="stat-desc">Full Analyst-Grade Output</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PH-GRAPH -->
+<section id="ph-graph" class="relative z-10 py-32 px-8 overflow-hidden" style="background:#fafafa;">
+  <div class="max-w-screen-xl mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+      <div>
+        <div id="phg-eye" class="flex items-center gap-4 mb-8" style="opacity:0;">
+          <span class="g-rule w-10"></span>
+          <span class="text-[11px] tracking-[.28em] uppercase font-medium gold-text">The Network</span>
+        </div>
+        <h2 id="phg-title" class="font-display font-light text-[clamp(32px,3.6vw,52px)] leading-[1.08] tracking-[-0.02em] mb-6" style="opacity:0;">
+          Every Drug. Every Pipeline.<br><em class="gold-text">Every Connection.</em>
+        </h2>
+        <p id="phg-body" class="text-[15px] leading-[1.85] text-[var(--muted)] font-light mb-10" style="opacity:0;">
+          Our pharmaceutical knowledge graph maps 2,000+ publicly traded biotech and pharma companies — US and global — with live pipeline data, competitive overlaps, trial status, and licensing relationships.
+        </p>
+        <div id="phg-badges" class="flex flex-wrap gap-2" style="opacity:0;">
+          <span class="therapy-badge" style="color:#4dbb77;border-color:rgba(77,187,119,.3);background:rgba(77,187,119,.06);">Medical Oncology</span>
+          <span class="therapy-badge" style="color:#00d4c8;border-color:rgba(0,212,200,.3);background:rgba(0,212,200,.06);">Immunology</span>
+          <span class="therapy-badge" style="color:#c9a462;border-color:rgba(201,164,98,.3);background:rgba(201,164,98,.06);">Gene Therapy</span>
+          <span class="therapy-badge" style="color:#a78bfa;border-color:rgba(167,139,250,.3);background:rgba(167,139,250,.06);">Rare Disease</span>
+          <span class="therapy-badge" style="color:#fb923c;border-color:rgba(251,146,60,.3);background:rgba(251,146,60,.06);">Neurology</span>
+        </div>
+      </div>
+      <div style="position:relative;height:520px;border-radius:12px;overflow:hidden;background:#0d1117;border:1px solid rgba(255,255,255,.06);box-shadow:0 40px 80px rgba(0,0,0,.14);">
+        <canvas id="cv-phgraph" style="display:block;width:100%;height:100%;"></canvas>
+        <div id="phg-labels" style="position:absolute;inset:0;pointer-events:none;"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PH-FDA -->
+<section id="ph-fda" class="relative z-10 py-32 px-8" style="background:#fff;">
+  <div class="max-w-screen-xl mx-auto">
+    <div class="mb-16 max-w-[700px]">
+      <div id="phf-eye" class="flex items-center gap-4 mb-8" style="opacity:0;">
+        <span class="g-rule w-10"></span>
+        <span class="text-[11px] tracking-[.28em] uppercase font-medium gold-text">FDA Intelligence</span>
+      </div>
+      <h2 id="phf-title" class="font-display font-light text-[clamp(32px,3.6vw,52px)] leading-[1.08] tracking-[-0.02em] mb-5" style="opacity:0;">
+        Know Before the<br><em class="gold-text">Market Does.</em>
+      </h2>
+      <p id="phf-body" class="text-[15px] leading-[1.85] text-[var(--muted)] font-light" style="opacity:0;">
+        Every PDUFA decision, BLA filing, and AdCom meeting — tracked and scored. Our probability engine factors drug mechanism, clinical trial design, competitive landscape, management track record, and historical approval rates for the same modality.
+      </p>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4" id="phf-grid">
+      <div class="fda-card" data-fda data-prob="89" data-arc-color="green">
+        <div class="flex items-start justify-between mb-3">
+          <div><p class="font-display font-light text-[22px] leading-none tracking-tight">ALNY</p><p class="text-[12px] font-medium text-[var(--muted)] mt-1">Fitusiran</p></div>
+          <span style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;padding:3px 9px;border-radius:99px;background:rgba(0,212,200,.08);color:#00d4c8;border:1px solid rgba(0,212,200,.25);">siRNA</span>
+        </div>
+        <p class="text-[11px] text-[var(--muted)] mb-4 font-light">Hemophilia A/B</p>
+        <div class="flex justify-center mb-3">
+          <svg width="84" height="84" viewBox="0 0 84 84"><circle cx="42" cy="42" r="32" fill="none" stroke="rgba(0,0,0,.07)" stroke-width="5"/><circle class="fda-arc" cx="42" cy="42" r="32" fill="none" stroke="#4dbb77" stroke-width="5" stroke-linecap="round" stroke-dasharray="201.1" stroke-dashoffset="201.1" transform="rotate(-90 42 42)" style="transition:stroke-dashoffset 1.2s cubic-bezier(.22,1,.36,1);"/><text x="42" y="38" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="17" font-weight="300" fill="#0a0a0a"><tspan class="arc-num">0</tspan>%</text><text x="42" y="54" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#9a9a9a" letter-spacing="2">APPROVAL</text></svg>
+        </div>
+        <div class="flex justify-between items-center mt-2"><span class="text-[10px] text-[var(--muted)] tracking-[.08em]">14 days</span><span class="font-display gold-text text-[13px]">89%</span></div>
+      </div>
+      <div class="fda-card" data-fda data-prob="76" data-arc-color="gold">
+        <div class="flex items-start justify-between mb-3">
+          <div><p class="font-display font-light text-[22px] leading-none tracking-tight">VRTX</p><p class="text-[12px] font-medium text-[var(--muted)] mt-1">VX-548</p></div>
+          <span style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;padding:3px 9px;border-radius:99px;background:rgba(201,164,98,.08);color:var(--gold);border:1px solid rgba(201,164,98,.25);">Small Mol</span>
+        </div>
+        <p class="text-[11px] text-[var(--muted)] mb-4 font-light">Acute Pain NaV1.8</p>
+        <div class="flex justify-center mb-3">
+          <svg width="84" height="84" viewBox="0 0 84 84"><circle cx="42" cy="42" r="32" fill="none" stroke="rgba(0,0,0,.07)" stroke-width="5"/><circle class="fda-arc" cx="42" cy="42" r="32" fill="none" stroke="#c9a462" stroke-width="5" stroke-linecap="round" stroke-dasharray="201.1" stroke-dashoffset="201.1" transform="rotate(-90 42 42)" style="transition:stroke-dashoffset 1.2s cubic-bezier(.22,1,.36,1);"/><text x="42" y="38" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="17" font-weight="300" fill="#0a0a0a"><tspan class="arc-num">0</tspan>%</text><text x="42" y="54" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#9a9a9a" letter-spacing="2">APPROVAL</text></svg>
+        </div>
+        <div class="flex justify-between items-center mt-2"><span class="text-[10px] text-[var(--muted)] tracking-[.08em]">31 days</span><span class="font-display gold-text text-[13px]">76%</span></div>
+      </div>
+      <div class="fda-card" data-fda data-prob="58" data-arc-color="red">
+        <div class="flex items-start justify-between mb-3">
+          <div><p class="font-display font-light text-[22px] leading-none tracking-tight">SRPT</p><p class="text-[12px] font-medium text-[var(--muted)] mt-1">SRP-9001</p></div>
+          <span style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;padding:3px 9px;border-radius:99px;background:rgba(167,139,250,.07);color:#a78bfa;border:1px solid rgba(167,139,250,.22);">Gene (AAV)</span>
+        </div>
+        <p class="text-[11px] text-[var(--muted)] mb-4 font-light">Duchenne MD</p>
+        <div class="flex justify-center mb-3">
+          <svg width="84" height="84" viewBox="0 0 84 84"><circle cx="42" cy="42" r="32" fill="none" stroke="rgba(0,0,0,.07)" stroke-width="5"/><circle class="fda-arc" cx="42" cy="42" r="32" fill="none" stroke="#e07070" stroke-width="5" stroke-linecap="round" stroke-dasharray="201.1" stroke-dashoffset="201.1" transform="rotate(-90 42 42)" style="transition:stroke-dashoffset 1.2s cubic-bezier(.22,1,.36,1);"/><text x="42" y="38" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="17" font-weight="300" fill="#0a0a0a"><tspan class="arc-num">0</tspan>%</text><text x="42" y="54" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#9a9a9a" letter-spacing="2">APPROVAL</text></svg>
+        </div>
+        <div class="flex justify-between items-center mt-2"><span class="text-[10px] text-[var(--muted)] tracking-[.08em]">47 days</span><span style="font-family:'Cormorant Garamond',serif;font-weight:300;font-size:13px;color:#e07070;">58%</span></div>
+      </div>
+      <div class="fda-card" data-fda data-prob="94" data-arc-color="green">
+        <div class="flex items-start justify-between mb-3">
+          <div><p class="font-display font-light text-[22px] leading-none tracking-tight">REGN</p><p class="text-[12px] font-medium text-[var(--muted)] mt-1">Dupixent-new</p></div>
+          <span style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;padding:3px 9px;border-radius:99px;background:rgba(0,212,200,.08);color:#00d4c8;border:1px solid rgba(0,212,200,.25);">mAb</span>
+        </div>
+        <p class="text-[11px] text-[var(--muted)] mb-4 font-light">COPD Exacerbation</p>
+        <div class="flex justify-center mb-3">
+          <svg width="84" height="84" viewBox="0 0 84 84"><circle cx="42" cy="42" r="32" fill="none" stroke="rgba(0,0,0,.07)" stroke-width="5"/><circle class="fda-arc" cx="42" cy="42" r="32" fill="none" stroke="#4dbb77" stroke-width="5" stroke-linecap="round" stroke-dasharray="201.1" stroke-dashoffset="201.1" transform="rotate(-90 42 42)" style="transition:stroke-dashoffset 1.2s cubic-bezier(.22,1,.36,1);"/><text x="42" y="38" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="17" font-weight="300" fill="#0a0a0a"><tspan class="arc-num">0</tspan>%</text><text x="42" y="54" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#9a9a9a" letter-spacing="2">APPROVAL</text></svg>
+        </div>
+        <div class="flex justify-between items-center mt-2"><span class="text-[10px] text-[var(--muted)] tracking-[.08em]">62 days</span><span class="font-display gold-text text-[13px]">94%</span></div>
+      </div>
+      <div class="fda-card" data-fda data-prob="71" data-arc-color="gold">
+        <div class="flex items-start justify-between mb-3">
+          <div><p class="font-display font-light text-[22px] leading-none tracking-tight">CRBU</p><p class="text-[12px] font-medium text-[var(--muted)] mt-1">CTX001</p></div>
+          <span style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;padding:3px 9px;border-radius:99px;background:rgba(251,146,60,.07);color:#fb923c;border:1px solid rgba(251,146,60,.22);">CAR-T</span>
+        </div>
+        <p class="text-[11px] text-[var(--muted)] mb-4 font-light">Sickle Cell Disease</p>
+        <div class="flex justify-center mb-3">
+          <svg width="84" height="84" viewBox="0 0 84 84"><circle cx="42" cy="42" r="32" fill="none" stroke="rgba(0,0,0,.07)" stroke-width="5"/><circle class="fda-arc" cx="42" cy="42" r="32" fill="none" stroke="#c9a462" stroke-width="5" stroke-linecap="round" stroke-dasharray="201.1" stroke-dashoffset="201.1" transform="rotate(-90 42 42)" style="transition:stroke-dashoffset 1.2s cubic-bezier(.22,1,.36,1);"/><text x="42" y="38" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="17" font-weight="300" fill="#0a0a0a"><tspan class="arc-num">0</tspan>%</text><text x="42" y="54" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#9a9a9a" letter-spacing="2">APPROVAL</text></svg>
+        </div>
+        <div class="flex justify-between items-center mt-2"><span class="text-[10px] text-[var(--muted)] tracking-[.08em]">91 days</span><span class="font-display gold-text text-[13px]">71%</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PH-RESEARCH -->
+<section id="ph-research" class="relative z-10 py-32 px-8" style="background:#fafafa;">
+  <div class="max-w-screen-xl mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+      <div>
+        <div id="phr-eye" class="flex items-center gap-4 mb-8" style="opacity:0;"><span class="g-rule w-10"></span><span class="text-[11px] tracking-[.28em] uppercase font-medium gold-text">Deep Research Engine</span></div>
+        <h2 id="phr-title" class="font-display font-light text-[clamp(32px,3.6vw,52px)] leading-[1.08] tracking-[-0.02em] mb-6" style="opacity:0;">Research like a<br><em class="gold-text">$10M/yr analyst desk.</em></h2>
+        <p id="phr-body" class="text-[15px] leading-[1.85] text-[var(--muted)] font-light mb-10" style="opacity:0;">Ask SEDGE to research any pharma company. It returns a structured report covering verdict, price target, mechanism analysis, disease landscape, clinical progress, commercial model, financials, and risk scenarios — in the depth of a full sell-side report. Download as .pptx to present directly.</p>
+        <div id="phr-tags" class="flex flex-wrap gap-2" style="opacity:0;"><span class="phr-tag">Verdict</span><span class="phr-tag">Price Target</span><span class="phr-tag">Pipeline NPV</span><span class="phr-tag">Risk Scenarios</span></div>
+      </div>
+      <div id="phr-frame-wrap" style="perspective:1100px;opacity:0;">
+        <div class="browser-frame" id="phr-frame">
+          <div class="browser-chrome">
+            <div style="width:11px;height:11px;border-radius:50%;background:#FF5F57;flex-shrink:0;"></div>
+            <div style="width:11px;height:11px;border-radius:50%;background:#FEBC2E;flex-shrink:0;"></div>
+            <div style="width:11px;height:11px;border-radius:50%;background:#28C840;flex-shrink:0;"></div>
+            <div style="flex:1;text-align:center;"><span style="font-size:11px;color:rgba(255,255,255,.22);letter-spacing:.06em;">sedge.ventures/research</span></div>
+          </div>
+          <div style="display:flex;align-items:flex-end;gap:2px;padding:10px 18px 0;background:#111115;border-bottom:1px solid rgba(255,255,255,.06);">
+            <div class="phr-tab phr-tab-active" id="tab0">Overview</div>
+            <div class="phr-tab" id="tab1">Pipeline</div>
+            <div class="phr-tab" id="tab2">Financials</div>
+            <div class="phr-tab" id="tab3">Risk</div>
+            <div class="phr-tab" id="tab4">Download</div>
+          </div>
+          <div style="padding:1.5rem 1.6rem;background:#1c1c22;min-height:280px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;padding-bottom:1rem;border-bottom:1px solid rgba(255,255,255,.07);">
+              <div style="display:flex;align-items:center;gap:12px;">
+                <span style="font-family:'Cormorant Garamond',serif;font-weight:300;font-size:28px;color:#fff;letter-spacing:-0.02em;">EWTX</span>
+                <span style="padding:3px 10px;border-radius:99px;background:rgba(77,187,119,.15);color:#4dbb77;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;border:1px solid rgba(77,187,119,.3);">BUY</span>
+              </div>
+              <div style="text-align:right;"><div style="font-size:11px;color:rgba(255,255,255,.35);letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px;">Price Target</div><div style="font-family:'Cormorant Garamond',serif;font-weight:300;font-size:22px;color:var(--gold);letter-spacing:-0.01em;">$35 – $52</div></div>
+            </div>
+            <div id="phr-verdict" style="border:1px solid rgba(201,164,98,.18);border-radius:8px;padding:1rem 1.2rem;background:rgba(201,164,98,.05);margin-bottom:1.2rem;opacity:0;">
+              <div style="font-size:10px;color:rgba(255,255,255,.35);letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px;">Analyst Verdict</div>
+              <div style="font-size:14px;color:rgba(255,255,255,.82);font-weight:400;line-height:1.6;"><span style="color:var(--gold);font-weight:600;">Buy · $35–52 · Moderate Risk</span> — Phase II data compelling; pivotal readout Q3. Management execution track record strong. First-in-class mechanism with limited competition.</div>
+            </div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <button style="padding:9px 18px;border-radius:7px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:rgba(255,255,255,.65);font-size:12px;font-weight:500;letter-spacing:.04em;cursor:pointer;">↓ Download .docx</button>
+              <button style="padding:9px 20px;border-radius:7px;border:1px solid rgba(201,164,98,.4);background:linear-gradient(135deg,rgba(201,164,98,.18),rgba(201,164,98,.06));color:var(--gold);font-size:12px;font-weight:600;letter-spacing:.04em;cursor:pointer;">↓ Download .pptx</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PH-DIAMOND -->
+<section id="ph-diamond" class="relative z-10 py-32 px-8" style="background:#fafafa;">
+  <div class="max-w-screen-xl mx-auto">
+    <div class="mb-16 max-w-[820px] mx-auto text-center">
+      <div id="phd-eye" class="inline-flex items-center gap-4 mb-8" style="opacity:0;"><span style="display:block;height:1px;width:28px;background:linear-gradient(90deg,transparent,var(--gold));"></span><span class="text-[11px] tracking-[.28em] uppercase font-medium gold-text">Diamond Hunter</span><span style="display:block;height:1px;width:28px;background:linear-gradient(90deg,var(--gold),transparent);"></span></div>
+      <h2 id="phd-title" class="font-display font-light text-[clamp(36px,4.4vw,62px)] leading-[1.06] tracking-[-0.025em] mb-3" style="opacity:0;">We found <em class="gold-text">MDGL at $8.</em> Before anyone else.</h2>
+      <h2 id="phd-title2" class="font-display font-light text-[clamp(22px,2.4vw,34px)] leading-[1.2] tracking-[-0.015em] mb-8 text-[var(--muted)]" style="opacity:0;">CRNX at $12. CYTX at $3. Identified before they moved.</h2>
+      <p id="phd-body" class="text-[15px] leading-[1.85] text-[var(--muted)] font-light max-w-[600px] mx-auto" style="opacity:0;">We backtested hundreds of biotech multi-baggers and reverse-engineered the exact signals — drug science milestones, management inflections, modality shifts. Diamond Hunter screens every company in our network for those same patterns, in real-time.</p>
+    </div>
+    <div id="phd-cards-wrap" class="grid grid-cols-1 md:grid-cols-3 gap-5" style="opacity:0;">
+      <div class="diamond-card" data-dcard>
+        <div class="flex items-start justify-between mb-3">
+          <div><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;"><span class="font-display font-light text-[22px] leading-none tracking-tight">RVMD</span><span style="padding:2px 9px;border-radius:99px;background:rgba(201,164,98,.09);color:var(--gold);font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;border:1px solid rgba(201,164,98,.28);">◆ Signal Forming</span></div><p class="text-[11px] text-[var(--muted)] mt-1.5 font-light">Revolution Medicines · PI3K · Oncology · mAb</p></div>
+          <span class="text-[10px] text-[var(--muted)] tracking-[.06em] whitespace-nowrap flex-shrink-0 ml-2">44 days</span>
+        </div>
+        <div class="flex gap-5 mb-4 text-[12px]"><span class="text-[var(--muted)]">Entry: <strong class="text-[var(--ink)]">$14.20–$17.80</strong></span><span class="text-[var(--muted)]">Exit: <strong class="gold-text">$52–$74</strong></span></div>
+        <div class="mb-3"><div class="flex justify-between mb-1.5 text-[10px] text-[var(--muted)] tracking-[.06em]"><span>Drug Science Score</span><span class="score-val-a">0%</span></div><div class="score-bar-track"><div class="score-bar-fill" data-score="82"></div></div></div>
+        <div><div class="flex justify-between mb-1.5 text-[10px] text-[var(--muted)] tracking-[.06em]"><span>Trial Success Probability</span><span class="score-val-b">0%</span></div><div class="score-bar-track"><div class="score-bar-fill" data-score="74"></div></div></div>
+      </div>
+      <div class="diamond-card" data-dcard>
+        <div class="flex items-start justify-between mb-3">
+          <div><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;"><span class="font-display font-light text-[22px] leading-none tracking-tight">FULC</span><span style="padding:2px 9px;border-radius:99px;background:rgba(201,164,98,.09);color:var(--gold);font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;border:1px solid rgba(201,164,98,.28);">◆ Signal Forming</span></div><p class="text-[11px] text-[var(--muted)] mt-1.5 font-light">Fulcrum Therapeutics · Losmapimod · FSHD · Small Mol</p></div>
+          <span class="text-[10px] text-[var(--muted)] tracking-[.06em] whitespace-nowrap flex-shrink-0 ml-2">67 days</span>
+        </div>
+        <div class="flex gap-5 mb-4 text-[12px]"><span class="text-[var(--muted)]">Entry: <strong class="text-[var(--ink)]">$4.80–$6.20</strong></span><span class="text-[var(--muted)]">Exit: <strong class="gold-text">$18–$28</strong></span></div>
+        <div class="mb-3"><div class="flex justify-between mb-1.5 text-[10px] text-[var(--muted)] tracking-[.06em]"><span>Drug Science Score</span><span class="score-val-a">0%</span></div><div class="score-bar-track"><div class="score-bar-fill" data-score="78"></div></div></div>
+        <div><div class="flex justify-between mb-1.5 text-[10px] text-[var(--muted)] tracking-[.06em]"><span>Trial Success Probability</span><span class="score-val-b">0%</span></div><div class="score-bar-track"><div class="score-bar-fill" data-score="68"></div></div></div>
+      </div>
+      <div class="diamond-card" data-dcard>
+        <div class="flex items-start justify-between mb-3">
+          <div><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;"><span class="font-display font-light text-[22px] leading-none tracking-tight">NUVB</span><span style="padding:2px 9px;border-radius:99px;background:rgba(201,164,98,.09);color:var(--gold);font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;border:1px solid rgba(201,164,98,.28);">◆ Signal Forming</span></div><p class="text-[11px] text-[var(--muted)] mt-1.5 font-light">Nuvation Bio · NUV-868 · Prostate · BET Inhibitor</p></div>
+          <span class="text-[10px] text-[var(--muted)] tracking-[.06em] whitespace-nowrap flex-shrink-0 ml-2">29 days</span>
+        </div>
+        <div class="flex gap-5 mb-4 text-[12px]"><span class="text-[var(--muted)]">Entry: <strong class="text-[var(--ink)]">$2.90–$3.80</strong></span><span class="text-[var(--muted)]">Exit: <strong class="gold-text">$11–$18</strong></span></div>
+        <div class="mb-3"><div class="flex justify-between mb-1.5 text-[10px] text-[var(--muted)] tracking-[.06em]"><span>Drug Science Score</span><span class="score-val-a">0%</span></div><div class="score-bar-track"><div class="score-bar-fill" data-score="85"></div></div></div>
+        <div><div class="flex justify-between mb-1.5 text-[10px] text-[var(--muted)] tracking-[.06em]"><span>Trial Success Probability</span><span class="score-val-b">0%</span></div><div class="score-bar-track"><div class="score-bar-fill" data-score="71"></div></div></div>
+      </div>
+    </div>
+    <div id="phd-proof" class="mt-12 text-center" style="opacity:0;"><p class="text-[12px] text-[var(--muted)] font-light tracking-[.06em]">Based on backtested patterns across 200+ biotech multi-baggers · <span class="gold-text font-medium">MDGL ×8.2 &nbsp;·&nbsp; CRNX ×6.4 &nbsp;·&nbsp; CYTX ×11.1</span></p></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="relative z-10 border-t border-gray-100 py-14 px-8">
+  <div class="max-w-screen-xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+    <div>
+      <div class="flex items-center gap-2 mb-2"><span class="font-display font-light tracking-[.22em] text-[16px] uppercase">SEDGE</span><span class="font-display font-light tracking-[.22em] text-[16px] uppercase gold-text">Ventures</span></div>
+      <p class="text-[12px] text-[var(--muted)] font-light tracking-[.06em]">Systematic Equity Investment Management</p>
+    </div>
+    <p class="text-[11px] text-[var(--muted)] font-light tracking-[.08em]">© 2025 SEDGE Ventures. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+'use strict';
+gsap.registerPlugin(ScrollTrigger);
+const lenis = new Lenis({ duration:1.4, easing:t=>Math.min(1,1.001-Math.pow(2,-10*t)) });
+lenis.on('scroll', ScrollTrigger.update);
+gsap.ticker.add(t=>lenis.raf(t*1000));
+gsap.ticker.lagSmoothing(0);
+lenis.on('scroll', ({scroll})=>{ document.getElementById('nav').classList.toggle('stuck', scroll>50); });
+
+// PH-INTRO
+(function(){
+  gsap.set(['#phi-title','#phi-body','#phi-tabs'],{y:22});
+  ScrollTrigger.create({ trigger:'#ph-intro', start:'top 76%', onEnter(){
+    gsap.to('#phi-eye',{opacity:1,duration:.9,ease:'power2.out'});
+    gsap.to('#phi-title',{opacity:1,y:0,duration:1.1,ease:'power4.out',delay:.1});
+    gsap.to('#phi-body',{opacity:1,y:0,duration:1.0,ease:'power3.out',delay:.24});
+    gsap.to('#phi-tabs',{opacity:1,y:0,duration:.9,ease:'power3.out',delay:.38});
+  }});
+})();
+
+// PH-STATS
+(function(){
+  function animateCount(el,target,duration){
+    const start=performance.now();
+    function tick(now){ const e=now-start,p=Math.min(e/duration,1),ease=1-Math.pow(1-p,3); el.textContent=Math.round(ease*target).toLocaleString(); if(p<1) requestAnimationFrame(tick); }
+    requestAnimationFrame(tick);
+  }
+  let triggered=false;
+  ScrollTrigger.create({ trigger:'#ph-stats', start:'top 80%', onEnter(){
+    if(triggered) return; triggered=true;
+    document.querySelectorAll('.stat-count').forEach(el=>{ const t=parseInt(el.dataset.target,10); animateCount(el,t,t>100?1600:900); });
+    gsap.from('[data-stat]',{opacity:0,y:24,duration:.9,ease:'power3.out',stagger:.12});
+  }});
+})();
+
+// PH-GRAPH
+gsap.set(['#phg-title','#phg-body','#phg-badges'],{y:20});
+ScrollTrigger.create({ trigger:'#ph-graph', start:'top 74%', onEnter(){
+  gsap.to('#phg-eye',{opacity:1,y:0,duration:1.0,ease:'power3.out'});
+  gsap.to('#phg-title',{opacity:1,y:0,duration:1.0,ease:'power3.out',delay:.12});
+  gsap.to('#phg-body',{opacity:1,y:0,duration:1.0,ease:'power3.out',delay:.24});
+  gsap.to('#phg-badges',{opacity:1,y:0,duration:.9,ease:'power3.out',delay:.38});
+}});
+
+// PH-FDA
+(function(){
+  let triggered=false;
+  ScrollTrigger.create({ trigger:'#ph-fda', start:'top 74%', onEnter(){
+    if(triggered) return; triggered=true;
+    gsap.to('#phf-eye',{opacity:1,y:0,duration:1.0,ease:'power3.out'});
+    gsap.to('#phf-title',{opacity:1,y:0,duration:1.0,ease:'power3.out',delay:.12});
+    gsap.to('#phf-body',{opacity:1,y:0,duration:1.0,ease:'power3.out',delay:.24});
+    gsap.set(['#phf-title','#phf-body'],{y:18});
+    gsap.from('[data-fda]',{opacity:0,y:44,duration:.9,ease:'power3.out',stagger:.12,delay:.35});
+    setTimeout(()=>{
+      document.querySelectorAll('[data-fda]').forEach(card=>{
+        const prob=parseInt(card.dataset.prob,10), circ=201.1;
+        const arc=card.querySelector('.fda-arc'), numEl=card.querySelector('.arc-num');
+        arc.style.strokeDashoffset = circ-(circ*prob/100);
+        let current=0; const step=()=>{ current=Math.min(current+2,prob); numEl.textContent=current; if(current<prob) requestAnimationFrame(step); }; requestAnimationFrame(step);
+      });
+    },600);
+  }});
+})();
+
+// PH-RESEARCH
+(function(){
+  let triggered=false;
+  ScrollTrigger.create({ trigger:'#ph-research', start:'top 74%', onEnter(){
+    if(triggered) return; triggered=true;
+    gsap.set(['#phr-title','#phr-body','#phr-tags'],{y:18}); gsap.set('#phr-frame-wrap',{y:28});
+    gsap.to('#phr-eye',{opacity:1,y:0,duration:1.0,ease:'power3.out'});
+    gsap.to('#phr-title',{opacity:1,y:0,duration:1.0,ease:'power3.out',delay:.12});
+    gsap.to('#phr-body',{opacity:1,y:0,duration:1.0,ease:'power3.out',delay:.24});
+    gsap.to('#phr-tags',{opacity:1,y:0,duration:.9,ease:'power3.out',delay:.36});
+    gsap.to('#phr-frame-wrap',{opacity:1,y:0,duration:1.0,ease:'power3.out',delay:.22});
+    gsap.to(['#tab0','#tab1','#tab2','#tab3','#tab4'],{opacity:1,y:0,duration:.6,ease:'power3.out',stagger:.1,delay:.55});
+    setTimeout(()=>{ gsap.to('#phr-verdict',{opacity:1,duration:.7,ease:'power2.out'}); },1100);
+  }});
+  const wrap=document.getElementById('phr-frame-wrap'), frame=document.getElementById('phr-frame');
+  if(wrap&&frame){
+    wrap.addEventListener('mousemove',e=>{ const r=wrap.getBoundingClientRect(),mx=(e.clientX-r.left)/r.width-.5,my=(e.clientY-r.top)/r.height-.5; frame.style.transform=`rotateY(${mx*8}deg) rotateX(${-my*5}deg)`; });
+    wrap.addEventListener('mouseleave',()=>{ frame.style.transform='rotateY(0deg) rotateX(0deg)'; });
+  }
+})();
+
+// PH-DIAMOND
+(function(){
+  let triggered=false;
+  gsap.set(['#phd-title','#phd-title2','#phd-body'],{y:22});
+  ScrollTrigger.create({ trigger:'#ph-diamond', start:'top 74%', onEnter(){
+    if(triggered) return; triggered=true;
+    gsap.to('#phd-eye',{opacity:1,duration:.9,ease:'power2.out'});
+    gsap.to('#phd-title',{opacity:1,y:0,duration:1.1,ease:'power4.out',delay:.1});
+    gsap.to('#phd-title2',{opacity:1,y:0,duration:1.0,ease:'power3.out',delay:.2});
+    gsap.to('#phd-body',{opacity:1,y:0,duration:1.0,ease:'power3.out',delay:.3});
+    gsap.set('#phd-cards-wrap',{y:28});
+    gsap.to('#phd-cards-wrap',{opacity:1,y:0,duration:1.0,ease:'power3.out',delay:.44});
+    gsap.from('[data-dcard]',{opacity:0,y:32,duration:.85,ease:'power3.out',stagger:.12,delay:.5});
+    gsap.to('#phd-proof',{opacity:1,duration:.9,ease:'power2.out',delay:.9});
+    setTimeout(()=>{
+      document.querySelectorAll('.score-bar-fill').forEach(bar=>{ bar.style.width=bar.dataset.score+'%'; });
+      document.querySelectorAll('[data-dcard]').forEach(card=>{
+        const bars=card.querySelectorAll('.score-bar-fill'),aEl=card.querySelector('.score-val-a'),bEl=card.querySelector('.score-val-b');
+        if(bars[0]&&aEl){ const t=parseInt(bars[0].dataset.score); let v=0; const tick=()=>{ v=Math.min(v+2,t); aEl.textContent=v+'%'; if(v<t) requestAnimationFrame(tick); }; requestAnimationFrame(tick); }
+        if(bars[1]&&bEl){ const t=parseInt(bars[1].dataset.score); let v=0; const tick=()=>{ v=Math.min(v+2,t); bEl.textContent=v+'%'; if(v<t) requestAnimationFrame(tick); }; requestAnimationFrame(tick); }
+      });
+    },800);
+  }});
+})();
+</script>
+
+<script>
+(function knowledgeGraph(){
+  'use strict';
+  const canvas=document.getElementById('cv-phgraph');
+  if(!canvas) return;
+  const wrap=canvas.parentElement;
+  function resize(){ const W=wrap.clientWidth,H=wrap.clientHeight; renderer.setSize(W,H); camera.aspect=W/H; camera.updateProjectionMatrix(); }
+  const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2)); renderer.setClearColor(0x0d1117,1);
+  const scene=new THREE.Scene(), camera=new THREE.PerspectiveCamera(48,1,0.1,100);
+  camera.position.z=8; resize(); window.addEventListener('resize',resize);
+  const AREAS=[{color:0x4dbb77},{color:0x00d4c8},{color:0xc9a462},{color:0xa78bfa},{color:0xfb923c}];
+  const TICKERS=['MRNA','NVO','BMY','REGN','ABBV','PFE'];
+  const N=55, nodes=[], nodeGroup=new THREE.Group(); scene.add(nodeGroup);
+  const highlightIdx=[2,9,17,28,36,48];
+  for(let i=0;i<N;i++){
+    const areaIdx=Math.floor(Math.random()*AREAS.length),area=AREAS[areaIdx],isHL=highlightIdx.includes(i),r=isHL?.11:.065+Math.random()*.035;
+    const mat=new THREE.MeshBasicMaterial({color:area.color,transparent:true,opacity:isHL?1.0:.55+Math.random()*.35});
+    const mesh=new THREE.Mesh(new THREE.SphereGeometry(r,10,10),mat);
+    const theta=Math.random()*Math.PI*2,phi=Math.acos(2*Math.random()-1),rad=1.8+Math.random()*2.4;
+    mesh.position.set(rad*Math.sin(phi)*Math.cos(theta),rad*Math.sin(phi)*Math.sin(theta)*.72,rad*Math.cos(phi)*.55);
+    mesh.userData={area:areaIdx,isHL,r,origOpacity:mat.opacity,origColor:area.color,phase:Math.random()*Math.PI*2,finalPos:mesh.position.clone()};
+    mesh.position.set(0,0,0); nodeGroup.add(mesh); nodes.push(mesh);
+  }
+  const edgeMat=new THREE.LineBasicMaterial({color:0x4dbb77,transparent:true,opacity:0.10}), edges=[];
+  for(let i=0;i<N;i++) for(let j=i+1;j<N;j++){
+    if(nodes[i].userData.finalPos.distanceTo(nodes[j].userData.finalPos)<2.2){
+      const mat=edgeMat.clone();
+      nodeGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([nodes[i].userData.finalPos,nodes[j].userData.finalPos]),mat));
+      edges.push({i,j,baseMat:mat});
+    }
+  }
+  nodes.forEach((n,idx)=>{ gsap.to(n.position,{x:n.userData.finalPos.x,y:n.userData.finalPos.y,z:n.userData.finalPos.z,duration:1.4+Math.random()*.5,ease:'power3.out',delay:.3+idx*.018}); });
+  const raycaster=new THREE.Raycaster(), mouse=new THREE.Vector2(-99,-99); let hoveredIdx=-1;
+  canvas.addEventListener('mousemove',e=>{ const r=canvas.getBoundingClientRect(); mouse.x=((e.clientX-r.left)/r.width)*2-1; mouse.y=-((e.clientY-r.top)/r.height)*2+1; });
+  canvas.addEventListener('mouseleave',()=>{ mouse.set(-99,-99); });
+  const labelsDiv=document.getElementById('phg-labels'), labelEls=[];
+  TICKERS.forEach(tk=>{ const div=document.createElement('div'); div.style.cssText='position:absolute;font-family:Inter,sans-serif;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6);pointer-events:none;white-space:nowrap;opacity:0;transition:opacity .5s;'; div.textContent=tk; labelsDiv.appendChild(div); labelEls.push(div); });
+  const clk=new THREE.Clock();
+  (function loop(){
+    requestAnimationFrame(loop); const t=clk.getElapsedTime();
+    nodeGroup.rotation.y=t*.08;
+    raycaster.setFromCamera(mouse,camera);
+    const hits=raycaster.intersectObjects(nodes), newHover=hits.length?nodes.indexOf(hits[0].object):-1;
+    if(newHover!==hoveredIdx){
+      if(hoveredIdx>=0){ nodes[hoveredIdx].material.color.setHex(AREAS[nodes[hoveredIdx].userData.area].color); nodes[hoveredIdx].material.opacity=nodes[hoveredIdx].userData.origOpacity; edges.forEach(e=>{ if(e.i===hoveredIdx||e.j===hoveredIdx) e.baseMat.opacity=0.10; }); }
+      hoveredIdx=newHover;
+      if(hoveredIdx>=0){ nodes[hoveredIdx].material.color.setHex(0xc9a462); nodes[hoveredIdx].material.opacity=1.0; edges.forEach(e=>{ if(e.i===hoveredIdx||e.j===hoveredIdx) e.baseMat.opacity=0.48; }); }
+    }
+    highlightIdx.forEach((idx,i)=>{ nodes[idx].material.opacity=.82+Math.sin(t*1.8+i*1.2)*.18; });
+    TICKERS.forEach((tk,i)=>{ const nodeIdx=highlightIdx[i]; if(!nodes[nodeIdx]) return; const pos=nodes[nodeIdx].userData.finalPos.clone(); pos.applyEuler(new THREE.Euler(nodeGroup.rotation.x,nodeGroup.rotation.y,nodeGroup.rotation.z)); pos.y+=.22; const proj=pos.clone().project(camera); const rect=canvas.getBoundingClientRect(); const px=(proj.x*.5+.5)*rect.width,py=(-proj.y*.5+.5)*rect.height; const el=labelEls[i]; el.style.left=(px-14)+'px'; el.style.top=(py-16)+'px'; el.style.opacity=proj.z<1?'0.7':'0'; });
+    renderer.render(scene,camera);
+  })();
+})();
+</script>
+</body>
+</html>
