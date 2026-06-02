@@ -298,25 +298,21 @@
     <a href="index.html" style="text-decoration:none">
       <div class="brand">SEDGE <span class="v">VENTURES</span></div>
     </a>
-    <div class="nav-right">
-      <ul class="nav-links">
-        <li><a href="index.html">Strategies</a></li>
-        <li>
-          <div class="nav-dropdown" id="productsDropdown" style="position:relative">
-            <a href="#" class="active" style="display:inline-flex;align-items:center;gap:7px">Products <span class="caret"></span></a>
-            <div class="nav-dropdown-menu">
-              <a href="pharma.html"><span class="dd-dot"></span>Pharma Research</a>
-              <a href="backtest.html"><span class="dd-dot"></span>Trade Backtest &amp; Algo</a>
-              <a href="forex.html" class="active"><span class="dd-dot"></span>Forex</a>
-              <a href="value-picks.html"><span class="dd-dot"></span>Value Picks</a>
-            </div>
-          </div>
-        </li>
-        <li><a href="index.html">Research</a></li>
-        <li><a href="index.html">Sectors</a></li>
-        <li><a href="index.html">About</a></li>
-      </ul>
-      <a href="#" class="login">Log in</a>
+    <div class="flex items-center gap-9">
+      <a href="index.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors font-medium">Strategies</a>
+      <div class="nav-dropdown">
+        <span class="nav-link-btn text-[11px] tracking-[.14em] uppercase font-medium cursor-pointer select-none" style="color:var(--gold);">Products</span>
+        <div class="nav-dropdown-menu">
+          <a href="pharma.html"><span class="dd-dot"></span>Pharma Research</a>
+          <a href="backtest.html"><span class="dd-dot"></span>Trade Backtest &amp; Algo</a>
+          <a href="forex.html" class="active"><span class="dd-dot"></span>Forex</a>
+          <a href="value-picks.html"><span class="dd-dot"></span>Value Picks</a>
+        </div>
+      </div>
+      <a href="index.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors font-medium">Research</a>
+      <a href="sectors.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors font-medium">Sectors</a>
+      <a href="about.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors font-medium">About</a>
+      <button class="border border-[var(--ink)] text-[var(--ink)] text-[11px] tracking-[.14em] uppercase px-5 py-2.5 font-medium hover:bg-[var(--ink)] hover:text-white transition-all duration-300">Log In</button>
     </div>
   </div>
 </nav>

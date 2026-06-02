@@ -259,8 +259,8 @@
         </div>
       </div>
       <a href="#" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">Research</a>
-      <a href="#" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">Sectors</a>
-      <a href="#" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">About</a>
+      <a href="sectors.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">Sectors</a>
+      <a href="about.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">About</a>
       <button class="border border-[var(--ink)] text-[var(--ink)] text-[11px] tracking-[.14em] uppercase px-5 py-2.5 font-medium hover:bg-[var(--ink)] hover:text-white transition-all duration-300">Log In</button>
     </div>
   </div>
@@ -452,9 +452,9 @@
 </section>
 
 <!-- ══════════════════════════════════════════════════════════
-     SECTION 2 — CORE PILLARS
+     SECTION 2 — CORE PILLARS (moved to about.html)
 ═══════════════════════════════════════════════════════════ -->
-<section id="pillars" class="relative z-10 py-40 px-8">
+<section id="pillars" class="relative z-10 py-40 px-8" style="display:none;">
   <div class="max-w-screen-xl mx-auto">
 
     <!-- Header -->
@@ -468,50 +468,70 @@
       </h2>
     </div>
 
-    <!-- 2-col pillar grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-gray-100">
-      <!-- 01 -->
-      <div class="pcard" data-pillar>
-        <p class="font-display gold-text text-[11px] tracking-[.22em] mb-4">01</p>
-        <span class="g-rule w-8 mb-6 block"></span>
-        <h3 class="font-display font-light text-[26px] leading-tight tracking-[-0.01em] mb-4">Systematic Approach</h3>
-        <p class="text-[14px] leading-[1.8] text-[var(--muted)] font-light">Quantitative screening frameworks combining fundamental analysis with technical indicators to identify high-conviction opportunities across global markets.</p>
+    <!-- Bento Grid -->
+    <style>
+      .bento-card { position:relative; background:#fff; overflow:hidden; padding:2.8rem; transition:box-shadow .35s,transform .35s; cursor:default; }
+      .bento-card::after { content:''; position:absolute; inset:0; background:linear-gradient(110deg,transparent 35%,rgba(201,164,98,.07) 50%,transparent 65%); transform:translateX(-120%); transition:transform .7s ease; pointer-events:none; }
+      .bento-card:hover::after { transform:translateX(120%); }
+      .bento-card:hover { box-shadow:0 24px 64px rgba(0,0,0,.07); }
+      .bento-hero { background:#fafafa; }
+      .bento-accent { background:var(--ink); color:#fff; }
+      .bento-accent .g-rule { background:linear-gradient(90deg,rgba(255,255,255,.4),transparent); }
+    </style>
+    <div data-pillar style="display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:auto auto auto;gap:2px;background:rgba(0,0,0,.07);">
+
+      <!-- 01 HERO — tall, spans 2 rows -->
+      <div class="bento-card bento-hero" data-tilt style="grid-row:1/3;grid-column:1;padding:3.5rem;display:flex;flex-direction:column;justify-content:space-between;min-height:420px;">
+        <div>
+          <p class="font-display gold-text text-[11px] tracking-[.22em] mb-5">01</p>
+          <span class="g-rule w-8 mb-7 block"></span>
+          <h3 class="font-display font-light text-[clamp(28px,2.8vw,42px)] leading-[1.05] tracking-[-0.02em] mb-5">Systematic<br>Approach</h3>
+          <p class="text-[14px] leading-[1.9] text-[var(--muted)] font-light max-w-[360px]">Quantitative screening frameworks combining fundamental analysis with technical indicators to identify high-conviction opportunities across global markets.</p>
+        </div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:7rem;font-weight:300;color:rgba(201,164,98,.08);line-height:1;user-select:none;margin-top:2rem;letter-spacing:-.04em;">01</div>
       </div>
+
       <!-- 02 -->
-      <div class="pcard" data-pillar>
+      <div class="bento-card" data-tilt style="grid-row:1;grid-column:2;">
         <p class="font-display gold-text text-[11px] tracking-[.22em] mb-4">02</p>
-        <span class="g-rule w-8 mb-6 block"></span>
-        <h3 class="font-display font-light text-[26px] leading-tight tracking-[-0.01em] mb-4">Risk-First Philosophy</h3>
-        <p class="text-[14px] leading-[1.8] text-[var(--muted)] font-light">Rigorous position sizing, Value-at-Risk monitoring, and portfolio loss limits ensure capital preservation is never compromised for return potential.</p>
+        <span class="g-rule w-8 mb-5 block"></span>
+        <h3 class="font-display font-light text-[22px] leading-tight tracking-[-0.01em] mb-3">Risk-First Philosophy</h3>
+        <p class="text-[13px] leading-[1.8] text-[var(--muted)] font-light">Rigorous position sizing, Value-at-Risk monitoring, and portfolio loss limits ensure capital preservation is never compromised.</p>
       </div>
+
       <!-- 03 -->
-      <div class="pcard" data-pillar>
-        <p class="font-display gold-text text-[11px] tracking-[.22em] mb-4">03</p>
-        <span class="g-rule w-8 mb-6 block"></span>
-        <h3 class="font-display font-light text-[26px] leading-tight tracking-[-0.01em] mb-4">Technology-Driven Edge</h3>
-        <p class="text-[14px] leading-[1.8] text-[var(--muted)] font-light">Proprietary analytics tools, AI-powered screeners, and real-time risk dashboards deliver the infrastructure of a tier-1 institutional investment operation.</p>
+      <div class="bento-card bento-accent" data-tilt style="grid-row:1;grid-column:3;">
+        <p class="font-display text-[11px] tracking-[.22em] mb-4" style="color:rgba(255,255,255,.4);">03</p>
+        <span class="g-rule w-8 mb-5 block"></span>
+        <h3 class="font-display font-light text-[22px] leading-tight tracking-[-0.01em] mb-3" style="color:#fff;">Technology-Driven Edge</h3>
+        <p class="text-[13px] leading-[1.8] font-light" style="color:rgba(255,255,255,.5);">Proprietary AI-powered screeners and real-time risk dashboards deliver tier-1 institutional infrastructure.</p>
       </div>
+
       <!-- 04 -->
-      <div class="pcard" data-pillar>
+      <div class="bento-card" data-tilt style="grid-row:2;grid-column:2;">
         <p class="font-display gold-text text-[11px] tracking-[.22em] mb-4">04</p>
-        <span class="g-rule w-8 mb-6 block"></span>
-        <h3 class="font-display font-light text-[26px] leading-tight tracking-[-0.01em] mb-4">Disciplined Execution</h3>
-        <p class="text-[14px] leading-[1.8] text-[var(--muted)] font-light">Every trade is documented and measured against predefined criteria. Emotional bias is structurally eliminated through systematic, rule-based processes.</p>
+        <span class="g-rule w-8 mb-5 block"></span>
+        <h3 class="font-display font-light text-[22px] leading-tight tracking-[-0.01em] mb-3">Disciplined Execution</h3>
+        <p class="text-[13px] leading-[1.8] text-[var(--muted)] font-light">Every trade documented and measured. Emotional bias eliminated through systematic, rule-based processes.</p>
       </div>
+
       <!-- 05 -->
-      <div class="pcard" data-pillar>
+      <div class="bento-card" data-tilt style="grid-row:2;grid-column:3;">
         <p class="font-display gold-text text-[11px] tracking-[.22em] mb-4">05</p>
-        <span class="g-rule w-8 mb-6 block"></span>
-        <h3 class="font-display font-light text-[26px] leading-tight tracking-[-0.01em] mb-4">Continuous Research</h3>
-        <p class="text-[14px] leading-[1.8] text-[var(--muted)] font-light">Daily monitoring of earnings, sector trends, macroeconomic indicators, and global catalysts keeps the portfolio aligned with structural market forces.</p>
+        <span class="g-rule w-8 mb-5 block"></span>
+        <h3 class="font-display font-light text-[22px] leading-tight tracking-[-0.01em] mb-3">Continuous Research</h3>
+        <p class="text-[13px] leading-[1.8] text-[var(--muted)] font-light">Daily monitoring of earnings, macro indicators, and global catalysts keeps the portfolio aligned with structural market forces.</p>
       </div>
-      <!-- 06 -->
-      <div class="pcard" data-pillar>
-        <p class="font-display gold-text text-[11px] tracking-[.22em] mb-4">06</p>
-        <span class="g-rule w-8 mb-6 block"></span>
-        <h3 class="font-display font-light text-[26px] leading-tight tracking-[-0.01em] mb-4">Performance Accountability</h3>
-        <p class="text-[14px] leading-[1.8] text-[var(--muted)] font-light">Comprehensive reporting including risk-adjusted returns, Sharpe ratio analysis, drawdown metrics, and detailed attribution analysis for full transparency.</p>
+
+      <!-- 06 FULL WIDTH -->
+      <div class="bento-card" data-tilt style="grid-row:3;grid-column:1/4;display:flex;align-items:center;justify-content:space-between;gap:4rem;padding:2.6rem 3.5rem;">
+        <div style="flex:1;">
+          <span class="g-rule w-8 mb-4 block"></span>
+          <h3 class="font-display font-light text-[26px] leading-tight tracking-[-0.01em] mb-3">Performance Accountability</h3>
+          <p class="text-[13px] leading-[1.8] text-[var(--muted)] font-light max-w-[480px]">Comprehensive reporting including risk-adjusted returns, Sharpe ratio analysis, drawdown metrics, and detailed attribution analysis for full transparency.</p>
+        </div>
       </div>
+
     </div>
 
   </div>
@@ -520,7 +540,7 @@
 <!-- ══════════════════════════════════════════════════════════
      SECTION 3 — TARGET SECTORS
 ═══════════════════════════════════════════════════════════ -->
-<section id="sectors" class="relative z-10 py-40 px-8 bg-[#fafafa]">
+<section id="sectors" class="relative z-10 py-40 px-8 bg-[#fafafa]" style="display:none;">
   <div class="max-w-screen-xl mx-auto">
 
     <!-- Header -->
@@ -900,6 +920,21 @@ makeSector('cv-space', (scene) => {
 // Pillars
 gsap.set(['#p-eye', '#p-title'], { opacity: 0, y: 36 });
 gsap.set('[data-pillar]', { opacity: 0, y: 30 });
+
+// Bento tilt
+document.querySelectorAll('[data-tilt]').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    const mx = (e.clientX - r.left) / r.width - 0.5;
+    const my = (e.clientY - r.top) / r.height - 0.5;
+    card.style.transform = `perspective(900px) rotateY(${mx*5}deg) rotateX(${-my*3}deg) scale(1.015)`;
+    card.style.zIndex = '2';
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = 'perspective(900px) rotateY(0deg) rotateX(0deg) scale(1)';
+    card.style.zIndex = '';
+  });
+});
 
 ScrollTrigger.create({
   trigger: '#pillars',
