@@ -36,15 +36,6 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 .nav-dropdown-menu a .dd-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0;}
 .nav-dropdown>.nav-link-btn::after{content:'';display:inline-block;width:5px;height:5px;border-right:1px solid currentColor;border-bottom:1px solid currentColor;transform:rotate(45deg) translateY(-2px);margin-left:5px;vertical-align:middle;}
 
-/* ─── TICKER ─── */
-#ticker-strip{position:fixed;top:68px;left:0;right:0;z-index:800;height:32px;display:flex;align-items:center;overflow:hidden;background:rgba(255,255,255,.97);border-bottom:1px solid rgba(201,164,98,.15);backdrop-filter:blur(12px);}
-.ticker-track{display:flex;align-items:center;white-space:nowrap;animation:tickerMove 55s linear infinite;}
-.ticker-item{display:inline-flex;align-items:center;gap:6px;padding:0 26px;font-size:10px;letter-spacing:.1em;font-weight:500;color:var(--muted);border-right:1px solid rgba(0,0,0,.05);}
-.t-sym{color:var(--ink);font-weight:600;}
-.t-up{color:#4dbb77;}.t-dn{color:#e05c5c;}
-.ticker-fade{position:absolute;right:0;top:0;bottom:0;width:100px;background:linear-gradient(90deg,rgba(255,255,255,0),#fff);display:flex;align-items:center;justify-content:flex-end;padding-right:12px;}
-.ticker-fade span{font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);opacity:.4;}
-@keyframes tickerMove{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
 /* ─── BUTTONS ─── */
 .btn-dark{background:var(--ink);color:#fff;font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:500;padding:.8rem 2.4rem;border:1px solid var(--ink);cursor:pointer;transition:background .28s,border-color .28s;white-space:nowrap;}
@@ -65,7 +56,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 .divider-line{height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:.35;}
 
 /* ─── HERO ─── */
-.hero-wrap{min-height:100vh;padding-top:102px;position:relative;z-index:10;background:#fff;overflow:hidden;}
+.hero-wrap{min-height:100vh;padding-top:70px;position:relative;z-index:10;background:#fff;overflow:hidden;}
 .hero-inner{max-width:1280px;margin:0 auto;padding:0 40px;display:grid;grid-template-columns:1fr 500px;gap:60px;align-items:center;min-height:calc(100vh - 102px);}
 @media(max-width:900px){.hero-inner{grid-template-columns:1fr;}.hero-globe{display:none;}}
 .hero-kicker{display:inline-flex;align-items:center;gap:10px;font-size:10px;letter-spacing:.28em;text-transform:uppercase;font-weight:500;color:var(--muted);margin-bottom:2rem;}
@@ -315,12 +306,6 @@ footer{background:#fff;border-top:1px solid var(--border);padding:3.5rem 40px;}
     </div>
   </div>
 </nav>
-
-<!-- ─── TICKER ─── -->
-<div id="ticker-strip">
-  <div class="ticker-track" id="tickerTrack"></div>
-  <div class="ticker-fade"><span>Indicative</span></div>
-</div>
 
 <!-- ─── HERO ─── -->
 <section class="hero-wrap">
@@ -641,7 +626,7 @@ footer{background:#fff;border-top:1px solid var(--border);padding:3.5rem 40px;}
 
 <!-- ─── DISCLAIMER ─── -->
 <section class="disclaimer">
-  <p><span style="font-weight:500;">Important Disclosures:</span> The information and research materials on this page are for qualified and sophisticated investor use only and do not constitute investment advice, a solicitation, or an offer to buy or sell any security. Research coverage shown is illustrative. Market data in the ticker strip is indicative and not live. Past performance is not indicative of future results. All investments carry risk including possible loss of principal. SEDGE Ventures is not a registered investment adviser. Research shown is currently produced for internal use only; any future external access will be subject to eligibility verification. Always conduct independent due diligence and consult a qualified financial professional before making investment decisions.</p>
+  <p><span style="font-weight:500;">Important Disclosures:</span> The information and research materials on this page are for qualified and sophisticated investor use only and do not constitute investment advice, a solicitation, or an offer to buy or sell any security. Research coverage shown is illustrative. Past performance is not indicative of future results. All investments carry risk including possible loss of principal. SEDGE Ventures is not a registered investment adviser. Research shown is currently produced for internal use only; any future external access will be subject to eligibility verification. Always conduct independent due diligence and consult a qualified financial professional before making investment decisions.</p>
 </section>
 
 <!-- ─── FOOTER ─── -->
@@ -657,16 +642,6 @@ footer{background:#fff;border-top:1px solid var(--border);padding:3.5rem 40px;}
 
 <script>
 'use strict';
-
-// ── TICKER ────────────────────────────────────────────────────
-const tickerData=[['SPX','5,847.21','▲','0.34%',true],['NDX','20,412.56','▲','0.51%',true],['DJI','42,156.34','▲','0.21%',true],['VIX','14.32','▼','5.81%',false],['DXY','104.21','▲','0.12%',true],['FTSE','8,234.67','▲','0.18%',true],['NK225','38,456.12','▲','0.44%',true],['HSI','17,234.50','▼','0.31%',false],['WTI','78.45','▲','0.67%',true],['GOLD','2,341.80','▲','0.23%',true],['EUR/USD','1.0842','▼','0.08%',false],['GBP/USD','1.2674','▲','0.14%',true]];
-const track=document.getElementById('tickerTrack');
-[...tickerData,...tickerData].forEach(([sym,val,arrow,pct,up])=>{
-  const el=document.createElement('div');
-  el.className='ticker-item';
-  el.innerHTML=`<span class="t-sym">${sym}</span><span>${val}</span><span class="${up?'t-up':'t-dn'}">${arrow} ${pct}</span>`;
-  track.appendChild(el);
-});
 
 // ── LENIS + SCROLL NAV ────────────────────────────────────────
 gsap.registerPlugin(ScrollTrigger);
