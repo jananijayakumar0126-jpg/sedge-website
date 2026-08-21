@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sectors — SEDGE Ventures</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+<script>
+  tailwind.config = {
+    theme: { extend: { fontFamily: { display: ['Cormorant Garamond','serif'], sans: ['Inter','sans-serif'] } } }
+  }
+</script>
+<style>
+  :root { --gold:#c9a462; --gold-l:#e2bc79; --ink:#0a0a0a; --muted:#5a5a5a; }
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  html, html.lenis { height:auto; }
+  .lenis.lenis-smooth { scroll-behavior:auto; }
+  body { font-family:'Inter',sans-serif; background:#fff; color:var(--ink); overflow-x:hidden; }
+  body::before { content:''; position:fixed; inset:0; z-index:0; pointer-events:none; background-image:linear-gradient(rgba(0,0,0,0.038) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,0.038) 1px,transparent 1px); background-size:44px 44px; }
+  #nav { position:fixed; top:0; left:0; right:0; z-index:900; transition:background .45s ease,border-color .45s ease,backdrop-filter .45s ease; border-bottom:1px solid transparent; }
+  #nav.stuck { background:rgba(255,255,255,.92); backdrop-filter:blur(22px); border-color:rgba(0,0,0,.07); }
+  .nav-dropdown { position:relative; }
+  .nav-dropdown-menu { position:absolute; top:calc(100% + 16px); left:50%; transform:translateX(-50%) translateY(-6px); background:#fff; border:1px solid rgba(0,0,0,.08); box-shadow:0 16px 48px rgba(0,0,0,.1); min-width:220px; padding:8px 0; opacity:0; pointer-events:none; transition:opacity .25s ease,transform .25s ease; }
+  .nav-dropdown:hover .nav-dropdown-menu, .nav-dropdown-menu:hover { opacity:1; pointer-events:all; transform:translateX(-50%) translateY(0); }
+  .nav-dropdown-menu a { display:flex; align-items:center; gap:10px; padding:11px 20px; font-size:11px; letter-spacing:.13em; text-transform:uppercase; font-weight:500; color:var(--muted); text-decoration:none; transition:background .2s,color .2s; }
+  .nav-dropdown-menu a:hover { background:#fafafa; color:var(--ink); }
+  .nav-dropdown-menu a .dd-dot { width:5px; height:5px; border-radius:50%; background:var(--gold); flex-shrink:0; }
+  .nav-dropdown > .nav-link-btn::after { content:''; display:inline-block; width:5px; height:5px; border-right:1px solid currentColor; border-bottom:1px solid currentColor; transform:rotate(45deg) translateY(-2px); margin-left:5px; vertical-align:middle; }
+  .gold-text { color:var(--gold); }
+  .g-rule { display:block; height:1px; background:linear-gradient(90deg,var(--gold),transparent); }
+  .scard { border:1px solid rgba(0,0,0,.07); background:#fff; overflow:hidden; transition:border-color .35s,box-shadow .35s,transform .35s; }
+  .scard:hover { border-color:rgba(201,164,98,.4); box-shadow:0 20px 60px rgba(0,0,0,.08); transform:translateY(-4px); }
+  .scard canvas { display:block; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="max-w-screen-xl mx-auto px-8 py-5 flex items-center justify-between relative z-10">
+    <div class="flex items-center gap-1">
+      <a href="index.html" style="text-decoration:none;color:inherit;display:flex;align-items:center;gap:0.5rem;">
+        <span class="font-display font-light tracking-[.22em] text-[17px] uppercase">SEDGE</span>
+        <span class="font-display font-light tracking-[.22em] text-[17px] uppercase gold-text ml-2">Ventures</span>
+      </a>
+    </div>
+    <div class="flex items-center gap-8">
+      <a href="index.html#strategies" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">Strategies</a>
+      <div class="nav-dropdown">
+        <span class="nav-link-btn text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium cursor-pointer">Products</span>
+        <div class="nav-dropdown-menu">
+          <a href="pharma.html"><span class="dd-dot"></span>Pharma Research</a>
+          <a href="backtest.html"><span class="dd-dot"></span>Trade Backtest &amp; Algo</a>
+          <a href="forex.html"><span class="dd-dot"></span>Forex</a>
+          <a href="value-picks.html"><span class="dd-dot"></span>Alpha Signals</a>
+        </div>
+      </div>
+      <a href="#" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">Research</a>
+      <a href="sectors.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--gold)] font-medium">Sectors</a>
+      <a href="about.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">About</a>
+      <button class="border border-[var(--ink)] text-[var(--ink)] text-[11px] tracking-[.14em] uppercase px-5 py-2.5 font-medium hover:bg-[var(--ink)] hover:text-white transition-all duration-300">Log In</button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="relative z-10" style="background:#fafafa;padding:9rem 2rem 5rem;border-bottom:1px solid rgba(0,0,0,.06);overflow:hidden;">
+  <div style="position:absolute;top:-100px;right:-60px;width:480px;height:480px;border-radius:50%;background:radial-gradient(circle,rgba(201,164,98,.06) 0%,transparent 70%);pointer-events:none;"></div>
+  <div class="max-w-screen-xl mx-auto">
+    <a href="index.html" id="sec-breadcrumb" style="display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;color:var(--muted);text-decoration:none;margin-bottom:3rem;transition:color .2s;opacity:0;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--muted)'">← Home</a>
+    <div id="sec-eye" style="display:flex;align-items:center;gap:12px;margin-bottom:1.4rem;opacity:0;">
+      <span style="display:block;height:1px;width:28px;background:linear-gradient(90deg,var(--gold),transparent);"></span>
+      <span style="font-size:10px;letter-spacing:.28em;text-transform:uppercase;font-weight:500;color:var(--gold);">Structural Innovation</span>
+    </div>
+    <h1 id="sec-h1" class="font-display font-light" style="font-size:clamp(2.6rem,4.2vw,4.8rem);line-height:1.05;letter-spacing:-0.025em;color:var(--ink);opacity:0;transform:translateY(28px);max-width:900px;">
+      Target Sectors — <em style="font-style:italic;color:var(--gold);">high-growth areas</em> driven by technological innovation and structural trends.
+    </h1>
+  </div>
+</section>
+
+<!-- SECTORS GRID -->
+<section id="sectors" class="relative z-10 py-20 px-8" style="background:#fafafa;">
+  <div class="max-w-screen-xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="s-grid">
+
+      <div class="scard" data-sc="ai">
+        <div style="height:160px;position:relative;overflow:hidden;background:#fafafa;">
+          <canvas id="cv-ai" style="display:block;width:100%;height:160px;"></canvas>
+        </div>
+        <div class="p-7">
+          <p class="text-[10px] tracking-[.24em] uppercase gold-text font-medium mb-3">01 — Artificial Intelligence</p>
+          <h3 class="font-display font-light text-[22px] leading-tight mb-3">AI &amp; Machine Learning</h3>
+          <p class="text-[13px] leading-[1.75] text-[var(--muted)] font-light">Machine learning, generative AI, and enterprise automation platforms reshaping global productivity curves.</p>
+        </div>
+      </div>
+
+      <div class="scard" data-sc="health">
+        <div style="height:160px;position:relative;overflow:hidden;background:#fafafa;">
+          <canvas id="cv-health" style="display:block;width:100%;height:160px;"></canvas>
+        </div>
+        <div class="p-7">
+          <p class="text-[10px] tracking-[.24em] uppercase gold-text font-medium mb-3">02 — Healthcare &amp; Biotech</p>
+          <h3 class="font-display font-light text-[22px] leading-tight mb-3">Healthcare &amp; Biotech</h3>
+          <p class="text-[13px] leading-[1.75] text-[var(--muted)] font-light">Drug discovery, gene therapy, and innovative treatment modalities at the frontier of modern medicine.</p>
+        </div>
+      </div>
+
+      <div class="scard" data-sc="semi">
+        <div style="height:160px;position:relative;overflow:hidden;background:#fafafa;">
+          <canvas id="cv-semi" style="display:block;width:100%;height:160px;"></canvas>
+        </div>
+        <div class="p-7">
+          <p class="text-[10px] tracking-[.24em] uppercase gold-text font-medium mb-3">03 — Semiconductors</p>
+          <h3 class="font-display font-light text-[22px] leading-tight mb-3">Semiconductors</h3>
+          <p class="text-[13px] leading-[1.75] text-[var(--muted)] font-light">Chipmakers and equipment manufacturers enabling next-generation computing and AI infrastructure.</p>
+        </div>
+      </div>
+
+      <div class="scard" data-sc="cyber">
+        <div style="height:160px;position:relative;overflow:hidden;background:#fafafa;">
+          <canvas id="cv-cyber" style="display:block;width:100%;height:160px;"></canvas>
+        </div>
+        <div class="p-7">
+          <p class="text-[10px] tracking-[.24em] uppercase gold-text font-medium mb-3">04 — Cybersecurity</p>
+          <h3 class="font-display font-light text-[22px] leading-tight mb-3">Cybersecurity</h3>
+          <p class="text-[13px] leading-[1.75] text-[var(--muted)] font-light">Cloud security, identity management, and threat intelligence protecting the digital economy at scale.</p>
+        </div>
+      </div>
+
+      <div class="scard" data-sc="energy">
+        <div style="height:160px;position:relative;overflow:hidden;background:#fafafa;">
+          <canvas id="cv-energy" style="display:block;width:100%;height:160px;"></canvas>
+        </div>
+        <div class="p-7">
+          <p class="text-[10px] tracking-[.24em] uppercase gold-text font-medium mb-3">05 — Clean Energy</p>
+          <h3 class="font-display font-light text-[22px] leading-tight mb-3">Clean Energy</h3>
+          <p class="text-[13px] leading-[1.75] text-[var(--muted)] font-light">Battery technology, renewable infrastructure, and grid modernization driving the energy transition.</p>
+        </div>
+      </div>
+
+      <div class="scard" data-sc="space">
+        <div style="height:160px;position:relative;overflow:hidden;background:#fafafa;">
+          <canvas id="cv-space" style="display:block;width:100%;height:160px;"></canvas>
+        </div>
+        <div class="p-7">
+          <p class="text-[10px] tracking-[.24em] uppercase gold-text font-medium mb-3">06 — Space &amp; Aerospace</p>
+          <h3 class="font-display font-light text-[22px] leading-tight mb-3">Space &amp; Aerospace</h3>
+          <p class="text-[13px] leading-[1.75] text-[var(--muted)] font-light">Commercial space, satellite technology, and defense contractors pioneering humanity's next frontier.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="relative z-10 border-t border-gray-100 py-14 px-8">
+  <div class="max-w-screen-xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+    <div>
+      <div class="flex items-center gap-2 mb-2"><span class="font-display font-light tracking-[.22em] text-[16px] uppercase">SEDGE</span><span class="font-display font-light tracking-[.22em] text-[16px] uppercase gold-text">Ventures</span></div>
+      <p class="text-[12px] text-[var(--muted)] font-light tracking-[.06em]">Systematic Equity Investment Management</p>
+    </div>
+    <p class="text-[11px] text-[var(--muted)] font-light tracking-[.08em]">© 2025 SEDGE Ventures. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+'use strict';
+gsap.registerPlugin(ScrollTrigger);
+const lenis = new Lenis({ duration:1.4, easing:t=>Math.min(1,1.001-Math.pow(2,-10*t)) });
+lenis.on('scroll', ScrollTrigger.update);
+gsap.ticker.add(t=>lenis.raf(t*1000));
+gsap.ticker.lagSmoothing(0);
+lenis.on('scroll', ({scroll})=>{ document.getElementById('nav').classList.toggle('stuck', scroll>50); });
+
+// Hero entrance
+gsap.to('#sec-breadcrumb',{opacity:1,duration:.7,ease:'power2.out',delay:.15});
+gsap.to('#sec-eye',{opacity:1,duration:.8,ease:'power2.out',delay:.3});
+gsap.to('#sec-h1',{opacity:1,y:0,duration:1.1,ease:'power4.out',delay:.45});
+
+// Grid entrance
+gsap.set('[data-sc]',{opacity:0,y:40});
+ScrollTrigger.create({ trigger:'#sectors', start:'top 76%', onEnter(){
+  gsap.to('[data-sc]',{opacity:1,y:0,duration:.85,ease:'power3.out',stagger:.09});
+}});
+
+// ─── THREE.JS SECTOR SCENES ───────────────────────────────────────────────────
+function makeSector(id, setupFn) {
+  const canvas = document.getElementById(id);
+  const wrap = canvas.parentElement;
+  function sizeCanvas() {
+    const W = wrap.clientWidth, H = 160, dpr = Math.min(devicePixelRatio,2);
+    canvas.width = W*dpr; canvas.height = H*dpr;
+    canvas.style.width = W+'px'; canvas.style.height = H+'px';
+    return { W, H };
+  }
+  const { W, H } = sizeCanvas();
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:false });
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+  renderer.setSize(W,H);
+  renderer.setClearColor(0xfafafa,1);
+  const scene = new THREE.Scene();
+  const cam = new THREE.PerspectiveCamera(48,W/H,0.1,100);
+  cam.position.z = 5;
+  scene.add(new THREE.AmbientLight(0xffffff,0.65));
+  const d1 = new THREE.DirectionalLight(0xc9a462,1.1); d1.position.set(3,5,4); scene.add(d1);
+  const d2 = new THREE.DirectionalLight(0x00d4c8,0.5); d2.position.set(-3,-2,2); scene.add(d2);
+  const card = canvas.closest('[data-sc]');
+  let hovered = false;
+  card.addEventListener('mouseenter',()=>hovered=true);
+  card.addEventListener('mouseleave',()=>hovered=false);
+  const clk = new THREE.Clock();
+  const { update } = setupFn(scene,cam,renderer);
+  (function loop(){ requestAnimationFrame(loop); update(clk.getElapsedTime(),hovered); renderer.render(scene,cam); })();
+}
+
+makeSector('cv-ai',(scene,cam)=>{
+  const G=new THREE.Group(); scene.add(G);
+  const nodeG=new THREE.SphereGeometry(.075,8,8), nodes=[];
+  for(let i=0;i<20;i++){
+    const r=.7+Math.random()*1.5,th=Math.random()*Math.PI*2,phi=Math.acos(2*Math.random()-1);
+    const m=new THREE.Mesh(nodeG,new THREE.MeshPhongMaterial({color:0xc9a462,shininess:90,transparent:true}));
+    m.position.set(r*Math.sin(phi)*Math.cos(th),r*Math.sin(phi)*Math.sin(th),r*Math.cos(phi));
+    m.userData.ph=Math.random()*Math.PI*2; G.add(m); nodes.push(m);
+  }
+  const lm=new THREE.LineBasicMaterial({color:0xc9a462,transparent:true,opacity:.22});
+  nodes.forEach((a,i)=>nodes.forEach((b,j)=>{ if(j<=i)return; if(a.position.distanceTo(b.position)<1.3) G.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([a.position,b.position]),lm.clone())); }));
+  G.add(new THREE.Mesh(new THREE.IcosahedronGeometry(.3,1),new THREE.MeshPhongMaterial({color:0xc9a462,transparent:true,opacity:.35,shininess:120})));
+  return { update(t,hov){ G.rotation.y=t*(hov?.75:.28); G.rotation.x=Math.sin(t*.22)*.18; nodes.forEach(n=>{n.material.opacity=.4+.55*Math.abs(Math.sin(n.userData.ph+t*(hov?2.8:1.1)));}) }};
+});
+
+makeSector('cv-health',(scene)=>{
+  const G=new THREE.Group(); scene.add(G);
+  const S=60,hH=3.0,amp=.85;
+  for(let s=0;s<2;s++){
+    const pts=[],ph=s*Math.PI;
+    for(let i=0;i<=S;i++){ const t=i/S; pts.push(new THREE.Vector3(Math.cos(t*Math.PI*4+ph)*amp,-hH/2+t*hH,Math.sin(t*Math.PI*4+ph)*amp*.35)); }
+    G.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts),S*2,.052,8,false),new THREE.MeshPhongMaterial({color:s===0?0xc9a462:0x00d4c8,shininess:100,transparent:true,opacity:.88})));
+  }
+  for(let i=0;i<=S;i+=4){ const t=i/S,y=-hH/2+t*hH,x1=Math.cos(t*Math.PI*4)*amp,z1=Math.sin(t*Math.PI*4)*amp*.35; G.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(x1,y,z1),new THREE.Vector3(-x1,y,-z1)]),new THREE.LineBasicMaterial({color:0x4dbb77,transparent:true,opacity:.38}))); }
+  return { update(t,hov){ G.rotation.y=t*(hov?.9:.32); G.rotation.x=Math.sin(t*.28)*.12; }};
+});
+
+makeSector('cv-semi',(scene,cam)=>{
+  cam.position.set(2,3.8,4.2); cam.lookAt(0,0,0);
+  const G=new THREE.Group(); scene.add(G);
+  const bG=new THREE.BoxGeometry(.30,.08,.30),items=[],R=4;
+  for(let x=-R;x<=R;x++) for(let z=-R;z<=R;z++){
+    const d=Math.sqrt(x*x+z*z); if(d>R)continue;
+    const m=new THREE.Mesh(bG,new THREE.MeshPhongMaterial({color:0xc9a462,shininess:120,transparent:true,opacity:.2+.65*(1-d/R)}));
+    m.position.set(x*.38,0,z*.38); m.userData.ph=Math.random()*Math.PI*2; m.userData.d=d; G.add(m); items.push(m);
+    if((x+z)%3===0&&d<R-1){ const dir=Math.random()>.5?1:0; G.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(x*.38,.04,z*.38),new THREE.Vector3((x+dir)*.38,.04,(z+(1-dir))*.38)]),new THREE.LineBasicMaterial({color:0x00d4c8,transparent:true,opacity:.28}))); }
+  }
+  return { update(t,hov){ G.rotation.y=t*(hov?.45:.13); items.forEach(m=>{ m.material.opacity=.15+.65*Math.abs(Math.sin(m.userData.ph+t*.7+m.userData.d*.35)); m.position.y=Math.sin(m.userData.ph+t*.55+m.userData.d*.3)*.05; }); }};
+});
+
+makeSector('cv-cyber',(scene)=>{
+  const G=new THREE.Group(); scene.add(G);
+  const defs=[{r:1.5,tube:.038,col:0xc9a462,rx:0,spd:.4},{r:1.15,tube:.038,col:0x00d4c8,rx:Math.PI/2,spd:-.6},{r:.85,tube:.034,col:0x4dbb77,rx:Math.PI/4,spd:.85},{r:.5,tube:.030,col:0xc9a462,rx:-Math.PI/3,spd:-1.2}];
+  const rings=defs.map(d=>{ const m=new THREE.Mesh(new THREE.TorusGeometry(d.r,d.tube,12,90),new THREE.MeshPhongMaterial({color:d.col,shininess:110,transparent:true,opacity:.82})); m.rotation.x=d.rx; m.userData.spd=d.spd; m.userData.brx=d.rx; G.add(m); return m; });
+  G.add(new THREE.Mesh(new THREE.SphereGeometry(.16,16,16),new THREE.MeshPhongMaterial({color:0xc9a462,shininess:140,transparent:true,opacity:.7})));
+  return { update(t,hov){ const s=hov?2.2:1.0; rings.forEach(r=>{ r.rotation.y=r.userData.brx+t*r.userData.spd*s; r.rotation.z=t*r.userData.spd*.28*s; }); G.rotation.y=t*.09; }};
+});
+
+makeSector('cv-energy',(scene,cam)=>{
+  cam.position.set(0,3.2,4.5); cam.lookAt(0,0,0);
+  const G=new THREE.Group(); scene.add(G);
+  const WS=42,HS=42,geo=new THREE.PlaneGeometry(5.5,3.8,WS,HS);
+  geo.rotateX(-Math.PI/2);
+  const mat=new THREE.MeshPhongMaterial({color:0xc9a462,wireframe:true,transparent:true,opacity:.48});
+  const plane=new THREE.Mesh(geo,mat); G.add(plane);
+  G.add(new THREE.Mesh(new THREE.PlaneGeometry(5.5,3.8).rotateX(-Math.PI/2),new THREE.MeshPhongMaterial({color:0xc9a462,transparent:true,opacity:.05})));
+  const pos=geo.getAttribute('position');
+  return { update(t,hov){ const amp=hov?.38:.22,freq=hov?2.6:1.3; for(let i=0;i<pos.count;i++){ const x=pos.getX(i),z=pos.getZ(i); pos.setY(i,Math.sin(x*1.6+t*freq)*amp+Math.cos(z*2.1+t*freq*.68)*amp*.5); } pos.needsUpdate=true; geo.computeVertexNormals(); G.rotation.y=t*.08; }};
+});
+
+makeSector('cv-space',(scene)=>{
+  const G=new THREE.Group(); scene.add(G);
+  const orbs=[{r:1.65,inc:0,spd:.5,col:0xc9a462},{r:1.15,inc:Math.PI/3.2,spd:-.7,col:0x00d4c8},{r:.75,inc:Math.PI/5,spd:.95,col:0x4dbb77}];
+  const sats=[];
+  orbs.forEach(o=>{ const ring=new THREE.Mesh(new THREE.TorusGeometry(o.r,.007,6,100),new THREE.MeshBasicMaterial({color:o.col,transparent:true,opacity:.32})); ring.rotation.x=o.inc; G.add(ring); const sat=new THREE.Mesh(new THREE.SphereGeometry(.065,8,8),new THREE.MeshPhongMaterial({color:o.col,shininess:130})); sat.userData={r:o.r,inc:o.inc,spd:o.spd,a:Math.random()*Math.PI*2}; G.add(sat); sats.push(sat); });
+  G.add(new THREE.Mesh(new THREE.SphereGeometry(.28,24,24),new THREE.MeshPhongMaterial({color:0xffffff,specular:0xc9a462,shininess:100,transparent:true,opacity:.9})));
+  const stN=70,stP=new Float32Array(stN*3);
+  for(let i=0;i<stN;i++){ stP[i*3]=(Math.random()-.5)*10; stP[i*3+1]=(Math.random()-.5)*8; stP[i*3+2]=(Math.random()-.5)*6-2; }
+  const stG=new THREE.BufferGeometry(); stG.setAttribute('position',new THREE.BufferAttribute(stP,3));
+  scene.add(new THREE.Points(stG,new THREE.PointsMaterial({color:0xc9a462,size:.04,transparent:true,opacity:.55})));
+  return { update(t,hov){ const s=hov?2.4:1.0; sats.forEach(sat=>{ sat.userData.a+=sat.userData.spd*.015*s; const{r,inc,a}=sat.userData; sat.position.set(r*Math.cos(a),r*Math.sin(a)*Math.sin(inc),r*Math.sin(a)*Math.cos(inc)); }); G.rotation.y=t*.1; }};
+});
+</script>
+</body>
+</html>

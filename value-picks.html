@@ -29,7 +29,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 #nav.stuck{background:rgba(255,255,255,.96);backdrop-filter:blur(24px);border-color:rgba(0,0,0,.06);}
 .nav-dropdown{position:relative;}
 .nav-dropdown-menu{position:absolute;top:calc(100% + 16px);left:50%;transform:translateX(-50%) translateY(-8px);background:#fff;border:1px solid rgba(0,0,0,.08);box-shadow:0 20px 56px rgba(0,0,0,.1);min-width:230px;padding:8px 0;opacity:0;pointer-events:none;transition:opacity .22s,transform .22s;}
-.nav-dropdown:hover .nav-dropdown-menu{opacity:1;pointer-events:all;transform:translateX(-50%) translateY(0);}
+.nav-dropdown:hover .nav-dropdown-menu,.nav-dropdown.open .nav-dropdown-menu{opacity:1;pointer-events:all;transform:translateX(-50%) translateY(0);}
 .nav-dropdown-menu a{display:flex;align-items:center;gap:10px;padding:11px 20px;font-size:11px;letter-spacing:.13em;text-transform:uppercase;font-weight:500;color:var(--muted);text-decoration:none;transition:background .18s,color .18s;}
 .nav-dropdown-menu a:hover{background:#fafafa;color:var(--ink);}
 .nav-dropdown-menu a.active{color:var(--gold);}
@@ -299,7 +299,7 @@ footer{background:#fff;border-top:1px solid var(--border);padding:3.5rem 40px;}
     </a>
     <div class="flex items-center gap-9">
       <a href="index.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors font-medium">Strategies</a>
-      <div class="nav-dropdown">
+      <div class="nav-dropdown" id="productsDropdown">
         <span class="nav-link-btn text-[11px] tracking-[.14em] uppercase font-medium cursor-pointer select-none" style="color:var(--gold)">Products</span>
         <div class="nav-dropdown-menu">
           <a href="pharma.html"><span class="dd-dot"></span>Pharma Research</a>
@@ -309,7 +309,7 @@ footer{background:#fff;border-top:1px solid var(--border);padding:3.5rem 40px;}
         </div>
       </div>
       <a href="index.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors font-medium">Research</a>
-      <a href="index.html#sectors" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors font-medium">Sectors</a>
+      <a href="sectors.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors font-medium">Sectors</a>
       <a href="index.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors font-medium">About</a>
       <button class="btn-dark">Log In</button>
     </div>
@@ -1109,6 +1109,15 @@ if(termSection) termObs.observe(termSection);
     W=host.clientWidth;H=host.clientHeight;
     camera.aspect=W/H;camera.updateProjectionMatrix();renderer.setSize(W,H);
   });
+})();
+</script>
+<script>
+(function(){
+  var d=document.getElementById('productsDropdown'); if(!d) return;
+  var t=null;
+  d.addEventListener('mouseenter',function(){ if(t){clearTimeout(t);t=null;} d.classList.add('open'); });
+  d.addEventListener('mouseleave',function(){ t=setTimeout(function(){ d.classList.remove('open');t=null; },5000); });
+  d.querySelectorAll('.nav-dropdown-menu a').forEach(function(a){ a.addEventListener('click',function(){ if(t){clearTimeout(t);t=null;} d.classList.remove('open'); }); });
 })();
 </script>
 </body>

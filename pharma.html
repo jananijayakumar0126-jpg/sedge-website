@@ -28,7 +28,9 @@
   #nav.stuck { background:rgba(255,255,255,.92); backdrop-filter:blur(22px); border-color:rgba(0,0,0,.07); }
   .nav-dropdown { position:relative; }
   .nav-dropdown-menu { position:absolute; top:calc(100% + 16px); left:50%; transform:translateX(-50%) translateY(-6px); background:#fff; border:1px solid rgba(0,0,0,.08); box-shadow:0 16px 48px rgba(0,0,0,.1); min-width:220px; padding:8px 0; opacity:0; pointer-events:none; transition:opacity .25s ease,transform .25s ease; }
-  .nav-dropdown:hover .nav-dropdown-menu, .nav-dropdown-menu:hover { opacity:1; pointer-events:all; transform:translateX(-50%) translateY(0); }
+  .nav-dropdown:hover .nav-dropdown-menu,
+  .nav-dropdown-menu:hover,
+  .nav-dropdown.open .nav-dropdown-menu { opacity:1; pointer-events:all; transform:translateX(-50%) translateY(0); }
   .nav-dropdown-menu a { display:flex; align-items:center; gap:10px; padding:11px 20px; font-size:11px; letter-spacing:.13em; text-transform:uppercase; font-weight:500; color:var(--muted); text-decoration:none; transition:background .2s,color .2s; }
   .nav-dropdown-menu a:hover { background:#fafafa; color:var(--ink); }
   .nav-dropdown-menu a.active { color:var(--gold); }
@@ -80,7 +82,7 @@
     </div>
     <div class="flex items-center gap-9">
       <a href="index.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">Strategies</a>
-      <div class="nav-dropdown">
+      <div class="nav-dropdown" id="productsDropdown">
         <span class="nav-link-btn text-[11px] tracking-[.14em] uppercase font-medium cursor-pointer select-none" style="color:var(--gold);">Products</span>
         <div class="nav-dropdown-menu">
           <a href="pharma.html" class="active"><span class="dd-dot"></span>Pharma Research</a>
@@ -90,84 +92,146 @@
         </div>
       </div>
       <a href="index.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">Research</a>
-      <a href="index.html#sectors" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">Sectors</a>
+      <a href="sectors.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">Sectors</a>
       <a href="index.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">About</a>
       <button class="border border-[var(--ink)] text-[var(--ink)] text-[11px] tracking-[.14em] uppercase px-5 py-2.5 font-medium hover:bg-[var(--ink)] hover:text-white transition-all duration-300">Log In</button>
     </div>
   </div>
 </nav>
 
-<!-- PAGE HERO — WHITE ON THEME -->
-<section class="relative z-10" style="background:#fff;padding:9rem 2rem 5rem;border-bottom:1px solid rgba(0,0,0,.06);">
+<!-- PAGE HERO -->
+<section id="ph-hero" class="relative z-10" style="background:#fff;padding:9rem 2rem 5rem;border-bottom:1px solid rgba(0,0,0,.06);overflow:hidden;">
+  <!-- subtle animated gradient orb -->
+  <div style="position:absolute;top:-120px;right:-80px;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(201,164,98,.07) 0%,transparent 70%);pointer-events:none;animation:orb-drift 8s ease-in-out infinite alternate;"></div>
+  <style>
+    @keyframes orb-drift { from{transform:translate(0,0) scale(1)} to{transform:translate(-30px,20px) scale(1.08)} }
+    .hero-tag { font-size:10px;letter-spacing:.18em;text-transform:uppercase;padding:7px 14px;border:1px solid rgba(201,164,98,.3);color:var(--gold);cursor:pointer;transition:background .2s,color .2s,border-color .2s; }
+    .hero-tag:hover { background:rgba(201,164,98,.08);border-color:var(--gold); }
+  </style>
   <div class="max-w-screen-xl mx-auto">
-    <a href="index.html#our-products" style="display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;color:var(--muted);text-decoration:none;margin-bottom:2.5rem;transition:color .2s;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--muted)'">← Our Products</a>
-    <div class="flex items-center gap-4 mb-5">
-      <span class="g-rule w-8"></span>
-      <span style="font-size:10px;letter-spacing:.28em;text-transform:uppercase;font-weight:500;color:var(--gold);">Product 01</span>
+    <!-- Breadcrumb -->
+    <a id="hero-breadcrumb" href="index.html#our-products" style="display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;color:var(--muted);text-decoration:none;margin-bottom:3rem;transition:color .2s;opacity:0;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--muted)'">← Our Products</a>
+    <!-- Title block -->
+    <div>
+      <div>
+        <h1 id="hero-h1" class="font-display font-light" style="font-size:clamp(2.6rem,4.2vw,4.4rem);line-height:1.05;letter-spacing:-0.025em;color:var(--ink);opacity:0;transform:translateY(28px);">
+          Pharma<br><em style="font-style:italic;color:var(--gold);">Research</em>
+        </h1>
+        <p id="hero-desc" class="font-light" style="margin-top:1.6rem;font-size:14px;color:var(--muted);line-height:1.9;max-width:420px;letter-spacing:.01em;opacity:0;transform:translateY(20px);">
+          FDA catalysts, knowledge graphs, clinical trial intelligence and the Diamond Hunter signal engine for biotech multi-baggers.
+        </p>
+        <div id="hero-tags" style="margin-top:2rem;display:flex;gap:12px;flex-wrap:wrap;opacity:0;transform:translateY(16px);">
+          <span class="hero-tag" onclick="document.getElementById('ph-fda').scrollIntoView({behavior:'smooth'})">FDA Calendar</span>
+          <span class="hero-tag" onclick="document.getElementById('ph-graph').scrollIntoView({behavior:'smooth'})">Knowledge Graph</span>
+          <span class="hero-tag" onclick="document.getElementById('ph-diamond').scrollIntoView({behavior:'smooth'})">◆ Diamond Hunter</span>
+        </div>
+      </div>
     </div>
-    <h1 class="font-display font-light" style="font-size:clamp(3.2rem,7vw,8rem);line-height:1.0;letter-spacing:-0.03em;color:var(--ink);">
-      Pharma<br>Research
-    </h1>
-    <div style="height:1px;margin-top:2.5rem;background:linear-gradient(90deg,var(--gold) 0%,rgba(201,164,98,.2) 35%,transparent 65%);max-width:520px;"></div>
-    <p style="margin-top:1.5rem;font-size:15px;color:var(--muted);line-height:1.85;max-width:560px;font-weight:300;">
-      FDA catalysts, knowledge graphs, clinical trial intelligence and the Diamond Hunter signal engine for biotech multi-baggers.
-    </p>
   </div>
 </section>
 
 <!-- PH-INTRO -->
-<section id="ph-intro" class="relative z-10 py-28 px-8" style="background:#fff;border-top:1px solid rgba(0,0,0,.06);">
+<section id="ph-intro" class="relative z-10 pt-16 pb-0 px-8" style="background:#fff;border-top:1px solid rgba(0,0,0,.06);">
   <div class="max-w-screen-xl mx-auto">
-    <div class="max-w-[820px] mx-auto text-center">
-      <div id="phi-eye" class="inline-flex items-center gap-4 mb-8" style="opacity:0;">
+    <!-- Heading + description: narrow centred -->
+    <div class="max-w-[680px] mx-auto text-center">
+      <div id="phi-eye" class="inline-flex items-center gap-4 mb-5" style="opacity:0;">
         <span style="display:block;height:1px;width:32px;background:linear-gradient(90deg,transparent,var(--gold));"></span>
         <span class="text-[11px] tracking-[.28em] uppercase font-medium gold-text">Pharmaceutical Intelligence</span>
         <span style="display:block;height:1px;width:32px;background:linear-gradient(90deg,var(--gold),transparent);"></span>
       </div>
-      <h2 id="phi-title" class="font-display font-light text-[clamp(36px,4.4vw,66px)] leading-[1.06] tracking-[-0.025em] mb-6" style="opacity:0;">
-        The biotech edge institutional<br>desks <em class="gold-text">pay millions for.</em>
+      <h2 id="phi-title" class="font-display font-light text-[clamp(24px,2.8vw,40px)] leading-[1.1] tracking-[-0.02em] mb-4" style="opacity:0;">
+        The biotech edge institutional desks <em class="gold-text">pay millions for.</em>
       </h2>
-      <p id="phi-body" class="text-[15px] leading-[1.85] text-[var(--muted)] font-light mb-12 max-w-[580px] mx-auto" style="opacity:0;">
+      <p id="phi-body" class="text-[13px] leading-[1.8] text-[var(--muted)] font-light mb-0 max-w-[500px] mx-auto" style="opacity:0;">
         Four tools. One system. Every signal that moves pharma stocks — from FDA catalysts to trial readouts to diamond-in-the-rough entries.
       </p>
+    </div>
+
+    <!-- STATS: full width, diagonal stagger -->
+    <div id="phi-stats" class="grid grid-cols-2 lg:grid-cols-4 mt-10 mb-0" style="opacity:0;border-top:1px solid rgba(0,0,0,.06);">
+      <div class="text-center px-8 py-10 border-r" style="border-color:rgba(0,0,0,.06);" data-stat>
+        <div class="stat-num" style="transform:translateY(0px);"><span class="stat-count" data-target="2000">0</span>+</div>
+        <div class="stat-sub mt-2">Global Pharma Companies</div>
+        <div class="stat-desc">US &amp; International</div>
+      </div>
+      <div class="text-center px-8 py-10 border-r" style="border-color:rgba(0,0,0,.06);padding-top:4rem;" data-stat>
+        <div class="stat-num"><span class="stat-count" data-target="15000">0</span>+</div>
+        <div class="stat-sub mt-2">Drug Trials Tracked</div>
+        <div class="stat-desc">Phase I–III Pipeline</div>
+      </div>
+      <div class="text-center px-8 py-10 border-r" style="border-color:rgba(0,0,0,.06);padding-top:2rem;" data-stat>
+        <div class="stat-num"><span class="stat-count" data-target="500">0</span>+</div>
+        <div class="stat-sub mt-2">FDA Events Monitored</div>
+        <div class="stat-desc">PDUFA · BLA · AdCom</div>
+      </div>
+      <div class="text-center px-8 py-10" style="padding-top:5rem;" data-stat>
+        <div class="stat-num"><span class="stat-count" data-target="3">0</span> min</div>
+        <div class="stat-sub mt-2">Research Reports</div>
+        <div class="stat-desc">Full Analyst-Grade Output</div>
+      </div>
+    </div>
+
+    <!-- Tabs: narrow centred -->
+    <div class="max-w-[680px] mx-auto text-center pb-12 pt-8">
       <div id="phi-tabs" class="flex flex-wrap items-center justify-center gap-3" style="opacity:0;">
-        <div class="ph-feature-tab"><span class="ph-feature-dot" style="background:#4dbb77;"></span>Knowledge Graph</div>
-        <div class="ph-feature-tab"><span class="ph-feature-dot" style="background:#00d4c8;"></span>FDA Calendar</div>
-        <div class="ph-feature-tab"><span class="ph-feature-dot" style="background:var(--gold);"></span>Deep Research</div>
-        <div class="ph-feature-tab"><span class="ph-feature-dot" style="background:var(--gold);"></span>◆ Diamond Hunter</div>
+        <button class="ph-feature-tab" onclick="document.getElementById('ph-graph').scrollIntoView({behavior:'smooth'})"><span class="ph-feature-dot" style="background:#4dbb77;"></span>Knowledge Graph</button>
+        <button class="ph-feature-tab" onclick="document.getElementById('ph-fda').scrollIntoView({behavior:'smooth'})"><span class="ph-feature-dot" style="background:#00d4c8;"></span>FDA Calendar</button>
+        <button class="ph-feature-tab" onclick="document.getElementById('ph-research').scrollIntoView({behavior:'smooth'})"><span class="ph-feature-dot" style="background:var(--gold);"></span>Deep Research</button>
+        <button class="ph-feature-tab" onclick="document.getElementById('ph-diamond').scrollIntoView({behavior:'smooth'})" style="background:rgba(201,164,98,.08);border-color:var(--gold);color:var(--gold);font-weight:600;box-shadow:0 0 0 1px rgba(201,164,98,.2),0 4px 16px rgba(201,164,98,.12);"><span class="ph-feature-dot" style="background:var(--gold);box-shadow:0 0 6px rgba(201,164,98,.6);"></span>◆ Diamond Hunter</button>
       </div>
     </div>
   </div>
 </section>
 
-<!-- PH-STATS -->
-<section id="ph-stats" class="relative z-10 py-16 px-8" style="background:#fff;border-top:1px solid rgba(0,0,0,.05);border-bottom:1px solid rgba(0,0,0,.05);">
+<!-- PH-DIAMOND -->
+<section id="ph-diamond" class="relative z-10 pt-12 pb-24 px-8" style="background:#fff;border-top:none;">
   <div class="max-w-screen-xl mx-auto">
-    <div class="flex flex-col md:flex-row items-center justify-center gap-0" style="row-gap:2rem;">
-      <div class="text-center flex-1 px-6 py-4" data-stat>
-        <div class="stat-num"><span class="stat-count" data-target="2000">0</span>+</div>
-        <div class="stat-sub">Global Pharma Companies</div>
-        <div class="stat-desc">US &amp; International</div>
+    <div class="mb-16 max-w-[820px] mx-auto text-center">
+      <div id="phd-eye" class="inline-flex items-center gap-4 mb-8" style="opacity:0;">
+        <span style="display:block;height:1px;width:28px;background:linear-gradient(90deg,transparent,var(--gold));"></span>
+        <span class="text-[11px] tracking-[.28em] uppercase font-medium gold-text">◆ Diamond Hunter</span>
+        <span style="display:block;height:1px;width:28px;background:linear-gradient(90deg,var(--gold),transparent);"></span>
+        <!-- live signal counter -->
+        <span id="phd-counter" style="display:inline-flex;align-items:center;gap:6px;padding:3px 12px;border-radius:99px;background:rgba(77,187,119,.08);border:1px solid rgba(77,187,119,.25);font-size:10px;font-weight:600;letter-spacing:.1em;color:#4dbb77;">
+          <span style="width:6px;height:6px;border-radius:50%;background:#4dbb77;animation:live-pulse 1.4s ease-in-out infinite;display:inline-block;"></span>
+          <span id="phd-signal-num">0</span> SIGNALS ACTIVE
+        </span>
       </div>
-      <div class="stat-divider hidden md:block" style="min-height:70px;"></div>
-      <div class="text-center flex-1 px-6 py-4" data-stat>
-        <div class="stat-num"><span class="stat-count" data-target="15000">0</span>+</div>
-        <div class="stat-sub">Drug Trials Tracked</div>
-        <div class="stat-desc">Phase I–III Pipeline</div>
+      <h2 id="phd-title" class="font-display font-light text-[clamp(36px,4.4vw,62px)] leading-[1.06] tracking-[-0.025em] mb-3" style="opacity:0;">We found <em class="gold-text">MDGL at $8.</em> Before anyone else.</h2>
+      <h2 id="phd-title2" class="font-display font-light text-[clamp(22px,2.4vw,34px)] leading-[1.2] tracking-[-0.015em] mb-8 text-[var(--muted)]" style="opacity:0;">CRNX at $12. CYTX at $3. Identified before they moved.</h2>
+      <p id="phd-body" class="text-[15px] leading-[1.85] text-[var(--muted)] font-light max-w-[600px] mx-auto" style="opacity:0;">We backtested hundreds of biotech multi-baggers and reverse-engineered the exact signals — drug science milestones, management inflections, modality shifts. Diamond Hunter screens every company in our network for those same patterns, in real-time.</p>
+    </div>
+    <div id="phd-cards-wrap" class="grid grid-cols-1 md:grid-cols-3 gap-5" style="opacity:0;">
+      <div class="diamond-card" data-dcard>
+        <div class="flex items-start justify-between mb-3">
+          <div><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;"><span class="font-display font-light text-[22px] leading-none tracking-tight">RVMD</span><span style="padding:2px 9px;border-radius:99px;background:rgba(201,164,98,.09);color:var(--gold);font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;border:1px solid rgba(201,164,98,.28);">◆ Signal Forming</span></div><p class="text-[11px] text-[var(--muted)] mt-1.5 font-light">Revolution Medicines · PI3K · Oncology · mAb</p></div>
+          <span class="text-[10px] text-[var(--muted)] tracking-[.06em] whitespace-nowrap flex-shrink-0 ml-2">44 days</span>
+        </div>
+        <div class="flex gap-5 mb-4 text-[12px]"><span class="text-[var(--muted)]">Entry: <strong class="text-[var(--ink)]">$14.20–$17.80</strong></span><span class="text-[var(--muted)]">Exit: <strong class="gold-text">$52–$74</strong></span></div>
+        <div class="mb-3"><div class="flex justify-between mb-1.5 text-[10px] text-[var(--muted)] tracking-[.06em]"><span>Drug Science Score</span><span class="score-val-a">0%</span></div><div class="score-bar-track"><div class="score-bar-fill" data-score="82"></div></div></div>
+        <div><div class="flex justify-between mb-1.5 text-[10px] text-[var(--muted)] tracking-[.06em]"><span>Trial Success Probability</span><span class="score-val-b">0%</span></div><div class="score-bar-track"><div class="score-bar-fill" data-score="74"></div></div></div>
       </div>
-      <div class="stat-divider hidden md:block" style="min-height:70px;"></div>
-      <div class="text-center flex-1 px-6 py-4" data-stat>
-        <div class="stat-num"><span class="stat-count" data-target="500">0</span>+</div>
-        <div class="stat-sub">FDA Events Monitored</div>
-        <div class="stat-desc">PDUFA · BLA · AdCom</div>
+      <div class="diamond-card" data-dcard>
+        <div class="flex items-start justify-between mb-3">
+          <div><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;"><span class="font-display font-light text-[22px] leading-none tracking-tight">FULC</span><span style="padding:2px 9px;border-radius:99px;background:rgba(201,164,98,.09);color:var(--gold);font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;border:1px solid rgba(201,164,98,.28);">◆ Signal Forming</span></div><p class="text-[11px] text-[var(--muted)] mt-1.5 font-light">Fulcrum Therapeutics · Losmapimod · FSHD · Small Mol</p></div>
+          <span class="text-[10px] text-[var(--muted)] tracking-[.06em] whitespace-nowrap flex-shrink-0 ml-2">67 days</span>
+        </div>
+        <div class="flex gap-5 mb-4 text-[12px]"><span class="text-[var(--muted)]">Entry: <strong class="text-[var(--ink)]">$4.80–$6.20</strong></span><span class="text-[var(--muted)]">Exit: <strong class="gold-text">$18–$28</strong></span></div>
+        <div class="mb-3"><div class="flex justify-between mb-1.5 text-[10px] text-[var(--muted)] tracking-[.06em]"><span>Drug Science Score</span><span class="score-val-a">0%</span></div><div class="score-bar-track"><div class="score-bar-fill" data-score="78"></div></div></div>
+        <div><div class="flex justify-between mb-1.5 text-[10px] text-[var(--muted)] tracking-[.06em]"><span>Trial Success Probability</span><span class="score-val-b">0%</span></div><div class="score-bar-track"><div class="score-bar-fill" data-score="68"></div></div></div>
       </div>
-      <div class="stat-divider hidden md:block" style="min-height:70px;"></div>
-      <div class="text-center flex-1 px-6 py-4" data-stat>
-        <div class="stat-num"><span class="stat-count" data-target="3">0</span> min</div>
-        <div class="stat-sub">Research Reports</div>
-        <div class="stat-desc">Full Analyst-Grade Output</div>
+      <div class="diamond-card" data-dcard>
+        <div class="flex items-start justify-between mb-3">
+          <div><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;"><span class="font-display font-light text-[22px] leading-none tracking-tight">NUVB</span><span style="padding:2px 9px;border-radius:99px;background:rgba(201,164,98,.09);color:var(--gold);font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;border:1px solid rgba(201,164,98,.28);">◆ Signal Forming</span></div><p class="text-[11px] text-[var(--muted)] mt-1.5 font-light">Nuvation Bio · NUV-868 · Prostate · BET Inhibitor</p></div>
+          <span class="text-[10px] text-[var(--muted)] tracking-[.06em] whitespace-nowrap flex-shrink-0 ml-2">29 days</span>
+        </div>
+        <div class="flex gap-5 mb-4 text-[12px]"><span class="text-[var(--muted)]">Entry: <strong class="text-[var(--ink)]">$2.90–$3.80</strong></span><span class="text-[var(--muted)]">Exit: <strong class="gold-text">$11–$18</strong></span></div>
+        <div class="mb-3"><div class="flex justify-between mb-1.5 text-[10px] text-[var(--muted)] tracking-[.06em]"><span>Drug Science Score</span><span class="score-val-a">0%</span></div><div class="score-bar-track"><div class="score-bar-fill" data-score="85"></div></div></div>
+        <div><div class="flex justify-between mb-1.5 text-[10px] text-[var(--muted)] tracking-[.06em]"><span>Trial Success Probability</span><span class="score-val-b">0%</span></div><div class="score-bar-track"><div class="score-bar-fill" data-score="71"></div></div></div>
       </div>
     </div>
+    <div id="phd-proof" class="mt-12 text-center" style="opacity:0;"><p class="text-[12px] text-[var(--muted)] font-light tracking-[.06em]">Based on backtested patterns across 200+ biotech multi-baggers · <span class="gold-text font-medium">MDGL ×8.2 &nbsp;·&nbsp; CRNX ×6.4 &nbsp;·&nbsp; CYTX ×11.1</span></p></div>
   </div>
 </section>
 
@@ -209,9 +273,12 @@
       <div id="phf-eye" class="flex items-center gap-4 mb-8" style="opacity:0;">
         <span class="g-rule w-10"></span>
         <span class="text-[11px] tracking-[.28em] uppercase font-medium gold-text">FDA Intelligence</span>
+        <span style="display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:99px;background:rgba(0,212,200,.07);border:1px solid rgba(0,212,200,.25);font-size:9px;font-weight:700;letter-spacing:.14em;color:#00d4c8;">
+          <span style="width:5px;height:5px;border-radius:50%;background:#00d4c8;animation:live-pulse 1.2s ease-in-out infinite;display:inline-block;"></span>LIVE
+        </span>
       </div>
       <h2 id="phf-title" class="font-display font-light text-[clamp(32px,3.6vw,52px)] leading-[1.08] tracking-[-0.02em] mb-5" style="opacity:0;">
-        Know Before the<br><em class="gold-text">Market Does.</em>
+        The FDA clock is ticking.<br><em class="gold-text">We're already counting.</em>
       </h2>
       <p id="phf-body" class="text-[15px] leading-[1.85] text-[var(--muted)] font-light" style="opacity:0;">
         Every PDUFA decision, BLA filing, and AdCom meeting — tracked and scored. Our probability engine factors drug mechanism, clinical trial design, competitive landscape, management track record, and historical approval rates for the same modality.
@@ -283,7 +350,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
       <div>
         <div id="phr-eye" class="flex items-center gap-4 mb-8" style="opacity:0;"><span class="g-rule w-10"></span><span class="text-[11px] tracking-[.28em] uppercase font-medium gold-text">Deep Research Engine</span></div>
-        <h2 id="phr-title" class="font-display font-light text-[clamp(32px,3.6vw,52px)] leading-[1.08] tracking-[-0.02em] mb-6" style="opacity:0;">Research like a<br><em class="gold-text">$10M/yr analyst desk.</em></h2>
+        <h2 id="phr-title" class="font-display font-light text-[clamp(32px,3.6vw,52px)] leading-[1.08] tracking-[-0.02em] mb-6" style="opacity:0;">Clarity on any company.<br><em class="gold-text">In minutes.</em></h2>
         <p id="phr-body" class="text-[15px] leading-[1.85] text-[var(--muted)] font-light mb-10" style="opacity:0;">Ask SEDGE to research any pharma company. It returns a structured report covering verdict, price target, mechanism analysis, disease landscape, clinical progress, commercial model, financials, and risk scenarios — in the depth of a full sell-side report. Download as .pptx to present directly.</p>
         <div id="phr-tags" class="flex flex-wrap gap-2" style="opacity:0;"><span class="phr-tag">Verdict</span><span class="phr-tag">Price Target</span><span class="phr-tag">Pipeline NPV</span><span class="phr-tag">Risk Scenarios</span></div>
       </div>
@@ -325,48 +392,6 @@
   </div>
 </section>
 
-<!-- PH-DIAMOND -->
-<section id="ph-diamond" class="relative z-10 py-32 px-8" style="background:#fafafa;">
-  <div class="max-w-screen-xl mx-auto">
-    <div class="mb-16 max-w-[820px] mx-auto text-center">
-      <div id="phd-eye" class="inline-flex items-center gap-4 mb-8" style="opacity:0;"><span style="display:block;height:1px;width:28px;background:linear-gradient(90deg,transparent,var(--gold));"></span><span class="text-[11px] tracking-[.28em] uppercase font-medium gold-text">Diamond Hunter</span><span style="display:block;height:1px;width:28px;background:linear-gradient(90deg,var(--gold),transparent);"></span></div>
-      <h2 id="phd-title" class="font-display font-light text-[clamp(36px,4.4vw,62px)] leading-[1.06] tracking-[-0.025em] mb-3" style="opacity:0;">We found <em class="gold-text">MDGL at $8.</em> Before anyone else.</h2>
-      <h2 id="phd-title2" class="font-display font-light text-[clamp(22px,2.4vw,34px)] leading-[1.2] tracking-[-0.015em] mb-8 text-[var(--muted)]" style="opacity:0;">CRNX at $12. CYTX at $3. Identified before they moved.</h2>
-      <p id="phd-body" class="text-[15px] leading-[1.85] text-[var(--muted)] font-light max-w-[600px] mx-auto" style="opacity:0;">We backtested hundreds of biotech multi-baggers and reverse-engineered the exact signals — drug science milestones, management inflections, modality shifts. Diamond Hunter screens every company in our network for those same patterns, in real-time.</p>
-    </div>
-    <div id="phd-cards-wrap" class="grid grid-cols-1 md:grid-cols-3 gap-5" style="opacity:0;">
-      <div class="diamond-card" data-dcard>
-        <div class="flex items-start justify-between mb-3">
-          <div><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;"><span class="font-display font-light text-[22px] leading-none tracking-tight">RVMD</span><span style="padding:2px 9px;border-radius:99px;background:rgba(201,164,98,.09);color:var(--gold);font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;border:1px solid rgba(201,164,98,.28);">◆ Signal Forming</span></div><p class="text-[11px] text-[var(--muted)] mt-1.5 font-light">Revolution Medicines · PI3K · Oncology · mAb</p></div>
-          <span class="text-[10px] text-[var(--muted)] tracking-[.06em] whitespace-nowrap flex-shrink-0 ml-2">44 days</span>
-        </div>
-        <div class="flex gap-5 mb-4 text-[12px]"><span class="text-[var(--muted)]">Entry: <strong class="text-[var(--ink)]">$14.20–$17.80</strong></span><span class="text-[var(--muted)]">Exit: <strong class="gold-text">$52–$74</strong></span></div>
-        <div class="mb-3"><div class="flex justify-between mb-1.5 text-[10px] text-[var(--muted)] tracking-[.06em]"><span>Drug Science Score</span><span class="score-val-a">0%</span></div><div class="score-bar-track"><div class="score-bar-fill" data-score="82"></div></div></div>
-        <div><div class="flex justify-between mb-1.5 text-[10px] text-[var(--muted)] tracking-[.06em]"><span>Trial Success Probability</span><span class="score-val-b">0%</span></div><div class="score-bar-track"><div class="score-bar-fill" data-score="74"></div></div></div>
-      </div>
-      <div class="diamond-card" data-dcard>
-        <div class="flex items-start justify-between mb-3">
-          <div><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;"><span class="font-display font-light text-[22px] leading-none tracking-tight">FULC</span><span style="padding:2px 9px;border-radius:99px;background:rgba(201,164,98,.09);color:var(--gold);font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;border:1px solid rgba(201,164,98,.28);">◆ Signal Forming</span></div><p class="text-[11px] text-[var(--muted)] mt-1.5 font-light">Fulcrum Therapeutics · Losmapimod · FSHD · Small Mol</p></div>
-          <span class="text-[10px] text-[var(--muted)] tracking-[.06em] whitespace-nowrap flex-shrink-0 ml-2">67 days</span>
-        </div>
-        <div class="flex gap-5 mb-4 text-[12px]"><span class="text-[var(--muted)]">Entry: <strong class="text-[var(--ink)]">$4.80–$6.20</strong></span><span class="text-[var(--muted)]">Exit: <strong class="gold-text">$18–$28</strong></span></div>
-        <div class="mb-3"><div class="flex justify-between mb-1.5 text-[10px] text-[var(--muted)] tracking-[.06em]"><span>Drug Science Score</span><span class="score-val-a">0%</span></div><div class="score-bar-track"><div class="score-bar-fill" data-score="78"></div></div></div>
-        <div><div class="flex justify-between mb-1.5 text-[10px] text-[var(--muted)] tracking-[.06em]"><span>Trial Success Probability</span><span class="score-val-b">0%</span></div><div class="score-bar-track"><div class="score-bar-fill" data-score="68"></div></div></div>
-      </div>
-      <div class="diamond-card" data-dcard>
-        <div class="flex items-start justify-between mb-3">
-          <div><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;"><span class="font-display font-light text-[22px] leading-none tracking-tight">NUVB</span><span style="padding:2px 9px;border-radius:99px;background:rgba(201,164,98,.09);color:var(--gold);font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;border:1px solid rgba(201,164,98,.28);">◆ Signal Forming</span></div><p class="text-[11px] text-[var(--muted)] mt-1.5 font-light">Nuvation Bio · NUV-868 · Prostate · BET Inhibitor</p></div>
-          <span class="text-[10px] text-[var(--muted)] tracking-[.06em] whitespace-nowrap flex-shrink-0 ml-2">29 days</span>
-        </div>
-        <div class="flex gap-5 mb-4 text-[12px]"><span class="text-[var(--muted)]">Entry: <strong class="text-[var(--ink)]">$2.90–$3.80</strong></span><span class="text-[var(--muted)]">Exit: <strong class="gold-text">$11–$18</strong></span></div>
-        <div class="mb-3"><div class="flex justify-between mb-1.5 text-[10px] text-[var(--muted)] tracking-[.06em]"><span>Drug Science Score</span><span class="score-val-a">0%</span></div><div class="score-bar-track"><div class="score-bar-fill" data-score="85"></div></div></div>
-        <div><div class="flex justify-between mb-1.5 text-[10px] text-[var(--muted)] tracking-[.06em]"><span>Trial Success Probability</span><span class="score-val-b">0%</span></div><div class="score-bar-track"><div class="score-bar-fill" data-score="71"></div></div></div>
-      </div>
-    </div>
-    <div id="phd-proof" class="mt-12 text-center" style="opacity:0;"><p class="text-[12px] text-[var(--muted)] font-light tracking-[.06em]">Based on backtested patterns across 200+ biotech multi-baggers · <span class="gold-text font-medium">MDGL ×8.2 &nbsp;·&nbsp; CRNX ×6.4 &nbsp;·&nbsp; CYTX ×11.1</span></p></div>
-  </div>
-</section>
-
 <!-- FOOTER -->
 <footer class="relative z-10 border-t border-gray-100 py-14 px-8">
   <div class="max-w-screen-xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
@@ -387,6 +412,21 @@ gsap.ticker.add(t=>lenis.raf(t*1000));
 gsap.ticker.lagSmoothing(0);
 lenis.on('scroll', ({scroll})=>{ document.getElementById('nav').classList.toggle('stuck', scroll>50); });
 
+// Live-pulse keyframe (injected via JS so it works alongside the <style> block)
+(function(){
+  const s=document.createElement('style');
+  s.textContent='@keyframes live-pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 currentColor}50%{opacity:.5;box-shadow:0 0 0 4px transparent}}';
+  document.head.appendChild(s);
+})();
+
+// HERO entrance animation
+(function(){
+  gsap.to('#hero-breadcrumb',{opacity:1,duration:.7,ease:'power2.out',delay:.15});
+  gsap.to('#hero-h1',{opacity:1,y:0,duration:1.1,ease:'power4.out',delay:.3});
+  gsap.to('#hero-desc',{opacity:1,y:0,duration:1.0,ease:'power3.out',delay:.5});
+  gsap.to('#hero-tags',{opacity:1,y:0,duration:.9,ease:'power3.out',delay:.68});
+})();
+
 // PH-INTRO
 (function(){
   gsap.set(['#phi-title','#phi-body','#phi-tabs'],{y:22});
@@ -394,22 +434,12 @@ lenis.on('scroll', ({scroll})=>{ document.getElementById('nav').classList.toggle
     gsap.to('#phi-eye',{opacity:1,duration:.9,ease:'power2.out'});
     gsap.to('#phi-title',{opacity:1,y:0,duration:1.1,ease:'power4.out',delay:.1});
     gsap.to('#phi-body',{opacity:1,y:0,duration:1.0,ease:'power3.out',delay:.24});
-    gsap.to('#phi-tabs',{opacity:1,y:0,duration:.9,ease:'power3.out',delay:.38});
-  }});
-})();
-
-// PH-STATS
-(function(){
-  function animateCount(el,target,duration){
-    const start=performance.now();
-    function tick(now){ const e=now-start,p=Math.min(e/duration,1),ease=1-Math.pow(1-p,3); el.textContent=Math.round(ease*target).toLocaleString(); if(p<1) requestAnimationFrame(tick); }
-    requestAnimationFrame(tick);
-  }
-  let triggered=false;
-  ScrollTrigger.create({ trigger:'#ph-stats', start:'top 80%', onEnter(){
-    if(triggered) return; triggered=true;
+    gsap.to('#phi-stats',{opacity:1,duration:.9,ease:'power3.out',delay:.46});
+    gsap.to('#phi-tabs',{opacity:1,y:0,duration:.9,ease:'power3.out',delay:.6});
+    // count-up
+    function animateCount(el,target,dur){ const s=performance.now(); function tick(n){ const e=n-s,p=Math.min(e/dur,1),ease=1-Math.pow(1-p,3); el.textContent=Math.round(ease*target).toLocaleString(); if(p<1) requestAnimationFrame(tick); } requestAnimationFrame(tick); }
     document.querySelectorAll('.stat-count').forEach(el=>{ const t=parseInt(el.dataset.target,10); animateCount(el,t,t>100?1600:900); });
-    gsap.from('[data-stat]',{opacity:0,y:24,duration:.9,ease:'power3.out',stagger:.12});
+    gsap.from('[data-stat]',{opacity:0,y:16,duration:.8,ease:'power3.out',stagger:.1,delay:.5});
   }});
 })();
 
@@ -478,6 +508,9 @@ ScrollTrigger.create({ trigger:'#ph-graph', start:'top 74%', onEnter(){
     gsap.to('#phd-cards-wrap',{opacity:1,y:0,duration:1.0,ease:'power3.out',delay:.44});
     gsap.from('[data-dcard]',{opacity:0,y:32,duration:.85,ease:'power3.out',stagger:.12,delay:.5});
     gsap.to('#phd-proof',{opacity:1,duration:.9,ease:'power2.out',delay:.9});
+    // Signal counter count-up
+    const numEl=document.getElementById('phd-signal-num');
+    if(numEl){ let v=0,target=47; const tick=()=>{ v=Math.min(v+1,target); numEl.textContent=v; if(v<target) requestAnimationFrame(tick); }; setTimeout(()=>requestAnimationFrame(tick),600); }
     setTimeout(()=>{
       document.querySelectorAll('.score-bar-fill').forEach(bar=>{ bar.style.width=bar.dataset.score+'%'; });
       document.querySelectorAll('[data-dcard]').forEach(card=>{
@@ -543,6 +576,15 @@ ScrollTrigger.create({ trigger:'#ph-graph', start:'top 74%', onEnter(){
     TICKERS.forEach((tk,i)=>{ const nodeIdx=highlightIdx[i]; if(!nodes[nodeIdx]) return; const pos=nodes[nodeIdx].userData.finalPos.clone(); pos.applyEuler(new THREE.Euler(nodeGroup.rotation.x,nodeGroup.rotation.y,nodeGroup.rotation.z)); pos.y+=.22; const proj=pos.clone().project(camera); const rect=canvas.getBoundingClientRect(); const px=(proj.x*.5+.5)*rect.width,py=(-proj.y*.5+.5)*rect.height; const el=labelEls[i]; el.style.left=(px-14)+'px'; el.style.top=(py-16)+'px'; el.style.opacity=proj.z<1?'0.7':'0'; });
     renderer.render(scene,camera);
   })();
+})();
+</script>
+<script>
+(function(){
+  var d=document.getElementById('productsDropdown'); if(!d) return;
+  var t=null;
+  d.addEventListener('mouseenter',function(){ if(t){clearTimeout(t);t=null;} d.classList.add('open'); });
+  d.addEventListener('mouseleave',function(){ t=setTimeout(function(){ d.classList.remove('open');t=null; },5000); });
+  d.querySelectorAll('.nav-dropdown-menu a').forEach(function(a){ a.addEventListener('click',function(){ if(t){clearTimeout(t);t=null;} d.classList.remove('open'); }); });
 })();
 </script>
 </body>
