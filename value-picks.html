@@ -13,7 +13,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
 <script>tailwind.config={theme:{extend:{fontFamily:{display:['Cormorant Garamond','serif'],sans:['Inter','sans-serif']}}}}</script>
 <style>
-:root{--gold:#c9a462;--gold-l:#e2bc79;--gold-d:#a07d3a;--ink:#0a0a0a;--ink-2:#1a1a1a;--muted:#5a5a5a;--muted-2:#888;--bg:#ffffff;--bg-2:#fafaf8;--border:rgba(0,0,0,.07);}
+:root{--gold:#c9a462;--gold-l:#e2bc79;--gold-deep:#a07d3a;--ink:#0a0a0a;--ink-2:#1a1a1a;--muted:#5a5a5a;--muted-2:#888;--bg:#ffffff;--bg-2:#fafaf8;--border:rgba(0,0,0,.07);}
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 html,html.lenis{height:auto;}
 .lenis.lenis-smooth{scroll-behavior:auto;}
@@ -50,7 +50,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 .btn-dark{background:var(--ink);color:#fff;font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:500;padding:.8rem 2.4rem;border:1px solid var(--ink);cursor:pointer;transition:background .28s,border-color .28s;white-space:nowrap;}
 .btn-dark:hover{background:var(--gold);border-color:var(--gold);}
 .btn-gold{background:var(--gold);color:#fff;font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;padding:.85rem 2.6rem;border:1px solid var(--gold);cursor:pointer;transition:background .28s,border-color .28s,box-shadow .28s;white-space:nowrap;}
-.btn-gold:hover{background:var(--gold-d);border-color:var(--gold-d);box-shadow:0 8px 28px rgba(201,164,98,.35);}
+.btn-gold:hover{background:var(--gold-deep);border-color:var(--gold-deep);box-shadow:0 8px 28px rgba(201,164,98,.35);}
 .btn-ghost{background:transparent;color:var(--ink);font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:500;padding:.8rem 2.4rem;border:1px solid rgba(0,0,0,.2);cursor:pointer;transition:border-color .28s,color .28s;white-space:nowrap;}
 .btn-ghost:hover{border-color:var(--ink);}
 
@@ -70,7 +70,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 @media(max-width:900px){.hero-inner{grid-template-columns:1fr;}.hero-globe{display:none;}}
 .hero-kicker{display:inline-flex;align-items:center;gap:10px;font-size:10px;letter-spacing:.28em;text-transform:uppercase;font-weight:500;color:var(--muted);margin-bottom:2rem;}
 .hero-kicker-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);}
-h1.hero-title{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(4.5rem,8.5vw,9.5rem);line-height:.9;letter-spacing:-.035em;color:var(--ink);margin-bottom:2.4rem;}
+h1.hero-title{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(2.6rem,4.2vw,4.8rem);line-height:.9;letter-spacing:-.035em;color:var(--ink);margin-bottom:2.4rem;}
 h1.hero-title em{font-style:italic;color:var(--gold);}
 .hero-rule{height:1px;max-width:440px;background:linear-gradient(90deg,var(--gold) 0%,rgba(201,164,98,.2) 50%,transparent 80%);margin-bottom:1.6rem;}
 .hero-desc{font-size:15px;color:var(--muted);line-height:1.9;max-width:460px;font-weight:300;margin-bottom:2.4rem;}
@@ -176,7 +176,7 @@ h1.hero-title em{font-style:italic;color:var(--gold);}
 .factor-bar-row:last-child{border-bottom:none;}
 .fb-label{font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:500;color:var(--ink);min-width:180px;}
 .fb-track{flex:1;height:5px;background:rgba(0,0,0,.07);position:relative;border-radius:0;}
-.fb-fill{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,var(--gold-d),var(--gold),var(--gold-l));transform-origin:left;transform:scaleX(0);transition:transform 1s cubic-bezier(.4,0,.2,1);}
+.fb-fill{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,var(--gold-deep),var(--gold),var(--gold-l));transform-origin:left;transform:scaleX(0);transition:transform 1s cubic-bezier(.4,0,.2,1);}
 .fb-fill.animated{transform:scaleX(1);}
 .fb-pct{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--gold);min-width:40px;text-align:right;}
 .fb-desc{font-size:11px;color:var(--muted);min-width:220px;line-height:1.4;}
@@ -253,14 +253,14 @@ h1.hero-title em{font-style:italic;color:var(--gold);}
 .cta-3d{position:absolute;inset:0;pointer-events:none;opacity:.55;}
 .cta-3d canvas{display:block;}
 .cta-inner{max-width:720px;margin:0 auto;padding:7rem 40px;text-align:center;position:relative;z-index:1;}
-.cta-inner h2{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(2.4rem,5vw,4.2rem);line-height:1.05;color:#fff;letter-spacing:-.03em;margin-bottom:1.2rem;}
+.cta-inner h2{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(2.4rem,4vw,3.6rem);line-height:1.05;color:#fff;letter-spacing:-.03em;margin-bottom:1.2rem;}
 .cta-inner h2 em{font-style:italic;color:var(--gold);}
 .cta-inner p{font-size:14px;color:rgba(255,255,255,.45);line-height:1.8;font-weight:300;max-width:520px;margin:0 auto 2.8rem;}
 .cta-form{display:flex;gap:0;max-width:460px;margin:0 auto 1.4rem;border:1px solid rgba(201,164,98,.3);}
 .cta-form input{flex:1;padding:1rem 1.4rem;background:rgba(255,255,255,.04);border:none;color:#fff;font-size:13px;font-family:'Inter',sans-serif;outline:none;}
 .cta-form input::placeholder{color:rgba(255,255,255,.25);}
 .cta-form button{padding:1rem 1.8rem;background:var(--gold);color:#fff;font-size:10px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;border:none;cursor:pointer;transition:background .25s;white-space:nowrap;}
-.cta-form button:hover{background:var(--gold-d);}
+.cta-form button:hover{background:var(--gold-deep);}
 .cta-note{font-size:10.5px;color:rgba(255,255,255,.22);letter-spacing:.06em;}
 
 /* ─── DISCLAIMER & FOOTER ─── */
@@ -284,32 +284,34 @@ footer{background:#fff;border-top:1px solid var(--border);padding:3.5rem 40px;}
 [data-reveal-delay="1"]{transition-delay:.12s;}
 [data-reveal-delay="2"]{transition-delay:.24s;}
 [data-reveal-delay="3"]{transition-delay:.36s;}
+  @media (max-width:1000px) { .nav-links { display:none; } }
 </style>
 </head>
 <body>
 
 <!-- ─── NAV ─── -->
 <nav id="nav">
-  <div class="max-w-screen-xl mx-auto px-10 py-5 flex items-center justify-between relative z-10">
-    <a href="index.html" style="text-decoration:none;color:inherit;display:flex;align-items:center;gap:.6rem;">
+  <div class="max-w-screen-xl mx-auto px-8 py-5 flex items-center justify-between gap-12 relative z-10">
+    <a href="index.html" style="text-decoration:none;color:inherit;display:flex;align-items:center;gap:0.5rem;">
       <span class="font-display font-light tracking-[.22em] text-[17px] uppercase">SEDGE</span>
       <span class="font-display font-light tracking-[.22em] text-[17px] uppercase gold-text ml-2">Ventures</span>
     </a>
     <div class="flex items-center gap-9">
-      <a href="index.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors font-medium">Strategies</a>
-      <div class="nav-dropdown" id="productsDropdown">
-        <span class="nav-link-btn text-[11px] tracking-[.14em] uppercase font-medium cursor-pointer select-none" style="color:var(--gold)">Products</span>
-        <div class="nav-dropdown-menu">
-          <a href="pharma.html"><span class="dd-dot"></span>Pharma Research</a>
-          <a href="backtest.html"><span class="dd-dot"></span>Trade Backtest &amp; Algo</a>
-          <a href="forex.html"><span class="dd-dot"></span>Forex</a>
-          <a href="value-picks.html" class="active"><span class="dd-dot"></span>Alpha Signals</a>
+      <div class="nav-links flex items-center gap-9">
+        <a href="index.html#our-products" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">Strategies</a>
+        <div class="nav-dropdown" id="productsDropdown">
+          <span class="nav-link-btn text-[11px] tracking-[.14em] uppercase font-medium cursor-pointer select-none" style="color:var(--gold);">Products</span>
+          <div class="nav-dropdown-menu">
+            <a href="pharma.html"><span class="dd-dot"></span>Pharma Research</a>
+            <a href="forex.html"><span class="dd-dot"></span>Forex</a>
+            <a href="value-picks.html" class="active"><span class="dd-dot"></span>Alpha Signals</a>
+          </div>
         </div>
+        <a href="index.html#research" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">Research</a>
+        <a href="mdos.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">MDOS</a>
+        <a href="about.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">About</a>
       </div>
-      <a href="index.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors font-medium">Research</a>
-      <a href="sectors.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors font-medium">Sectors</a>
-      <a href="index.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors font-medium">About</a>
-      <button class="btn-dark">Log In</button>
+      <a href="contact.html" class="border border-[var(--ink)] text-[var(--ink)] text-[11px] tracking-[.14em] uppercase px-5 py-2.5 font-medium hover:bg-[var(--ink)] hover:text-white transition-all duration-300 whitespace-nowrap" style="text-decoration:none;">Book a Demo</a>
     </div>
   </div>
 </nav>
@@ -389,7 +391,7 @@ footer{background:#fff;border-top:1px solid var(--border);padding:3.5rem 40px;}
         <span class="section-eyebrow">What we deliver</span>
         <span class="sl sl-r"></span>
       </div>
-      <h2 class="font-display font-light text-[clamp(2rem,3.8vw,3.4rem)] leading-[1.08]">Three pillars of our edge</h2>
+      <h2 class="font-display font-light text-[clamp(2.4rem,4vw,3.6rem)] leading-[1.08]">Three pillars of our edge</h2>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
       <div class="pcard" data-card data-reveal data-reveal-delay="1">
@@ -397,7 +399,7 @@ footer{background:#fff;border-top:1px solid var(--border);padding:3.5rem 40px;}
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="var(--gold)" stroke-width="1.2"><path d="M1 12 L5 7 L9 9 L14 2"/><circle cx="14" cy="2" r="1" fill="var(--gold)" stroke="none"/></svg>
         </div>
         <div class="section-eyebrow mb-3">FCF Screener</div>
-        <h3 class="font-display font-light text-[1.75rem] mb-3 leading-tight">Cash flow is king</h3>
+        <h3 class="font-display font-light text-[1.9rem] mb-3 leading-tight">Cash flow is king</h3>
         <p class="text-[13px] text-[var(--muted)] leading-relaxed">Rank every equity by free cash flow yield, owner earnings, and FCF conversion ratio. Filter out accounting noise and focus on real cash generation capacity.</p>
       </div>
       <div class="pcard" data-card data-reveal data-reveal-delay="2">
@@ -405,7 +407,7 @@ footer{background:#fff;border-top:1px solid var(--border);padding:3.5rem 40px;}
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="var(--gold)" stroke-width="1.2"><rect x="1" y="5" width="3" height="10"/><rect x="6.5" y="2" width="3" height="13"/><rect x="12" y="7" width="3" height="8"/></svg>
         </div>
         <div class="section-eyebrow mb-3">Quality Score</div>
-        <h3 class="font-display font-light text-[1.75rem] mb-3 leading-tight">Balance sheet strength</h3>
+        <h3 class="font-display font-light text-[1.9rem] mb-3 leading-tight">Balance sheet strength</h3>
         <p class="text-[13px] text-[var(--muted)] leading-relaxed">Composite scoring across ROIC, debt structure, accruals, and earnings stability. Separate durable compounders from value traps before you deploy capital.</p>
       </div>
       <div class="pcard" data-card data-reveal data-reveal-delay="3">
@@ -413,7 +415,7 @@ footer{background:#fff;border-top:1px solid var(--border);padding:3.5rem 40px;}
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="var(--gold)" stroke-width="1.2"><circle cx="8" cy="8" r="7"/><path d="M8 4 L8 8 L11 11"/></svg>
         </div>
         <div class="section-eyebrow mb-3">Contrarian Coverage</div>
-        <h3 class="font-display font-light text-[1.75rem] mb-3 leading-tight">When the crowd is wrong</h3>
+        <h3 class="font-display font-light text-[1.9rem] mb-3 leading-tight">When the crowd is wrong</h3>
         <p class="text-[13px] text-[var(--muted)] leading-relaxed">Curated coverage of high-quality US businesses trading below intrinsic value — with full valuation model, catalyst timeline, and downside scenarios.</p>
       </div>
     </div>
@@ -572,7 +574,7 @@ footer{background:#fff;border-top:1px solid var(--border);padding:3.5rem 40px;}
     <div class="perf-card" data-reveal id="perfCard">
       <div class="flex items-center justify-between flex-wrap gap-4 mb-6">
         <div class="perf-legend">
-          <div class="perf-leg-item"><span class="perf-leg-swatch" style="background:linear-gradient(90deg,var(--gold-d),var(--gold-l));"></span>Alpha Signals Model</div>
+          <div class="perf-leg-item"><span class="perf-leg-swatch" style="background:linear-gradient(90deg,var(--gold-deep),var(--gold-l));"></span>Alpha Signals Model</div>
           <div class="perf-leg-item"><span class="perf-leg-swatch" style="background:#c9c9c4;"></span>S&amp;P 500 TR</div>
         </div>
         <span class="chip">36-Month Simulation</span>
@@ -643,48 +645,13 @@ footer{background:#fff;border-top:1px solid var(--border);padding:3.5rem 40px;}
 </section>
 
 <!-- ─── FOOTER ─── -->
-<footer>
-  <div class="footer-inner">
-    <div class="footer-top">
-      <div class="footer-logo-area">
-        <div class="flex items-center gap-2 mb-2">
-          <span class="font-display font-light tracking-[.22em] text-[16px] uppercase">SEDGE</span>
-          <span class="font-display font-light tracking-[.22em] text-[16px] uppercase gold-text">Ventures</span>
-        </div>
-        <p class="text-[12px] text-[var(--muted)] font-light tracking-[.06em]">Systematic Equity Investment Management</p>
-      </div>
-      <div class="footer-links-grid">
-        <div class="footer-links-col">
-          <div class="footer-col-title">Products</div>
-          <a href="pharma.html">Pharma Research</a>
-          <a href="backtest.html">Trade Backtest &amp; Algo</a>
-          <a href="forex.html">Forex</a>
-          <a href="value-picks.html">Alpha Signals</a>
-        </div>
-        <div class="footer-links-col">
-          <div class="footer-col-title">Company</div>
-          <a href="index.html">Strategies</a>
-          <a href="index.html#sectors">Sectors</a>
-          <a href="index.html">About</a>
-          <a href="#">Research</a>
-        </div>
-        <div class="footer-links-col">
-          <div class="footer-col-title">Legal</div>
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Use</a>
-          <a href="#">Regulatory</a>
-          <a href="#">Disclosures</a>
-        </div>
-      </div>
+<footer class="relative z-10 border-t border-gray-100 py-14 px-8">
+  <div class="max-w-screen-xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+    <div>
+      <div class="flex items-center gap-2 mb-2"><span class="font-display font-light tracking-[.22em] text-[16px] uppercase">SEDGE</span><span class="font-display font-light tracking-[.22em] text-[16px] uppercase gold-text">Ventures</span></div>
+      <p class="text-[12px] text-[var(--muted)] font-light tracking-[.06em]">Systematic Equity Investment Management</p>
     </div>
-    <div class="footer-bottom">
-      <p>© 2026 SEDGE Ventures. All rights reserved.</p>
-      <div class="flex items-center gap-6">
-        <a href="#" class="text-[11px] text-[var(--muted)] hover:text-[var(--ink)] transition-colors">Privacy</a>
-        <a href="#" class="text-[11px] text-[var(--muted)] hover:text-[var(--ink)] transition-colors">Terms</a>
-        <a href="#" class="text-[11px] text-[var(--muted)] hover:text-[var(--ink)] transition-colors">Regulatory</a>
-      </div>
-    </div>
+    <p class="text-[11px] text-[var(--muted)] font-light tracking-[.08em]">© 2026 SEDGE Ventures. All rights reserved.</p>
   </div>
 </footer>
 

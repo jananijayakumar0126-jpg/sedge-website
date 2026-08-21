@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MDOS — SEDGE Ventures</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+<script>
+  tailwind.config = {
+    theme: { extend: { fontFamily: { display: ['Cormorant Garamond','serif'], sans: ['Inter','sans-serif'] } } }
+  }
+</script>
+<style>
+  :root { --gold:#c9a462; --gold-l:#e2bc79; --gold-d:#a07d3a; --ink:#0a0a0a; --muted:#5a5a5a; }
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  html, html.lenis { height:auto; }
+  .lenis.lenis-smooth { scroll-behavior:auto; }
+  body { font-family:'Inter',sans-serif; background:#fff; color:var(--ink); overflow-x:hidden; }
+  body::before { content:''; position:fixed; inset:0; z-index:0; pointer-events:none; background-image:linear-gradient(rgba(0,0,0,0.038) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,0.038) 1px,transparent 1px); background-size:44px 44px; }
+  #nav { position:fixed; top:0; left:0; right:0; z-index:900; transition:background .45s ease,border-color .45s ease,backdrop-filter .45s ease; border-bottom:1px solid transparent; }
+  #nav.stuck { background:rgba(255,255,255,.92); backdrop-filter:blur(22px); border-color:rgba(0,0,0,.07); }
+  .nav-dropdown { position:relative; }
+  .nav-dropdown-menu { position:absolute; top:calc(100% + 16px); left:50%; transform:translateX(-50%) translateY(-6px); background:#fff; border:1px solid rgba(0,0,0,.08); box-shadow:0 16px 48px rgba(0,0,0,.1); min-width:220px; padding:8px 0; opacity:0; pointer-events:none; transition:opacity .25s ease,transform .25s ease; }
+  .nav-dropdown:hover .nav-dropdown-menu, .nav-dropdown-menu:hover { opacity:1; pointer-events:all; transform:translateX(-50%) translateY(0); }
+  .nav-dropdown-menu a { display:flex; align-items:center; gap:10px; padding:11px 20px; font-size:11px; letter-spacing:.13em; text-transform:uppercase; font-weight:500; color:var(--muted); text-decoration:none; transition:background .2s,color .2s; }
+  .nav-dropdown-menu a:hover { background:#fafafa; color:var(--ink); }
+  .nav-dropdown-menu a .dd-dot { width:5px; height:5px; border-radius:50%; background:var(--gold); flex-shrink:0; }
+  .nav-dropdown > .nav-link-btn::after { content:''; display:inline-block; width:5px; height:5px; border-right:1px solid currentColor; border-bottom:1px solid currentColor; transform:rotate(45deg) translateY(-2px); margin-left:5px; vertical-align:middle; }
+  .gold-text { color:var(--gold); }
+  .eyebrow { font-size:10px; letter-spacing:.28em; text-transform:uppercase; font-weight:500; color:var(--gold); }
+  .axis-label { font-family:'Inter',sans-serif; font-size:8.5px; letter-spacing:.2em; text-transform:uppercase; fill:#a8a8a8; font-weight:500; }
+
+  /* dimension list */
+  .dim-row { display:grid; grid-template-columns:44px 1fr; gap:18px; align-items:baseline; padding:18px 0; border-top:1px solid rgba(0,0,0,.07); cursor:default; transition:opacity .3s; }
+  .dim-row:last-child { border-bottom:1px solid rgba(0,0,0,.07); }
+  .dim-key { font-family:'Cormorant Garamond',serif; font-size:20px; font-style:italic; color:var(--gold); line-height:1; }
+  .dim-name { font-family:'Cormorant Garamond',serif; font-size:23px; font-weight:400; letter-spacing:-.01em; line-height:1.2; }
+  .dim-desc { font-size:13px; color:var(--muted); font-weight:300; margin-top:4px; line-height:1.6; }
+  .dims.dimmed .dim-row { opacity:.32; }
+  .dims.dimmed .dim-row.on { opacity:1; }
+  @media (max-width:1000px) { .nav-links { display:none; } }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="max-w-screen-xl mx-auto px-8 py-5 flex items-center justify-between gap-12 relative z-10">
+    <a href="index.html" style="text-decoration:none;color:inherit;display:flex;align-items:center;gap:0.5rem;">
+      <span class="font-display font-light tracking-[.22em] text-[17px] uppercase">SEDGE</span>
+      <span class="font-display font-light tracking-[.22em] text-[17px] uppercase gold-text ml-2">Ventures</span>
+    </a>
+    <div class="flex items-center gap-9">
+      <div class="nav-links flex items-center gap-9">
+        <a href="index.html#our-products" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">Strategies</a>
+        <div class="nav-dropdown" id="productsDropdown">
+          <span class="nav-link-btn text-[11px] tracking-[.14em] uppercase font-medium cursor-pointer select-none" style="">Products</span>
+          <div class="nav-dropdown-menu">
+            <a href="pharma.html"><span class="dd-dot"></span>Pharma Research</a>
+            <a href="forex.html"><span class="dd-dot"></span>Forex</a>
+            <a href="value-picks.html"><span class="dd-dot"></span>Alpha Signals</a>
+          </div>
+        </div>
+        <a href="index.html#research" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">Research</a>
+        <a href="mdos.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--gold)] font-medium">MDOS</a>
+        <a href="about.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">About</a>
+      </div>
+      <a href="contact.html" class="border border-[var(--ink)] text-[var(--ink)] text-[11px] tracking-[.14em] uppercase px-5 py-2.5 font-medium hover:bg-[var(--ink)] hover:text-white transition-all duration-300 whitespace-nowrap" style="text-decoration:none;">Book a Demo</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="relative z-10" style="padding:9rem 2rem 6rem;overflow:hidden;">
+  <div style="position:absolute;top:-140px;right:-80px;width:560px;height:560px;border-radius:50%;background:radial-gradient(circle,rgba(201,164,98,.07) 0%,transparent 70%);pointer-events:none;"></div>
+  <div class="max-w-screen-xl mx-auto">
+    <a href="index.html" id="h-crumb" style="display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;color:var(--muted);text-decoration:none;margin-bottom:3.5rem;transition:color .2s;opacity:0;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--muted)'">← Home</a>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;" id="hero-grid">
+      <div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:1.6rem;opacity:0;" id="h-eye">
+          <span style="display:block;height:1px;width:28px;background:linear-gradient(90deg,var(--gold),transparent);"></span>
+          <span class="eyebrow">Built in-house · Not for sale</span>
+        </div>
+        <h1 id="h-title" class="font-display font-light" style="font-size:clamp(2.6rem,4.2vw,4.8rem);line-height:1.04;letter-spacing:-.025em;opacity:0;transform:translateY(28px);">
+          Every option in the chain, scored on the <em style="font-style:italic;color:var(--gold);">same five questions</em>.
+        </h1>
+        <p id="h-sub" class="text-[15px] leading-[1.9] text-[var(--muted)] font-light" style="margin-top:1.8rem;max-width:440px;opacity:0;">
+          MDOS is the screener our own desk runs before it trades. It replaces scanning the chain by feel with one shortlist, built the same way every time.
+        </p>
+      </div>
+
+      <!-- composite heatmap -->
+      <div id="h-map" style="opacity:0;">
+        <svg id="heat" viewBox="-46 -18 400 250" style="width:100%;height:auto;display:block;overflow:visible;"></svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FUNNEL ═══ -->
+<section class="relative z-10" style="padding:6rem 2rem 7rem;background:#fafaf8;border-top:1px solid rgba(0,0,0,.06);border-bottom:1px solid rgba(0,0,0,.06);">
+  <div class="max-w-screen-xl mx-auto" style="max-width:900px;">
+    <div style="text-align:center;margin-bottom:4rem;">
+      <h2 class="font-display font-light" style="font-size:clamp(2.4rem,4vw,3.6rem);line-height:1.1;letter-spacing:-.02em;">One chain in. <em style="font-style:italic;color:var(--gold);">One contract out.</em></h2>
+    </div>
+
+    <div id="funnel" style="display:flex;flex-direction:column;gap:1.4rem;align-items:center;">
+      <div class="fstep" style="width:100%;">
+        <div class="fbar" style="height:56px;background:#e8e5de;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;transform-origin:center;">
+          <span class="font-display" style="font-size:30px;font-weight:300;letter-spacing:-.02em;">1,247</span>
+          <span style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:500;">contracts in the chain</span>
+        </div>
+      </div>
+      <div class="fstep" style="width:62%;">
+        <div class="fbar" style="height:56px;background:#d8cfba;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;transform-origin:center;">
+          <span class="font-display" style="font-size:30px;font-weight:300;letter-spacing:-.02em;">84</span>
+          <span style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#6b6350;font-weight:500;">clear the risk gate</span>
+        </div>
+      </div>
+      <div class="fstep" style="width:30%;">
+        <div class="fbar" style="height:56px;background:var(--gold);display:flex;align-items:center;justify-content:space-between;padding:0 2rem;transform-origin:center;">
+          <span class="font-display" style="font-size:30px;font-weight:300;letter-spacing:-.02em;color:#fff;">1</span>
+          <span style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.85);font-weight:500;">ranked first</span>
+        </div>
+      </div>
+    </div>
+
+    <p id="funnel-note" class="text-[13px] text-[var(--muted)] font-light" style="text-align:center;margin-top:2.6rem;max-width:520px;margin-left:auto;margin-right:auto;line-height:1.8;">
+      Nothing is picked because it looked cheap. Everything that survives has been priced, scored, and risk-checked against the same rules.
+    </p>
+  </div>
+</section>
+
+<!-- ═══ FIVE DIMENSIONS ═══ -->
+<section class="relative z-10" style="padding:7rem 2rem;">
+  <div class="max-w-screen-xl mx-auto">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;">
+
+      <!-- radar -->
+      <div id="radar-wrap" style="opacity:0;">
+        <svg id="radar" viewBox="-170 -170 340 340" style="width:100%;max-width:420px;height:auto;display:block;margin:0 auto;overflow:visible;"></svg>
+        <p style="text-align:center;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#b0b0b0;font-weight:500;margin-top:1.4rem;">Illustrative contract profile</p>
+      </div>
+
+      <!-- list -->
+      <div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:1.4rem;">
+          <span style="display:block;height:1px;width:28px;background:linear-gradient(90deg,var(--gold),transparent);"></span>
+          <span class="eyebrow">The five dimensions</span>
+        </div>
+        <h2 class="font-display font-light" style="font-size:clamp(2.4rem,4vw,3.6rem);line-height:1.1;letter-spacing:-.02em;margin-bottom:2.4rem;">Five questions,<br>asked of every contract.</h2>
+
+        <div class="dims" id="dims">
+          <div class="dim-row" data-d="0">
+            <span class="dim-key">D1</span>
+            <div><div class="dim-name">Risk / Reward</div><div class="dim-desc">Payoff per dollar paid, if the view is right.</div></div>
+          </div>
+          <div class="dim-row" data-d="1">
+            <span class="dim-key">D2</span>
+            <div><div class="dim-name">Vol Cheapness</div><div class="dim-desc">Cheap or dear against its own history.</div></div>
+          </div>
+          <div class="dim-row" data-d="2">
+            <span class="dim-key">D3</span>
+            <div><div class="dim-name">Skew Edge</div><div class="dim-desc">Which side of the smile you're buying.</div></div>
+          </div>
+          <div class="dim-row" data-d="3">
+            <span class="dim-key">D4</span>
+            <div><div class="dim-name">Delta Fit</div><div class="dim-desc">The exposure you actually wanted.</div></div>
+          </div>
+          <div class="dim-row" data-d="4">
+            <span class="dim-key">D5</span>
+            <div><div class="dim-name">Catalyst Timing</div><div class="dim-desc">Whether expiry catches the event.</div></div>
+          </div>
+        </div>
+
+        <p class="text-[13px] text-[var(--muted)] font-light" style="margin-top:2rem;line-height:1.8;max-width:420px;">
+          Weighted into one score between 0 and 1. The best contract is rarely the cheapest or the highest-payoff — it's the one that answers all five well.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CLOSING BAND ═══ -->
+<section class="relative z-10" style="padding:5.5rem 2rem;background:var(--ink);">
+  <div class="max-w-screen-xl mx-auto" style="display:flex;align-items:center;justify-content:space-between;gap:3rem;flex-wrap:wrap;">
+    <div style="max-width:600px;">
+      <span class="eyebrow" style="color:var(--gold);">A second market</span>
+      <p class="font-display font-light" style="font-size:clamp(1.6rem,2.4vw,2.2rem);line-height:1.32;letter-spacing:-.015em;color:#fff;margin-top:1rem;">
+        The same five-dimension engine prices and ranks <em style="font-style:italic;color:var(--gold);">freight, bunker and cargo</em> options — with CVaR-capped sizing.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <span style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;padding:7px 14px;border:1px solid rgba(201,164,98,.35);color:var(--gold);">Black-76</span>
+      <span style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;padding:7px 14px;border:1px solid rgba(201,164,98,.35);color:var(--gold);">VaR &amp; Stress</span>
+      <span style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;padding:7px 14px;border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.5);">Internal only</span>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="relative z-10 border-t border-gray-100 py-14 px-8">
+  <div class="max-w-screen-xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+    <div>
+      <div class="flex items-center gap-2 mb-2"><span class="font-display font-light tracking-[.22em] text-[16px] uppercase">SEDGE</span><span class="font-display font-light tracking-[.22em] text-[16px] uppercase gold-text">Ventures</span></div>
+      <p class="text-[12px] text-[var(--muted)] font-light tracking-[.06em]">Systematic Equity Investment Management</p>
+    </div>
+    <p class="text-[11px] text-[var(--muted)] font-light tracking-[.08em]">© 2026 SEDGE Ventures. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+'use strict';
+gsap.registerPlugin(ScrollTrigger);
+const lenis = new Lenis({ duration:1.4, easing:t=>Math.min(1,1.001-Math.pow(2,-10*t)) });
+lenis.on('scroll', ScrollTrigger.update);
+gsap.ticker.add(t=>lenis.raf(t*1000));
+gsap.ticker.lagSmoothing(0);
+lenis.on('scroll', ({scroll})=>{ document.getElementById('nav').classList.toggle('stuck', scroll>50); });
+
+const NS = 'http://www.w3.org/2000/svg';
+const el = (n, attrs) => { const e = document.createElementNS(NS, n); for (const k in attrs) e.setAttribute(k, attrs[k]); return e; };
+
+/* ── Composite heatmap: strike × expiry, coloured by score ─────────────────── */
+(function heatmap() {
+  const svg = document.getElementById('heat');
+  const COLS = 12, ROWS = 7, CELL = 26, GAP = 3, P = CELL + GAP;
+  // Smooth score surface with one clear peak, so the "winner" reads instantly.
+  const peak = { c: 7.4, r: 2.6 }, sx = 3.1, sy = 1.9;
+  const score = (c, r) =>
+    Math.exp(-(((c - peak.c) ** 2) / (2 * sx * sx) + ((r - peak.r) ** 2) / (2 * sy * sy)))
+    + 0.28 * Math.exp(-(((c - 2.5) ** 2) / 7 + ((r - 5) ** 2) / 3));
+
+  const lo = [244, 242, 238], hi = [201, 164, 98];
+  const mix = t => `rgb(${lo.map((v, i) => Math.round(v + (hi[i] - v) * t)).join(',')})`;
+
+  let best = { v: -1 };
+  const cells = [];
+  for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) {
+    const v = Math.min(1, score(c, r));
+    if (v > best.v) best = { v, c, r };
+    const rect = el('rect', { x: c * P, y: r * P, width: CELL, height: CELL, fill: mix(v), opacity: 0 });
+    svg.appendChild(rect); cells.push(rect);
+  }
+
+  const W = COLS * P - GAP, H = ROWS * P - GAP;
+
+  // winner cell + ring
+  const bx = best.c * P, by = best.r * P;
+  svg.appendChild(el('rect', { x: bx, y: by, width: CELL, height: CELL, fill: '#a07d3a' }));
+  const ring = el('rect', { x: bx - 5, y: by - 5, width: CELL + 10, height: CELL + 10, fill: 'none', stroke: '#a07d3a', 'stroke-width': 1.2, opacity: 0 });
+  ring.id = 'heat-ring'; svg.appendChild(ring);
+
+  // Callout chip — sits on a solid card so it stays legible over the cells,
+  // and flips to the left of the winner if it would overflow the grid.
+  const CW = 86, CH = 36, GAPX = 12;
+  const flip = bx + CELL + GAPX + CW > W;
+  const cx0 = flip ? bx - GAPX - CW : bx + CELL + GAPX;
+  const cy0 = by + CELL / 2 - CH / 2;
+  const midY = by + CELL / 2;
+
+  const chip = el('g', { opacity: 0 }); chip.id = 'heat-chip';
+  chip.appendChild(el('line', {
+    x1: flip ? bx - 3 : bx + CELL + 3, y1: midY,
+    x2: flip ? cx0 + CW : cx0, y2: midY,
+    stroke: '#a07d3a', 'stroke-width': 1
+  }));
+  chip.appendChild(el('rect', { x: cx0, y: cy0, width: CW, height: CH, fill: '#fff', stroke: 'rgba(160,125,58,.4)', 'stroke-width': 1 }));
+  const t1 = el('text', { x: cx0 + 11, y: cy0 + 16, fill: '#a07d3a', 'font-size': 13, 'font-family': 'Inter,sans-serif', 'font-weight': 600 });
+  t1.textContent = '0.87';
+  const t2 = el('text', { x: cx0 + 11, y: cy0 + 28, fill: '#9a9a9a', 'font-size': 7.5, 'font-family': 'Inter,sans-serif', 'letter-spacing': '.16em', 'font-weight': 500 });
+  t2.textContent = 'RANKED 1ST';
+  chip.appendChild(t1); chip.appendChild(t2);
+  svg.appendChild(chip);
+
+  // axes
+  const ax1 = el('text', { x: 0, y: H + 22, class: 'axis-label' }); ax1.textContent = 'STRIKE →';
+  const ax2 = el('text', { x: -12, y: 0, class: 'axis-label', transform: `rotate(-90 -12 0)`, 'text-anchor': 'end' }); ax2.textContent = 'EXPIRY →';
+  svg.appendChild(ax1); svg.appendChild(ax2);
+
+  ScrollTrigger.create({
+    trigger: '#h-map', start: 'top 92%', once: true,
+    onEnter() {
+      gsap.to(cells, { opacity: 1, duration: .5, ease: 'power2.out', stagger: { each: .006, from: 'start' } });
+      gsap.to(['#heat-ring', '#heat-chip'], { opacity: 1, duration: .7, ease: 'power2.out', delay: 1.0, stagger: .12 });
+    }
+  });
+})();
+
+/* ── Radar: the five dimensions for one contract ───────────────────────────── */
+(function radar() {
+  const svg = document.getElementById('radar');
+  const R = 118, N = 5;
+  const VALS = [0.92, 0.74, 0.61, 0.99, 0.86];
+  const NAMES = ['D1', 'D2', 'D3', 'D4', 'D5'];
+  const ang = i => (-90 + i * (360 / N)) * Math.PI / 180;
+  const pt = (i, f) => [Math.cos(ang(i)) * R * f, Math.sin(ang(i)) * R * f];
+  const poly = f => Array.from({ length: N }, (_, i) => pt(i, f).join(',')).join(' ');
+
+  // grid rings
+  [0.25, 0.5, 0.75, 1].forEach(f => {
+    svg.appendChild(el('polygon', { points: poly(f), fill: 'none', stroke: 'rgba(0,0,0,.09)', 'stroke-width': 1 }));
+  });
+  // spokes
+  for (let i = 0; i < N; i++) {
+    const [x, y] = pt(i, 1);
+    svg.appendChild(el('line', { x1: 0, y1: 0, x2: x, y2: y, stroke: 'rgba(0,0,0,.09)', 'stroke-width': 1 }));
+  }
+  // value polygon
+  const shape = el('polygon', {
+    points: Array.from({ length: N }, (_, i) => pt(i, VALS[i]).join(',')).join(' '),
+    fill: 'rgba(201,164,98,.16)', stroke: '#c9a462', 'stroke-width': 1.6
+  });
+  shape.id = 'radar-shape';
+  svg.appendChild(shape);
+  // vertices + axis keys
+  const dots = [];
+  for (let i = 0; i < N; i++) {
+    const [vx, vy] = pt(i, VALS[i]);
+    const d = el('circle', { cx: vx, cy: vy, r: 3.4, fill: '#c9a462' });
+    d.dataset.d = i; svg.appendChild(d); dots.push(d);
+
+    const [lx, ly] = pt(i, 1.24);
+    const t = el('text', {
+      x: lx, y: ly + 4, fill: '#9a9a9a', 'font-size': 11, 'font-family': 'Cormorant Garamond,serif',
+      'font-style': 'italic', 'text-anchor': Math.abs(lx) < 6 ? 'middle' : (lx > 0 ? 'start' : 'end')
+    });
+    t.textContent = NAMES[i]; t.dataset.k = i;
+    svg.appendChild(t);
+  }
+
+  // hovering a dimension row highlights its vertex
+  const dims = document.getElementById('dims');
+  dims.querySelectorAll('.dim-row').forEach(row => {
+    row.addEventListener('mouseenter', () => {
+      const i = +row.dataset.d;
+      dims.classList.add('dimmed'); row.classList.add('on');
+      dots.forEach((d, j) => gsap.to(d, { attr: { r: j === i ? 6 : 3.4 }, duration: .3, ease: 'power2.out' }));
+      svg.querySelectorAll('text[data-k]').forEach(t => t.setAttribute('fill', +t.dataset.k === i ? '#c9a462' : '#9a9a9a'));
+    });
+    row.addEventListener('mouseleave', () => {
+      dims.classList.remove('dimmed'); row.classList.remove('on');
+      dots.forEach(d => gsap.to(d, { attr: { r: 3.4 }, duration: .3 }));
+      svg.querySelectorAll('text[data-k]').forEach(t => t.setAttribute('fill', '#9a9a9a'));
+    });
+  });
+
+  ScrollTrigger.create({
+    trigger: '#radar-wrap', start: 'top 82%', once: true,
+    onEnter() {
+      gsap.to('#radar-wrap', { opacity: 1, duration: .6, ease: 'power2.out' });
+      gsap.from('#radar-shape', { scale: 0.1, transformOrigin: 'center', duration: 1.1, ease: 'power3.out' });
+      gsap.from(dots, { scale: 0, transformOrigin: 'center', duration: .5, ease: 'back.out(2)', stagger: .07, delay: .45 });
+    }
+  });
+})();
+
+/* ── Entrances ─────────────────────────────────────────────────────────────── */
+gsap.to('#h-crumb', { opacity: 1, duration: .7, ease: 'power2.out', delay: .15 });
+gsap.to('#h-eye',   { opacity: 1, duration: .8, ease: 'power2.out', delay: .3 });
+gsap.to('#h-title', { opacity: 1, y: 0, duration: 1.1, ease: 'power4.out', delay: .42 });
+gsap.to('#h-sub',   { opacity: 1, duration: 1.0, ease: 'power2.out', delay: .62 });
+gsap.to('#h-map',   { opacity: 1, duration: .9, ease: 'power2.out', delay: .55 });
+
+ScrollTrigger.create({
+  trigger: '#funnel', start: 'top 80%', once: true,
+  onEnter() {
+    gsap.from('.fbar', { scaleX: 0, duration: .95, ease: 'power3.out', stagger: .14 });
+    gsap.from('#funnel-note', { opacity: 0, y: 14, duration: .8, ease: 'power2.out', delay: .7 });
+  }
+});
+</script>
+</body>
+</html>

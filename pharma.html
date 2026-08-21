@@ -67,34 +67,34 @@
   @keyframes scan { 0%{top:-80%} 100%{top:160%} }
   .score-bar-track { height:4px; background:rgba(0,0,0,.06); border-radius:2px; overflow:hidden; }
   .score-bar-fill  { height:100%; border-radius:2px; background:linear-gradient(90deg,#4dbb77,var(--gold)); width:0; transition:width 1.4s cubic-bezier(.22,1,.36,1); }
+  @media (max-width:1000px) { .nav-links { display:none; } }
 </style>
 </head>
 <body>
 
 <!-- NAV -->
 <nav id="nav">
-  <div class="max-w-screen-xl mx-auto px-8 py-5 flex items-center justify-between relative z-10">
-    <div class="flex items-center gap-1">
-      <a href="index.html" style="text-decoration:none;color:inherit;display:flex;align-items:center;gap:0.5rem;">
-        <span class="font-display font-light tracking-[.22em] text-[17px] uppercase">SEDGE</span>
-        <span class="font-display font-light tracking-[.22em] text-[17px] uppercase gold-text ml-2">Ventures</span>
-      </a>
-    </div>
+  <div class="max-w-screen-xl mx-auto px-8 py-5 flex items-center justify-between gap-12 relative z-10">
+    <a href="index.html" style="text-decoration:none;color:inherit;display:flex;align-items:center;gap:0.5rem;">
+      <span class="font-display font-light tracking-[.22em] text-[17px] uppercase">SEDGE</span>
+      <span class="font-display font-light tracking-[.22em] text-[17px] uppercase gold-text ml-2">Ventures</span>
+    </a>
     <div class="flex items-center gap-9">
-      <a href="index.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">Strategies</a>
-      <div class="nav-dropdown" id="productsDropdown">
-        <span class="nav-link-btn text-[11px] tracking-[.14em] uppercase font-medium cursor-pointer select-none" style="color:var(--gold);">Products</span>
-        <div class="nav-dropdown-menu">
-          <a href="pharma.html" class="active"><span class="dd-dot"></span>Pharma Research</a>
-          <a href="backtest.html"><span class="dd-dot"></span>Trade Backtest &amp; Algo</a>
-          <a href="forex.html"><span class="dd-dot"></span>Forex</a>
-          <a href="value-picks.html"><span class="dd-dot"></span>Alpha Signals</a>
+      <div class="nav-links flex items-center gap-9">
+        <a href="index.html#our-products" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">Strategies</a>
+        <div class="nav-dropdown" id="productsDropdown">
+          <span class="nav-link-btn text-[11px] tracking-[.14em] uppercase font-medium cursor-pointer select-none" style="color:var(--gold);">Products</span>
+          <div class="nav-dropdown-menu">
+            <a href="pharma.html" class="active"><span class="dd-dot"></span>Pharma Research</a>
+            <a href="forex.html"><span class="dd-dot"></span>Forex</a>
+            <a href="value-picks.html"><span class="dd-dot"></span>Alpha Signals</a>
+          </div>
         </div>
+        <a href="index.html#research" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">Research</a>
+        <a href="mdos.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">MDOS</a>
+        <a href="about.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">About</a>
       </div>
-      <a href="index.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">Research</a>
-      <a href="sectors.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">Sectors</a>
-      <a href="index.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">About</a>
-      <button class="border border-[var(--ink)] text-[var(--ink)] text-[11px] tracking-[.14em] uppercase px-5 py-2.5 font-medium hover:bg-[var(--ink)] hover:text-white transition-all duration-300">Log In</button>
+      <a href="contact.html" class="border border-[var(--ink)] text-[var(--ink)] text-[11px] tracking-[.14em] uppercase px-5 py-2.5 font-medium hover:bg-[var(--ink)] hover:text-white transition-all duration-300 whitespace-nowrap" style="text-decoration:none;">Book a Demo</a>
     </div>
   </div>
 </nav>
@@ -114,7 +114,7 @@
     <!-- Title block -->
     <div>
       <div>
-        <h1 id="hero-h1" class="font-display font-light" style="font-size:clamp(2.6rem,4.2vw,4.4rem);line-height:1.05;letter-spacing:-0.025em;color:var(--ink);opacity:0;transform:translateY(28px);">
+        <h1 id="hero-h1" class="font-display font-light" style="font-size:clamp(2.6rem,4.2vw,4.8rem);line-height:1.05;letter-spacing:-0.025em;color:var(--ink);opacity:0;transform:translateY(28px);">
           Pharma<br><em style="font-style:italic;color:var(--gold);">Research</em>
         </h1>
         <p id="hero-desc" class="font-light" style="margin-top:1.6rem;font-size:14px;color:var(--muted);line-height:1.9;max-width:420px;letter-spacing:.01em;opacity:0;transform:translateY(20px);">
@@ -392,6 +392,22 @@
   </div>
 </section>
 
+<!-- CTA — BOOK A DEMO -->
+<section class="relative z-10 py-24 px-8" style="background:var(--ink);text-align:center;">
+  <div class="max-w-screen-xl mx-auto" style="max-width:640px;">
+    <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:1.4rem;">
+      <span style="display:block;height:1px;width:28px;background:linear-gradient(90deg,transparent,var(--gold));"></span>
+      <span style="font-size:10px;letter-spacing:.28em;text-transform:uppercase;font-weight:500;color:var(--gold);">Available Now</span>
+      <span style="display:block;height:1px;width:28px;background:linear-gradient(90deg,var(--gold),transparent);"></span>
+    </div>
+    <h2 class="font-display font-light" style="font-size:clamp(2.4rem,4vw,3.6rem);line-height:1.1;letter-spacing:-0.02em;color:#fff;margin-bottom:1.2rem;">
+      Pharma Research is the one product on the desk we're opening up. <em style="font-style:italic;color:var(--gold);">See it on your own coverage.</em>
+    </h2>
+    <p class="text-[15px] leading-[1.8] font-light" style="color:rgba(255,255,255,.55);margin-bottom:2.2rem;">Book a 30-minute walkthrough of the FDA Calendar, the knowledge graph, and Diamond Hunter — no commitment.</p>
+    <a href="contact.html" class="border text-[12px] tracking-[.14em] uppercase px-7 py-4 font-medium transition-all duration-300" style="text-decoration:none;border-color:var(--gold);color:var(--gold);display:inline-block;">Book a Demo</a>
+  </div>
+</section>
+
 <!-- FOOTER -->
 <footer class="relative z-10 border-t border-gray-100 py-14 px-8">
   <div class="max-w-screen-xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
@@ -399,7 +415,7 @@
       <div class="flex items-center gap-2 mb-2"><span class="font-display font-light tracking-[.22em] text-[16px] uppercase">SEDGE</span><span class="font-display font-light tracking-[.22em] text-[16px] uppercase gold-text">Ventures</span></div>
       <p class="text-[12px] text-[var(--muted)] font-light tracking-[.06em]">Systematic Equity Investment Management</p>
     </div>
-    <p class="text-[11px] text-[var(--muted)] font-light tracking-[.08em]">© 2025 SEDGE Ventures. All rights reserved.</p>
+    <p class="text-[11px] text-[var(--muted)] font-light tracking-[.08em]">© 2026 SEDGE Ventures. All rights reserved.</p>
   </div>
 </footer>
 
@@ -529,52 +545,96 @@ ScrollTrigger.create({ trigger:'#ph-graph', start:'top 74%', onEnter(){
   const canvas=document.getElementById('cv-phgraph');
   if(!canvas) return;
   const wrap=canvas.parentElement;
-  function resize(){ const W=wrap.clientWidth,H=wrap.clientHeight; renderer.setSize(W,H); camera.aspect=W/H; camera.updateProjectionMatrix(); }
-  const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
-  renderer.setPixelRatio(Math.min(devicePixelRatio,2)); renderer.setClearColor(0x0d1117,1);
-  const scene=new THREE.Scene(), camera=new THREE.PerspectiveCamera(48,1,0.1,100);
-  camera.position.z=8; resize(); window.addEventListener('resize',resize);
-  const AREAS=[{color:0x4dbb77},{color:0x00d4c8},{color:0xc9a462},{color:0xa78bfa},{color:0xfb923c}];
+  const ctx=canvas.getContext('2d');
+  if(!ctx) return;
+
+  let W=0,H=0;
+  const DPR=Math.min(devicePixelRatio||1,2);
+  function resize(){
+    W=wrap.clientWidth; H=wrap.clientHeight;
+    canvas.width=W*DPR; canvas.height=H*DPR;
+    canvas.style.width=W+'px'; canvas.style.height=H+'px';
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+  }
+  resize(); window.addEventListener('resize',resize);
+
+  const AREAS=['#4dbb77','#00d4c8','#c9a462','#a78bfa','#fb923c'];
   const TICKERS=['MRNA','NVO','BMY','REGN','ABBV','PFE'];
-  const N=55, nodes=[], nodeGroup=new THREE.Group(); scene.add(nodeGroup);
+  const N=55, nodes=[];
   const highlightIdx=[2,9,17,28,36,48];
+
+  function hexToRgb(hex){ const n=parseInt(hex.slice(1),16); return [(n>>16)&255,(n>>8)&255,n&255]; }
+  function rgba(hex,a){ const [r,g,b]=hexToRgb(hex); return 'rgba('+r+','+g+','+b+','+a+')'; }
+
   for(let i=0;i<N;i++){
-    const areaIdx=Math.floor(Math.random()*AREAS.length),area=AREAS[areaIdx],isHL=highlightIdx.includes(i),r=isHL?.11:.065+Math.random()*.035;
-    const mat=new THREE.MeshBasicMaterial({color:area.color,transparent:true,opacity:isHL?1.0:.55+Math.random()*.35});
-    const mesh=new THREE.Mesh(new THREE.SphereGeometry(r,10,10),mat);
+    const areaIdx=Math.floor(Math.random()*AREAS.length),isHL=highlightIdx.includes(i),r=isHL?.11:.065+Math.random()*.035;
     const theta=Math.random()*Math.PI*2,phi=Math.acos(2*Math.random()-1),rad=1.8+Math.random()*2.4;
-    mesh.position.set(rad*Math.sin(phi)*Math.cos(theta),rad*Math.sin(phi)*Math.sin(theta)*.72,rad*Math.cos(phi)*.55);
-    mesh.userData={area:areaIdx,isHL,r,origOpacity:mat.opacity,origColor:area.color,phase:Math.random()*Math.PI*2,finalPos:mesh.position.clone()};
-    mesh.position.set(0,0,0); nodeGroup.add(mesh); nodes.push(mesh);
+    const fx=rad*Math.sin(phi)*Math.cos(theta), fy=rad*Math.sin(phi)*Math.sin(theta)*.72, fz=rad*Math.cos(phi)*.55;
+    nodes.push({areaIdx,isHL,r,color:AREAS[areaIdx],origOpacity:isHL?1.0:.55+Math.random()*.35,fx,fy,fz,scale:0,x:0,y:0,z:0});
   }
-  const edgeMat=new THREE.LineBasicMaterial({color:0x4dbb77,transparent:true,opacity:0.10}), edges=[];
+  nodes.forEach((n,idx)=>{ gsap.to(n,{scale:1,duration:1.4+Math.random()*.5,ease:'power3.out',delay:.3+idx*.018}); });
+
+  const edges=[];
   for(let i=0;i<N;i++) for(let j=i+1;j<N;j++){
-    if(nodes[i].userData.finalPos.distanceTo(nodes[j].userData.finalPos)<2.2){
-      const mat=edgeMat.clone();
-      nodeGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([nodes[i].userData.finalPos,nodes[j].userData.finalPos]),mat));
-      edges.push({i,j,baseMat:mat});
-    }
+    const dx=nodes[i].fx-nodes[j].fx, dy=nodes[i].fy-nodes[j].fy, dz=nodes[i].fz-nodes[j].fz;
+    if(Math.sqrt(dx*dx+dy*dy+dz*dz)<2.2) edges.push({i,j,opacity:0.10});
   }
-  nodes.forEach((n,idx)=>{ gsap.to(n.position,{x:n.userData.finalPos.x,y:n.userData.finalPos.y,z:n.userData.finalPos.z,duration:1.4+Math.random()*.5,ease:'power3.out',delay:.3+idx*.018}); });
-  const raycaster=new THREE.Raycaster(), mouse=new THREE.Vector2(-99,-99); let hoveredIdx=-1;
-  canvas.addEventListener('mousemove',e=>{ const r=canvas.getBoundingClientRect(); mouse.x=((e.clientX-r.left)/r.width)*2-1; mouse.y=-((e.clientY-r.top)/r.height)*2+1; });
-  canvas.addEventListener('mouseleave',()=>{ mouse.set(-99,-99); });
+
+  let mouseX=-9999, mouseY=-9999, hoveredIdx=-1;
+  canvas.addEventListener('mousemove',e=>{ const r=canvas.getBoundingClientRect(); mouseX=e.clientX-r.left; mouseY=e.clientY-r.top; });
+  canvas.addEventListener('mouseleave',()=>{ mouseX=-9999; mouseY=-9999; });
+
   const labelsDiv=document.getElementById('phg-labels'), labelEls=[];
   TICKERS.forEach(tk=>{ const div=document.createElement('div'); div.style.cssText='position:absolute;font-family:Inter,sans-serif;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6);pointer-events:none;white-space:nowrap;opacity:0;transition:opacity .5s;'; div.textContent=tk; labelsDiv.appendChild(div); labelEls.push(div); });
-  const clk=new THREE.Clock();
+
+  const CAMZ=8, FOV=48*Math.PI/180;
+  function project(n){
+    const dist=CAMZ-n.z;
+    const focal=(H/2)/Math.tan(FOV/2);
+    return { sx:W/2+(n.x*focal)/dist, sy:H/2-(n.y*focal)/dist, scale:focal/dist, dist };
+  }
+
+  const start=performance.now();
   (function loop(){
-    requestAnimationFrame(loop); const t=clk.getElapsedTime();
-    nodeGroup.rotation.y=t*.08;
-    raycaster.setFromCamera(mouse,camera);
-    const hits=raycaster.intersectObjects(nodes), newHover=hits.length?nodes.indexOf(hits[0].object):-1;
-    if(newHover!==hoveredIdx){
-      if(hoveredIdx>=0){ nodes[hoveredIdx].material.color.setHex(AREAS[nodes[hoveredIdx].userData.area].color); nodes[hoveredIdx].material.opacity=nodes[hoveredIdx].userData.origOpacity; edges.forEach(e=>{ if(e.i===hoveredIdx||e.j===hoveredIdx) e.baseMat.opacity=0.10; }); }
-      hoveredIdx=newHover;
-      if(hoveredIdx>=0){ nodes[hoveredIdx].material.color.setHex(0xc9a462); nodes[hoveredIdx].material.opacity=1.0; edges.forEach(e=>{ if(e.i===hoveredIdx||e.j===hoveredIdx) e.baseMat.opacity=0.48; }); }
-    }
-    highlightIdx.forEach((idx,i)=>{ nodes[idx].material.opacity=.82+Math.sin(t*1.8+i*1.2)*.18; });
-    TICKERS.forEach((tk,i)=>{ const nodeIdx=highlightIdx[i]; if(!nodes[nodeIdx]) return; const pos=nodes[nodeIdx].userData.finalPos.clone(); pos.applyEuler(new THREE.Euler(nodeGroup.rotation.x,nodeGroup.rotation.y,nodeGroup.rotation.z)); pos.y+=.22; const proj=pos.clone().project(camera); const rect=canvas.getBoundingClientRect(); const px=(proj.x*.5+.5)*rect.width,py=(-proj.y*.5+.5)*rect.height; const el=labelEls[i]; el.style.left=(px-14)+'px'; el.style.top=(py-16)+'px'; el.style.opacity=proj.z<1?'0.7':'0'; });
-    renderer.render(scene,camera);
+    requestAnimationFrame(loop);
+    const t=(performance.now()-start)/1000;
+    const rot=t*.08, cosR=Math.cos(rot), sinR=Math.sin(rot);
+
+    ctx.clearRect(0,0,W,H);
+
+    nodes.forEach(n=>{
+      const cx=n.fx*n.scale, cy=n.fy*n.scale, cz=n.fz*n.scale;
+      n.x=cx*cosR+cz*sinR; n.y=cy; n.z=-cx*sinR+cz*cosR;
+    });
+
+    let newHover=-1, bestDist=Infinity;
+    nodes.forEach((n,idx)=>{
+      const p=project(n), dx=p.sx-mouseX, dy=p.sy-mouseY, d=Math.sqrt(dx*dx+dy*dy), rad=Math.max(4,n.r*p.scale);
+      if(d<rad && d<bestDist){ bestDist=d; newHover=idx; }
+    });
+    hoveredIdx=newHover;
+
+    edges.forEach(e=>{ e.opacity=(e.i===hoveredIdx||e.j===hoveredIdx)?0.48:0.10; });
+    edges.forEach(e=>{
+      const pa=project(nodes[e.i]), pb=project(nodes[e.j]);
+      ctx.beginPath(); ctx.moveTo(pa.sx,pa.sy); ctx.lineTo(pb.sx,pb.sy);
+      ctx.strokeStyle=rgba('#4dbb77',e.opacity); ctx.lineWidth=1; ctx.stroke();
+    });
+
+    highlightIdx.forEach((idx,i)=>{ nodes[idx].origOpacity=.82+Math.sin(t*1.8+i*1.2)*.18; });
+
+    nodes.forEach((n,idx)=>{
+      const p=project(n), rad=Math.max(1,n.r*p.scale);
+      const color=idx===hoveredIdx?'#c9a462':n.color, op=idx===hoveredIdx?1.0:n.origOpacity;
+      ctx.beginPath(); ctx.arc(p.sx,p.sy,rad,0,Math.PI*2); ctx.fillStyle=rgba(color,op); ctx.fill();
+    });
+
+    TICKERS.forEach((tk,i)=>{
+      const nodeIdx=highlightIdx[i]; if(!nodes[nodeIdx]) return;
+      const p=project(nodes[nodeIdx]), el=labelEls[i];
+      el.style.left=(p.sx-14)+'px'; el.style.top=(p.sy-28)+'px';
+      el.style.opacity=p.dist>0?'0.7':'0';
+    });
   })();
 })();
 </script>

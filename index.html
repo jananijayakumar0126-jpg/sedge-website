@@ -235,33 +235,34 @@
   @keyframes scan { 0%{top:-80%} 100%{top:160%} }
   .score-bar-track { height:4px; background:rgba(0,0,0,.06); border-radius:2px; overflow:hidden; }
   .score-bar-fill  { height:100%; border-radius:2px; background:linear-gradient(90deg,#4dbb77,var(--gold)); width:0; transition:width 1.4s cubic-bezier(.22,1,.36,1); }
+  @media (max-width:1000px) { .nav-links { display:none; } }
 </style>
 </head>
 <body>
 
 <!-- NAV -->
 <nav id="nav">
-  <div class="max-w-screen-xl mx-auto px-8 py-5 flex items-center justify-between relative z-10">
-    <div class="flex items-center gap-1">
+  <div class="max-w-screen-xl mx-auto px-8 py-5 flex items-center justify-between gap-12 relative z-10">
+    <a href="index.html" style="text-decoration:none;color:inherit;display:flex;align-items:center;gap:0.5rem;">
       <span class="font-display font-light tracking-[.22em] text-[17px] uppercase">SEDGE</span>
       <span class="font-display font-light tracking-[.22em] text-[17px] uppercase gold-text ml-2">Ventures</span>
-    </div>
+    </a>
     <div class="flex items-center gap-9">
-      <a href="#" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">Strategies</a>
-      <!-- Products dropdown -->
-      <div class="nav-dropdown" id="productsDropdown">
-        <span class="nav-link-btn text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium cursor-pointer select-none">Products</span>
-        <div class="nav-dropdown-menu">
-          <a href="pharma.html"><span class="dd-dot"></span>Pharma Research</a>
-          <a href="backtest.html"><span class="dd-dot"></span>Trade Backtest &amp; Algo</a>
-          <a href="forex.html"><span class="dd-dot"></span>Forex</a>
-          <a href="value-picks.html"><span class="dd-dot"></span>Alpha Signals
+      <div class="nav-links flex items-center gap-9">
+        <a href="index.html#our-products" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">Strategies</a>
+        <div class="nav-dropdown" id="productsDropdown">
+          <span class="nav-link-btn text-[11px] tracking-[.14em] uppercase font-medium cursor-pointer select-none" style="">Products</span>
+          <div class="nav-dropdown-menu">
+            <a href="pharma.html"><span class="dd-dot"></span>Pharma Research</a>
+            <a href="forex.html"><span class="dd-dot"></span>Forex</a>
+            <a href="value-picks.html"><span class="dd-dot"></span>Alpha Signals</a>
+          </div>
         </div>
+        <a href="index.html#research" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">Research</a>
+        <a href="mdos.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">MDOS</a>
+        <a href="about.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">About</a>
       </div>
-      <a href="#" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">Research</a>
-      <a href="sectors.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">Sectors</a>
-      <a href="about.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">About</a>
-      <button class="border border-[var(--ink)] text-[var(--ink)] text-[11px] tracking-[.14em] uppercase px-5 py-2.5 font-medium hover:bg-[var(--ink)] hover:text-white transition-all duration-300">Log In</button>
+      <a href="contact.html" class="border border-[var(--ink)] text-[var(--ink)] text-[11px] tracking-[.14em] uppercase px-5 py-2.5 font-medium hover:bg-[var(--ink)] hover:text-white transition-all duration-300 whitespace-nowrap" style="text-decoration:none;">Book a Demo</a>
     </div>
   </div>
 </nav>
@@ -402,25 +403,10 @@
         </div>
       </a>
 
-      <!-- Trade Backtest & Algo -->
-      <a href="backtest.html" class="product-card block no-underline" style="text-decoration:none;color:inherit;">
-        <div class="flex items-start justify-between mb-6">
-          <span class="text-[10px] tracking-[.28em] uppercase font-medium gold-text">02</span>
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style="opacity:.3"><path d="M3 15L15 3M15 3H7M15 3V11" stroke="currentColor" stroke-width="1.2"/></svg>
-        </div>
-        <h3 class="font-display font-light text-[1.9rem] leading-tight mb-3">Trade Backtest &amp; Algo</h3>
-        <p class="text-[13px] text-[var(--muted)] leading-relaxed mb-6">Run institutional-grade strategy backtests across decades of market data. Validate, stress-test, and deploy algo signals with confidence.</p>
-        <div class="flex flex-wrap gap-2">
-          <span class="text-[10px] tracking-[.18em] uppercase px-3 py-1 border border-[rgba(201,164,98,.3)] text-[var(--gold)]">Backtesting</span>
-          <span class="text-[10px] tracking-[.18em] uppercase px-3 py-1 border border-[rgba(201,164,98,.3)] text-[var(--gold)]">Signal Engine</span>
-          <span class="text-[10px] tracking-[.18em] uppercase px-3 py-1 border border-[rgba(201,164,98,.3)] text-[var(--gold)]">Strategy Builder</span>
-        </div>
-      </a>
-
       <!-- Forex -->
       <a href="forex.html" class="product-card block no-underline" style="text-decoration:none;color:inherit;">
         <div class="flex items-start justify-between mb-6">
-          <span class="text-[10px] tracking-[.28em] uppercase font-medium gold-text">03</span>
+          <span class="text-[10px] tracking-[.28em] uppercase font-medium gold-text">02</span>
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style="opacity:.3"><path d="M3 15L15 3M15 3H7M15 3V11" stroke="currentColor" stroke-width="1.2"/></svg>
         </div>
         <h3 class="font-display font-light text-[1.9rem] leading-tight mb-3">Forex</h3>
@@ -435,7 +421,7 @@
       <!-- Alpha Signals -->
       <a href="value-picks.html" class="product-card block no-underline" style="text-decoration:none;color:inherit;">
         <div class="flex items-start justify-between mb-6">
-          <span class="text-[10px] tracking-[.28em] uppercase font-medium gold-text">04</span>
+          <span class="text-[10px] tracking-[.28em] uppercase font-medium gold-text">03</span>
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style="opacity:.3"><path d="M3 15L15 3M15 3H7M15 3V11" stroke="currentColor" stroke-width="1.2"/></svg>
         </div>
         <h3 class="font-display font-light text-[1.9rem] leading-tight mb-3">Alpha Signals</h3>
@@ -447,181 +433,20 @@
         </div>
       </a>
 
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════════════════════════════════════════════════
-     SECTION 2 — CORE PILLARS (moved to about.html)
-═══════════════════════════════════════════════════════════ -->
-<section id="pillars" class="relative z-10 py-40 px-8" style="display:none;">
-  <div class="max-w-screen-xl mx-auto">
-
-    <!-- Header -->
-    <div class="mb-24 max-w-[780px]">
-      <div id="p-eye" class="flex items-center gap-4 mb-8">
-        <span class="g-rule w-10"></span>
-        <span class="text-[11px] tracking-[.28em] uppercase font-medium gold-text">About SEDGE Ventures</span>
-      </div>
-      <h2 id="p-title" class="font-display font-light text-[clamp(34px,3.8vw,54px)] leading-[1.1] tracking-[-0.02em]">
-        Professional investment management through <em class="gold-text">systematic analysis</em>, disciplined risk management, and institutional-grade technology infrastructure.
-      </h2>
-    </div>
-
-    <!-- Bento Grid -->
-    <style>
-      .bento-card { position:relative; background:#fff; overflow:hidden; padding:2.8rem; transition:box-shadow .35s,transform .35s; cursor:default; }
-      .bento-card::after { content:''; position:absolute; inset:0; background:linear-gradient(110deg,transparent 35%,rgba(201,164,98,.07) 50%,transparent 65%); transform:translateX(-120%); transition:transform .7s ease; pointer-events:none; }
-      .bento-card:hover::after { transform:translateX(120%); }
-      .bento-card:hover { box-shadow:0 24px 64px rgba(0,0,0,.07); }
-      .bento-hero { background:#fafafa; }
-      .bento-accent { background:var(--ink); color:#fff; }
-      .bento-accent .g-rule { background:linear-gradient(90deg,rgba(255,255,255,.4),transparent); }
-    </style>
-    <div data-pillar style="display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:auto auto auto;gap:2px;background:rgba(0,0,0,.07);">
-
-      <!-- 01 HERO — tall, spans 2 rows -->
-      <div class="bento-card bento-hero" data-tilt style="grid-row:1/3;grid-column:1;padding:3.5rem;display:flex;flex-direction:column;justify-content:space-between;min-height:420px;">
-        <div>
-          <p class="font-display gold-text text-[11px] tracking-[.22em] mb-5">01</p>
-          <span class="g-rule w-8 mb-7 block"></span>
-          <h3 class="font-display font-light text-[clamp(28px,2.8vw,42px)] leading-[1.05] tracking-[-0.02em] mb-5">Systematic<br>Approach</h3>
-          <p class="text-[14px] leading-[1.9] text-[var(--muted)] font-light max-w-[360px]">Quantitative screening frameworks combining fundamental analysis with technical indicators to identify high-conviction opportunities across global markets.</p>
+      <!-- MDOS -->
+      <a href="mdos.html" class="product-card block no-underline" style="text-decoration:none;color:inherit;">
+        <div class="flex items-start justify-between mb-6">
+          <span class="text-[10px] tracking-[.28em] uppercase font-medium gold-text">04</span>
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style="opacity:.3"><path d="M3 15L15 3M15 3H7M15 3V11" stroke="currentColor" stroke-width="1.2"/></svg>
         </div>
-        <div style="font-family:'Cormorant Garamond',serif;font-size:7rem;font-weight:300;color:rgba(201,164,98,.08);line-height:1;user-select:none;margin-top:2rem;letter-spacing:-.04em;">01</div>
-      </div>
-
-      <!-- 02 -->
-      <div class="bento-card" data-tilt style="grid-row:1;grid-column:2;">
-        <p class="font-display gold-text text-[11px] tracking-[.22em] mb-4">02</p>
-        <span class="g-rule w-8 mb-5 block"></span>
-        <h3 class="font-display font-light text-[22px] leading-tight tracking-[-0.01em] mb-3">Risk-First Philosophy</h3>
-        <p class="text-[13px] leading-[1.8] text-[var(--muted)] font-light">Rigorous position sizing, Value-at-Risk monitoring, and portfolio loss limits ensure capital preservation is never compromised.</p>
-      </div>
-
-      <!-- 03 -->
-      <div class="bento-card bento-accent" data-tilt style="grid-row:1;grid-column:3;">
-        <p class="font-display text-[11px] tracking-[.22em] mb-4" style="color:rgba(255,255,255,.4);">03</p>
-        <span class="g-rule w-8 mb-5 block"></span>
-        <h3 class="font-display font-light text-[22px] leading-tight tracking-[-0.01em] mb-3" style="color:#fff;">Technology-Driven Edge</h3>
-        <p class="text-[13px] leading-[1.8] font-light" style="color:rgba(255,255,255,.5);">Proprietary AI-powered screeners and real-time risk dashboards deliver tier-1 institutional infrastructure.</p>
-      </div>
-
-      <!-- 04 -->
-      <div class="bento-card" data-tilt style="grid-row:2;grid-column:2;">
-        <p class="font-display gold-text text-[11px] tracking-[.22em] mb-4">04</p>
-        <span class="g-rule w-8 mb-5 block"></span>
-        <h3 class="font-display font-light text-[22px] leading-tight tracking-[-0.01em] mb-3">Disciplined Execution</h3>
-        <p class="text-[13px] leading-[1.8] text-[var(--muted)] font-light">Every trade documented and measured. Emotional bias eliminated through systematic, rule-based processes.</p>
-      </div>
-
-      <!-- 05 -->
-      <div class="bento-card" data-tilt style="grid-row:2;grid-column:3;">
-        <p class="font-display gold-text text-[11px] tracking-[.22em] mb-4">05</p>
-        <span class="g-rule w-8 mb-5 block"></span>
-        <h3 class="font-display font-light text-[22px] leading-tight tracking-[-0.01em] mb-3">Continuous Research</h3>
-        <p class="text-[13px] leading-[1.8] text-[var(--muted)] font-light">Daily monitoring of earnings, macro indicators, and global catalysts keeps the portfolio aligned with structural market forces.</p>
-      </div>
-
-      <!-- 06 FULL WIDTH -->
-      <div class="bento-card" data-tilt style="grid-row:3;grid-column:1/4;display:flex;align-items:center;justify-content:space-between;gap:4rem;padding:2.6rem 3.5rem;">
-        <div style="flex:1;">
-          <span class="g-rule w-8 mb-4 block"></span>
-          <h3 class="font-display font-light text-[26px] leading-tight tracking-[-0.01em] mb-3">Performance Accountability</h3>
-          <p class="text-[13px] leading-[1.8] text-[var(--muted)] font-light max-w-[480px]">Comprehensive reporting including risk-adjusted returns, Sharpe ratio analysis, drawdown metrics, and detailed attribution analysis for full transparency.</p>
+        <h3 class="font-display font-light text-[1.9rem] leading-tight mb-3">MDOS</h3>
+        <p class="text-[13px] text-[var(--muted)] leading-relaxed mb-6">Our internal multi-dimensional options scoring engine — five-factor contract ranking, risk-gated sizing, and a charter-procurement module for freight and bunker options. Built in-house, not for sale.</p>
+        <div class="flex flex-wrap gap-2">
+          <span class="text-[10px] tracking-[.18em] uppercase px-3 py-1 border border-[rgba(201,164,98,.3)] text-[var(--gold)]">Options Scoring</span>
+          <span class="text-[10px] tracking-[.18em] uppercase px-3 py-1 border border-[rgba(201,164,98,.3)] text-[var(--gold)]">Risk Engine</span>
+          <span class="text-[10px] tracking-[.18em] uppercase px-3 py-1 border border-[rgba(201,164,98,.3)] text-[var(--gold)]">Internal R&amp;D</span>
         </div>
-      </div>
-
-    </div>
-
-  </div>
-</section>
-
-<!-- ══════════════════════════════════════════════════════════
-     SECTION 3 — TARGET SECTORS
-═══════════════════════════════════════════════════════════ -->
-<section id="sectors" class="relative z-10 py-40 px-8 bg-[#fafafa]" style="display:none;">
-  <div class="max-w-screen-xl mx-auto">
-
-    <!-- Header -->
-    <div class="mb-20 max-w-[700px]">
-      <div id="s-eye" class="flex items-center gap-4 mb-8">
-        <span class="g-rule w-10"></span>
-        <span class="text-[11px] tracking-[.28em] uppercase font-medium gold-text">Structural Innovation</span>
-      </div>
-      <h2 id="s-title" class="font-display font-light text-[clamp(34px,3.8vw,54px)] leading-[1.1] tracking-[-0.02em]">
-        Target Sectors — <em class="gold-text">high-growth areas</em> driven by technological innovation and structural trends.
-      </h2>
-    </div>
-
-    <!-- 3×2 grid -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="s-grid">
-
-      <div class="scard" data-sc="ai">
-        <div style="height:160px;position:relative;overflow:hidden;background:#fafafa;">
-          <canvas id="cv-ai" style="display:block;width:100%;height:160px;"></canvas>
-        </div>
-        <div class="p-7">
-          <p class="text-[10px] tracking-[.24em] uppercase gold-text font-medium mb-3">01 — Artificial Intelligence</p>
-          <h3 class="font-display font-light text-[22px] leading-tight mb-3">AI &amp; Machine Learning</h3>
-          <p class="text-[13px] leading-[1.75] text-[var(--muted)] font-light">Machine learning, generative AI, and enterprise automation platforms reshaping global productivity curves.</p>
-        </div>
-      </div>
-
-      <div class="scard" data-sc="health">
-        <div style="height:160px;position:relative;overflow:hidden;background:#fafafa;">
-          <canvas id="cv-health" style="display:block;width:100%;height:160px;"></canvas>
-        </div>
-        <div class="p-7">
-          <p class="text-[10px] tracking-[.24em] uppercase gold-text font-medium mb-3">02 — Healthcare &amp; Biotech</p>
-          <h3 class="font-display font-light text-[22px] leading-tight mb-3">Healthcare &amp; Biotech</h3>
-          <p class="text-[13px] leading-[1.75] text-[var(--muted)] font-light">Drug discovery, gene therapy, and innovative treatment modalities at the frontier of modern medicine.</p>
-        </div>
-      </div>
-
-      <div class="scard" data-sc="semi">
-        <div style="height:160px;position:relative;overflow:hidden;background:#fafafa;">
-          <canvas id="cv-semi" style="display:block;width:100%;height:160px;"></canvas>
-        </div>
-        <div class="p-7">
-          <p class="text-[10px] tracking-[.24em] uppercase gold-text font-medium mb-3">03 — Semiconductors</p>
-          <h3 class="font-display font-light text-[22px] leading-tight mb-3">Semiconductors</h3>
-          <p class="text-[13px] leading-[1.75] text-[var(--muted)] font-light">Chipmakers and equipment manufacturers enabling next-generation computing and AI infrastructure.</p>
-        </div>
-      </div>
-
-      <div class="scard" data-sc="cyber">
-        <div style="height:160px;position:relative;overflow:hidden;background:#fafafa;">
-          <canvas id="cv-cyber" style="display:block;width:100%;height:160px;"></canvas>
-        </div>
-        <div class="p-7">
-          <p class="text-[10px] tracking-[.24em] uppercase gold-text font-medium mb-3">04 — Cybersecurity</p>
-          <h3 class="font-display font-light text-[22px] leading-tight mb-3">Cybersecurity</h3>
-          <p class="text-[13px] leading-[1.75] text-[var(--muted)] font-light">Cloud security, identity management, and threat intelligence protecting the digital economy at scale.</p>
-        </div>
-      </div>
-
-      <div class="scard" data-sc="energy">
-        <div style="height:160px;position:relative;overflow:hidden;background:#fafafa;">
-          <canvas id="cv-energy" style="display:block;width:100%;height:160px;"></canvas>
-        </div>
-        <div class="p-7">
-          <p class="text-[10px] tracking-[.24em] uppercase gold-text font-medium mb-3">05 — Clean Energy</p>
-          <h3 class="font-display font-light text-[22px] leading-tight mb-3">Clean Energy</h3>
-          <p class="text-[13px] leading-[1.75] text-[var(--muted)] font-light">Battery technology, renewable infrastructure, and grid modernization driving the energy transition.</p>
-        </div>
-      </div>
-
-      <div class="scard" data-sc="space">
-        <div style="height:160px;position:relative;overflow:hidden;background:#fafafa;">
-          <canvas id="cv-space" style="display:block;width:100%;height:160px;"></canvas>
-        </div>
-        <div class="p-7">
-          <p class="text-[10px] tracking-[.24em] uppercase gold-text font-medium mb-3">06 — Space &amp; Aerospace</p>
-          <h3 class="font-display font-light text-[22px] leading-tight mb-3">Space &amp; Aerospace</h3>
-          <p class="text-[13px] leading-[1.75] text-[var(--muted)] font-light">Commercial space, satellite technology, and defense contractors pioneering humanity's next frontier.</p>
-        </div>
-      </div>
+      </a>
 
     </div>
   </div>
@@ -637,7 +462,7 @@
       </div>
       <p class="text-[12px] text-[var(--muted)] font-light tracking-[.06em]">Systematic Equity Investment Management</p>
     </div>
-    <p class="text-[11px] text-[var(--muted)] font-light tracking-[.08em]">© 2025 SEDGE Ventures. All rights reserved.</p>
+    <p class="text-[11px] text-[var(--muted)] font-light tracking-[.08em]">© 2026 SEDGE Ventures. All rights reserved.</p>
   </div>
 </footer>
 
@@ -659,267 +484,10 @@ lenis.on('scroll', ({ scroll }) => {
   document.getElementById('nav').classList.toggle('stuck', scroll > 50);
 });
 
-// ─── SECTOR SCENES (shared setup helper) ─────────────────────────────────────
-function makeSector(id, setupFn) {
-  const canvas = document.getElementById(id);
-  const wrap   = canvas.parentElement;
-
-  function sizeCanvas() {
-    const W = wrap.clientWidth;
-    const H = 160;
-    const dpr = Math.min(devicePixelRatio, 2);
-    canvas.width  = W * dpr;
-    canvas.height = H * dpr;
-    canvas.style.width  = W + 'px';
-    canvas.style.height = H + 'px';
-    return { W, H };
-  }
-
-  const { W, H } = sizeCanvas();
-
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
-  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
-  renderer.setSize(W, H);
-  renderer.setClearColor(0xfafafa, 1);
-
-  const scene = new THREE.Scene();
-  const cam = new THREE.PerspectiveCamera(48, W / H, 0.1, 100);
-  cam.position.z = 5;
-
-  scene.add(new THREE.AmbientLight(0xffffff, 0.65));
-  const d1 = new THREE.DirectionalLight(0xc9a462, 1.1); d1.position.set(3, 5, 4); scene.add(d1);
-  const d2 = new THREE.DirectionalLight(0x00d4c8, 0.5); d2.position.set(-3, -2, 2); scene.add(d2);
-
-  const card = canvas.closest('[data-sc]');
-  let hovered = false;
-  card.addEventListener('mouseenter', () => hovered = true);
-  card.addEventListener('mouseleave', () => hovered = false);
-
-  const clk = new THREE.Clock();
-  const { update } = setupFn(scene, cam, renderer);
-
-  (function loop() {
-    requestAnimationFrame(loop);
-    update(clk.getElapsedTime(), hovered);
-    renderer.render(scene, cam);
-  })();
-}
-
-// ── 01 AI — Neural Node Cluster ───────────────────────────────────────────────
-makeSector('cv-ai', (scene, cam) => {
-  const G = new THREE.Group(); scene.add(G);
-  const nodeG = new THREE.SphereGeometry(.075, 8, 8);
-  const nodes = [];
-
-  for (let i = 0; i < 20; i++) {
-    const r = .7 + Math.random() * 1.5;
-    const th = Math.random() * Math.PI * 2;
-    const phi = Math.acos(2 * Math.random() - 1);
-    const m = new THREE.Mesh(nodeG, new THREE.MeshPhongMaterial({ color: 0xc9a462, shininess: 90, transparent: true }));
-    m.position.set(r * Math.sin(phi) * Math.cos(th), r * Math.sin(phi) * Math.sin(th), r * Math.cos(phi));
-    m.userData.ph = Math.random() * Math.PI * 2;
-    G.add(m); nodes.push(m);
-  }
-
-  const lm = new THREE.LineBasicMaterial({ color: 0xc9a462, transparent: true, opacity: 0.22 });
-  nodes.forEach((a, i) => nodes.forEach((b, j) => {
-    if (j <= i) return;
-    if (a.position.distanceTo(b.position) < 1.3) {
-      G.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([a.position, b.position]), lm.clone()));
-    }
-  }));
-
-  const core = new THREE.Mesh(new THREE.IcosahedronGeometry(.3, 1),
-    new THREE.MeshPhongMaterial({ color: 0xc9a462, transparent: true, opacity: 0.35, shininess: 120 }));
-  G.add(core);
-
-  return { update(t, hov) {
-    G.rotation.y = t * (hov ? .75 : .28);
-    G.rotation.x = Math.sin(t * .22) * .18;
-    nodes.forEach(n => { n.material.opacity = .4 + .55 * Math.abs(Math.sin(n.userData.ph + t * (hov ? 2.8 : 1.1))); });
-  }};
-});
-
-// ── 02 Healthcare — Double Helix ──────────────────────────────────────────────
-makeSector('cv-health', (scene) => {
-  const G = new THREE.Group(); scene.add(G);
-  const S = 60, hH = 3.0, amp = .85;
-
-  for (let s = 0; s < 2; s++) {
-    const pts = [], ph = s * Math.PI;
-    for (let i = 0; i <= S; i++) {
-      const t = i / S;
-      pts.push(new THREE.Vector3(
-        Math.cos(t * Math.PI * 4 + ph) * amp,
-        -hH/2 + t * hH,
-        Math.sin(t * Math.PI * 4 + ph) * amp * .35
-      ));
-    }
-    const tube = new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), S * 2, .052, 8, false);
-    G.add(new THREE.Mesh(tube, new THREE.MeshPhongMaterial({
-      color: s === 0 ? 0xc9a462 : 0x00d4c8, shininess: 100, transparent: true, opacity: .88
-    })));
-  }
-
-  for (let i = 0; i <= S; i += 4) {
-    const t = i / S;
-    const y = -hH/2 + t * hH;
-    const x1 = Math.cos(t * Math.PI * 4) * amp, z1 = Math.sin(t * Math.PI * 4) * amp * .35;
-    const rG = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(x1, y, z1), new THREE.Vector3(-x1, y, -z1)]);
-    G.add(new THREE.Line(rG, new THREE.LineBasicMaterial({ color: 0x4dbb77, transparent: true, opacity: .38 })));
-  }
-
-  return { update(t, hov) {
-    G.rotation.y = t * (hov ? .9 : .32);
-    G.rotation.x = Math.sin(t * .28) * .12;
-  }};
-});
-
-// ── 03 Semiconductors — Silicon Wafer ────────────────────────────────────────
-makeSector('cv-semi', (scene, cam) => {
-  cam.position.set(2, 3.8, 4.2); cam.lookAt(0, 0, 0);
-  const G = new THREE.Group(); scene.add(G);
-  const bG = new THREE.BoxGeometry(.30, .08, .30);
-  const items = [];
-  const R = 4;
-
-  for (let x = -R; x <= R; x++) {
-    for (let z = -R; z <= R; z++) {
-      const d = Math.sqrt(x*x + z*z);
-      if (d > R) continue;
-      const mat = new THREE.MeshPhongMaterial({ color: 0xc9a462, shininess: 120, transparent: true, opacity: .2 + .65 * (1 - d / R) });
-      const m = new THREE.Mesh(bG, mat);
-      m.position.set(x * .38, 0, z * .38);
-      m.userData.ph = Math.random() * Math.PI * 2;
-      m.userData.d = d;
-      G.add(m); items.push(m);
-
-      if ((x + z) % 3 === 0 && d < R - 1) {
-        const dir = Math.random() > .5 ? 1 : 0;
-        const lG = new THREE.BufferGeometry().setFromPoints([
-          new THREE.Vector3(x * .38, .04, z * .38),
-          new THREE.Vector3((x + dir) * .38, .04, (z + (1 - dir)) * .38),
-        ]);
-        G.add(new THREE.Line(lG, new THREE.LineBasicMaterial({ color: 0x00d4c8, transparent: true, opacity: .28 })));
-      }
-    }
-  }
-
-  return { update(t, hov) {
-    G.rotation.y = t * (hov ? .45 : .13);
-    items.forEach(m => {
-      m.material.opacity = .15 + .65 * Math.abs(Math.sin(m.userData.ph + t * .7 + m.userData.d * .35));
-      m.position.y = Math.sin(m.userData.ph + t * .55 + m.userData.d * .3) * .05;
-    });
-  }};
-});
-
-// ── 04 Cybersecurity — Interlocking Rings ─────────────────────────────────────
-makeSector('cv-cyber', (scene) => {
-  const G = new THREE.Group(); scene.add(G);
-  const defs = [
-    { r: 1.5,  tube: .038, col: 0xc9a462, rx: 0,           spd:  .4 },
-    { r: 1.15, tube: .038, col: 0x00d4c8, rx: Math.PI/2,   spd: -.6 },
-    { r: .85,  tube: .034, col: 0x4dbb77, rx: Math.PI/4,   spd:  .85 },
-    { r: .5,   tube: .030, col: 0xc9a462, rx: -Math.PI/3,  spd: -1.2 },
-  ];
-  const rings = defs.map(d => {
-    const m = new THREE.Mesh(
-      new THREE.TorusGeometry(d.r, d.tube, 12, 90),
-      new THREE.MeshPhongMaterial({ color: d.col, shininess: 110, transparent: true, opacity: .82 })
-    );
-    m.rotation.x = d.rx; m.userData.spd = d.spd; m.userData.brx = d.rx;
-    G.add(m); return m;
-  });
-  G.add(new THREE.Mesh(new THREE.SphereGeometry(.16, 16, 16),
-    new THREE.MeshPhongMaterial({ color: 0xc9a462, shininess: 140, transparent: true, opacity: .7 })));
-
-  return { update(t, hov) {
-    const s = hov ? 2.2 : 1.0;
-    rings.forEach(r => {
-      r.rotation.y = r.userData.brx + t * r.userData.spd * s;
-      r.rotation.z = t * r.userData.spd * .28 * s;
-    });
-    G.rotation.y = t * .09;
-  }};
-});
-
-// ── 05 Clean Energy — Wave Landscape ─────────────────────────────────────────
-makeSector('cv-energy', (scene, cam) => {
-  cam.position.set(0, 3.2, 4.5); cam.lookAt(0, 0, 0);
-  const G = new THREE.Group(); scene.add(G);
-  const WS = 42, HS = 42;
-  const geo = new THREE.PlaneGeometry(5.5, 3.8, WS, HS);
-  geo.rotateX(-Math.PI / 2);
-  const mat = new THREE.MeshPhongMaterial({ color: 0xc9a462, wireframe: true, transparent: true, opacity: .48 });
-  const plane = new THREE.Mesh(geo, mat);
-  G.add(plane);
-  G.add(new THREE.Mesh(new THREE.PlaneGeometry(5.5, 3.8).rotateX(-Math.PI / 2),
-    new THREE.MeshPhongMaterial({ color: 0xc9a462, transparent: true, opacity: .05 })));
-
-  const pos = geo.getAttribute('position');
-
-  return { update(t, hov) {
-    const amp = hov ? .38 : .22, freq = hov ? 2.6 : 1.3;
-    for (let i = 0; i < pos.count; i++) {
-      const x = pos.getX(i), z = pos.getZ(i);
-      pos.setY(i, Math.sin(x * 1.6 + t * freq) * amp + Math.cos(z * 2.1 + t * freq * .68) * amp * .5);
-    }
-    pos.needsUpdate = true;
-    geo.computeVertexNormals();
-    G.rotation.y = t * .08;
-  }};
-});
-
-// ── 06 Space & Aerospace — Orbital Constellation ──────────────────────────────
-makeSector('cv-space', (scene) => {
-  const G = new THREE.Group(); scene.add(G);
-  const orbs = [
-    { r: 1.65, inc: 0,           spd:  .5,  col: 0xc9a462 },
-    { r: 1.15, inc: Math.PI/3.2, spd: -.7,  col: 0x00d4c8 },
-    { r: .75,  inc: Math.PI/5,   spd:  .95, col: 0x4dbb77 },
-  ];
-  const sats = [];
-  orbs.forEach(o => {
-    const ring = new THREE.Mesh(
-      new THREE.TorusGeometry(o.r, .007, 6, 100),
-      new THREE.MeshBasicMaterial({ color: o.col, transparent: true, opacity: .32 })
-    );
-    ring.rotation.x = o.inc; G.add(ring);
-    const sat = new THREE.Mesh(new THREE.SphereGeometry(.065, 8, 8),
-      new THREE.MeshPhongMaterial({ color: o.col, shininess: 130 }));
-    sat.userData = { r: o.r, inc: o.inc, spd: o.spd, a: Math.random() * Math.PI * 2 };
-    G.add(sat); sats.push(sat);
-  });
-
-  G.add(new THREE.Mesh(new THREE.SphereGeometry(.28, 24, 24),
-    new THREE.MeshPhongMaterial({ color: 0xffffff, specular: 0xc9a462, shininess: 100, transparent: true, opacity: .9 })));
-
-  const stN = 70; const stP = new Float32Array(stN * 3);
-  for (let i = 0; i < stN; i++) {
-    stP[i*3] = (Math.random()-.5)*10; stP[i*3+1] = (Math.random()-.5)*8; stP[i*3+2] = (Math.random()-.5)*6-2;
-  }
-  const stG = new THREE.BufferGeometry(); stG.setAttribute('position', new THREE.BufferAttribute(stP, 3));
-  scene.add(new THREE.Points(stG, new THREE.PointsMaterial({ color: 0xc9a462, size: .04, transparent: true, opacity: .55 })));
-
-  return { update(t, hov) {
-    const s = hov ? 2.4 : 1.0;
-    sats.forEach(sat => {
-      sat.userData.a += sat.userData.spd * .015 * s;
-      const { r, inc, a } = sat.userData;
-      sat.position.set(r * Math.cos(a), r * Math.sin(a) * Math.sin(inc), r * Math.sin(a) * Math.cos(inc));
-    });
-    G.rotation.y = t * .1;
-  }};
-});
 
 // ─── GSAP ENTRANCE ANIMATIONS ─────────────────────────────────────────────────
 
 // Omni hero entrance is handled inside the omni console script (immediate on load)
-
-// Pillars
-gsap.set(['#p-eye', '#p-title'], { opacity: 0, y: 36 });
-gsap.set('[data-pillar]', { opacity: 0, y: 30 });
 
 // Bento tilt
 document.querySelectorAll('[data-tilt]').forEach(card => {
@@ -934,28 +502,6 @@ document.querySelectorAll('[data-tilt]').forEach(card => {
     card.style.transform = 'perspective(900px) rotateY(0deg) rotateX(0deg) scale(1)';
     card.style.zIndex = '';
   });
-});
-
-ScrollTrigger.create({
-  trigger: '#pillars',
-  start: 'top 76%',
-  onEnter() {
-    gsap.to(['#p-eye', '#p-title'], { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out', stagger: .14 });
-    gsap.to('[data-pillar]', { opacity: 1, y: 0, duration: .85, ease: 'power3.out', stagger: .1, delay: .2 });
-  }
-});
-
-// Sectors
-gsap.set(['#s-eye', '#s-title'], { opacity: 0, y: 36 });
-gsap.set('[data-sc]', { opacity: 0, y: 40 });
-
-ScrollTrigger.create({
-  trigger: '#sectors',
-  start: 'top 76%',
-  onEnter() {
-    gsap.to(['#s-eye', '#s-title'], { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out', stagger: .14 });
-    gsap.to('[data-sc]', { opacity: 1, y: 0, duration: .85, ease: 'power3.out', stagger: .09, delay: .22 });
-  }
 });
 
 // ─── PHARMA SECTION ANIMATIONS ────────────────────────────────────────────────
@@ -1378,15 +924,26 @@ gsap.set(['#phg-title','#phg-body','#phg-badges'], { y: 20 });
   gsap.to(cursorEl, { opacity: 0, duration: .48, repeat: -1, yoyo: true, ease: 'none' });
 
   // ── Renderer ─────────────────────────────────────────────────────────────────
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
-  renderer.setClearColor(0xffffff, 1);
-  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  // WebGL context creation can fail (blocked GPU, disabled hardware accel, etc.).
+  // The background line animation is decorative — the typing engine below must
+  // keep running even if WebGL is unavailable, so this is isolated in a try/catch.
+  let hasWebGL = true;
+  let renderer, scene, camera;
+  try {
+    renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
+    renderer.setClearColor(0xffffff, 1);
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 
-  const scene  = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(50, 2, 0.1, 100);
-  camera.position.z = 9;
+    scene  = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(50, 2, 0.1, 100);
+    camera.position.z = 9;
+  } catch (e) {
+    hasWebGL = false;
+    console.warn('Omni console: WebGL unavailable, background animation disabled.', e);
+  }
 
   function onResize() {
+    if (!hasWebGL) return;
     const W = section.clientWidth, H = section.clientHeight;
     renderer.setSize(W, H);
     camera.aspect = W / H;
@@ -1432,29 +989,33 @@ gsap.set(['#phg-title','#phg-body','#phg-badges'], { y: 20 });
   // ── Line geometry ─────────────────────────────────────────────────────────────
   let baseY = buildY(shapeA);
 
-  const linePos   = new Float32Array(NL * 3);
-  const shadowPos = new Float32Array(NL * 3);
+  let lineGeo, shadowGeo, lineMat, shadowMat;
+  if (hasWebGL) {
+    const linePos   = new Float32Array(NL * 3);
+    const shadowPos = new Float32Array(NL * 3);
 
-  for (let i = 0; i < NL; i++) {
-    const x = -8.5 + (i / (NL - 1)) * 17;
-    linePos[i*3]   = x;  linePos[i*3+1]   = baseY[i];        linePos[i*3+2]   = 0;
-    shadowPos[i*3] = x;  shadowPos[i*3+1] = baseY[i] - 0.14; shadowPos[i*3+2] = 0.1;
+    for (let i = 0; i < NL; i++) {
+      const x = -8.5 + (i / (NL - 1)) * 17;
+      linePos[i*3]   = x;  linePos[i*3+1]   = baseY[i];        linePos[i*3+2]   = 0;
+      shadowPos[i*3] = x;  shadowPos[i*3+1] = baseY[i] - 0.14; shadowPos[i*3+2] = 0.1;
+    }
+
+    lineGeo   = new THREE.BufferGeometry();
+    shadowGeo = new THREE.BufferGeometry();
+    lineGeo.setAttribute(  'position', new THREE.BufferAttribute(linePos,   3));
+    shadowGeo.setAttribute('position', new THREE.BufferAttribute(shadowPos, 3));
+
+    lineMat   = new THREE.LineBasicMaterial({ color: 0x4dbb77, transparent: true, opacity: 0.20 });
+    shadowMat = new THREE.LineBasicMaterial({ color: 0x4dbb77, transparent: true, opacity: 0.06 });
+
+    scene.add(new THREE.Line(lineGeo,   lineMat));
+    scene.add(new THREE.Line(shadowGeo, shadowMat));
   }
-
-  const lineGeo   = new THREE.BufferGeometry();
-  const shadowGeo = new THREE.BufferGeometry();
-  lineGeo.setAttribute(  'position', new THREE.BufferAttribute(linePos,   3));
-  shadowGeo.setAttribute('position', new THREE.BufferAttribute(shadowPos, 3));
-
-  const lineMat   = new THREE.LineBasicMaterial({ color: 0x4dbb77, transparent: true, opacity: 0.20 });
-  const shadowMat = new THREE.LineBasicMaterial({ color: 0x4dbb77, transparent: true, opacity: 0.06 });
-
-  scene.add(new THREE.Line(lineGeo,   lineMat));
-  scene.add(new THREE.Line(shadowGeo, shadowMat));
 
   // ── Morph between shapes ──────────────────────────────────────────────────────
   let activeMorph = null;
   function morphTo(idx) {
+    if (!hasWebGL) return;
     if (activeMorph) activeMorph.kill();
     const targetY = buildY(SHAPE_FNS[idx]);
     const fromY   = baseY.slice();
@@ -1557,29 +1118,33 @@ gsap.set(['#phg-title','#phg-body','#phg-badges'], { y: 20 });
   term.addEventListener('mouseleave', () => { cam.tx = 0; cam.ty = 0; });
 
   // ── Render loop ───────────────────────────────────────────────────────────────
-  const clk = new THREE.Clock();
-  (function renderLoop() {
-    requestAnimationFrame(renderLoop);
-    const t = clk.getElapsedTime();
+  if (hasWebGL) {
+    const clk = new THREE.Clock();
+    const linePos   = lineGeo.attributes.position.array;
+    const shadowPos = shadowGeo.attributes.position.array;
+    (function renderLoop() {
+      requestAnimationFrame(renderLoop);
+      const t = clk.getElapsedTime();
 
-    cam.x += (cam.tx - cam.x) * .042;
-    cam.y += (cam.ty - cam.y) * .042;
-    camera.position.x = cam.x;
-    camera.position.y = cam.y;
-    camera.lookAt(0, 0, 0);
+      cam.x += (cam.tx - cam.x) * .042;
+      cam.y += (cam.ty - cam.y) * .042;
+      camera.position.x = cam.x;
+      camera.position.y = cam.y;
+      camera.lookAt(0, 0, 0);
 
-    // Gentle breathing animation on the line
-    for (let i = 0; i < NL; i++) {
-      const x  = linePos[i * 3];
-      const dY = Math.sin(t * 0.60 + x * 0.42) * 0.030;
-      linePos[i*3+1]   = baseY[i] + dY;
-      shadowPos[i*3+1] = baseY[i] + dY - 0.13;
-    }
-    lineGeo.attributes.position.needsUpdate   = true;
-    shadowGeo.attributes.position.needsUpdate = true;
+      // Gentle breathing animation on the line
+      for (let i = 0; i < NL; i++) {
+        const x  = linePos[i * 3];
+        const dY = Math.sin(t * 0.60 + x * 0.42) * 0.030;
+        linePos[i*3+1]   = baseY[i] + dY;
+        shadowPos[i*3+1] = baseY[i] + dY - 0.13;
+      }
+      lineGeo.attributes.position.needsUpdate   = true;
+      shadowGeo.attributes.position.needsUpdate = true;
 
-    renderer.render(scene, camera);
-  })();
+      renderer.render(scene, camera);
+    })();
+  }
 
   // ── Immediate hero entrance ───────────────────────────────────────────────────
   gsap.set('.omni-rinner', { yPercent: 108 });
