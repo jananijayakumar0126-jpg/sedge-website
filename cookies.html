@@ -3,27 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Book a Demo — SEDGE Ventures</title>
+<title>Cookie Policy — SEDGE Ventures</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
 <script>
-  tailwind.config = {
-    theme: { extend: { fontFamily: { display: ['Cormorant Garamond','serif'], sans: ['Inter','sans-serif'] } } }
-  }
+  tailwind.config = { theme: { extend: { fontFamily: { display: ['Cormorant Garamond','serif'], sans: ['Inter','sans-serif'] } } } }
 </script>
 <style>
-  :root { --gold:#c9a462; --gold-l:#e2bc79; --ink:#0a0a0a; --muted:#5a5a5a; }
+  :root { --gold:#c9a462; --gold-l:#e2bc79; --gold-d:#a07d3a; --ink:#0a0a0a; --muted:#5a5a5a; }
   *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-  html, html.lenis { height:auto; }
-  .lenis.lenis-smooth { scroll-behavior:auto; }
   body { font-family:'Inter',sans-serif; background:#fff; color:var(--ink); overflow-x:hidden; }
-  body::before { content:''; position:fixed; inset:0; z-index:0; pointer-events:none; background-image:linear-gradient(rgba(0,0,0,0.038) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,0.038) 1px,transparent 1px); background-size:44px 44px; }
-  #nav { position:fixed; top:0; left:0; right:0; z-index:900; transition:background .45s ease,border-color .45s ease,backdrop-filter .45s ease; border-bottom:1px solid transparent; }
-  #nav.stuck { background:rgba(255,255,255,.92); backdrop-filter:blur(22px); border-color:rgba(0,0,0,.07); }
+  #nav { position:fixed; top:0; left:0; right:0; z-index:900; background:rgba(255,255,255,.94);
+         backdrop-filter:blur(22px); border-bottom:1px solid rgba(0,0,0,.07); }
   .nav-dropdown { position:relative; }
   .nav-dropdown-menu { position:absolute; top:calc(100% + 16px); left:50%; transform:translateX(-50%) translateY(-6px); background:#fff; border:1px solid rgba(0,0,0,.08); box-shadow:0 16px 48px rgba(0,0,0,.1); min-width:270px; padding:8px 0; opacity:0; pointer-events:none; transition:opacity .25s ease,transform .25s ease; }
   .nav-dropdown:hover .nav-dropdown-menu, .nav-dropdown-menu:hover { opacity:1; pointer-events:all; transform:translateX(-50%) translateY(0); }
@@ -34,12 +26,38 @@
   .dd-sub { font-size:9.5px; letter-spacing:.04em; text-transform:none; color:#9a9a9a; font-weight:400; opacity:.85; }
   .nav-dropdown > .nav-link-btn::after { content:''; display:inline-block; width:5px; height:5px; border-right:1px solid currentColor; border-bottom:1px solid currentColor; transform:rotate(45deg) translateY(-2px); margin-left:5px; vertical-align:middle; }
   .gold-text { color:var(--gold); }
-  .g-rule { display:block; height:1px; background:linear-gradient(90deg,var(--gold),transparent); }
-  .field { width:100%; background:#fff; border:1px solid rgba(0,0,0,.12); padding:14px 16px; font-size:14px; font-family:'Inter',sans-serif; color:var(--ink); transition:border-color .2s; }
-  .field:focus { outline:none; border-color:var(--gold); }
-  .field::placeholder { color:#b0b0b0; }
-  label.field-label { display:block; font-size:11px; letter-spacing:.1em; text-transform:uppercase; font-weight:500; color:var(--muted); margin-bottom:8px; }
   @media (max-width:1000px) { .nav-links { display:none !important; } }
+
+  /* legal page */
+  .lp-hero { padding:9rem 2rem 3rem; }
+  .lp-wrap { max-width:820px; margin:0 auto; }
+  .lp-eyebrow { display:flex; align-items:center; gap:12px; margin-bottom:1.6rem; }
+  .lp-eyebrow::before { content:''; height:1px; width:28px; background:linear-gradient(90deg,var(--gold),transparent); }
+  .lp-eyebrow span { font-size:10px; letter-spacing:.28em; text-transform:uppercase; font-weight:500; color:var(--gold); }
+  .lp-title { font-family:'Cormorant Garamond',serif; font-weight:300; font-size:clamp(2.4rem,4vw,3.6rem);
+              line-height:1.08; letter-spacing:-.025em; }
+  .lp-meta { font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:#8a8a8a;
+             font-weight:500; margin-top:1.4rem; }
+  .lp-body { padding:1rem 2rem 6rem; }
+  .lp-lead { font-size:15px; line-height:1.95; color:var(--muted); font-weight:300;
+             padding-bottom:2.4rem; margin-bottom:2.6rem; border-bottom:1px solid rgba(0,0,0,.08); }
+  .lp-sec { margin-bottom:2.6rem; }
+  .lp-sec h2 { font-family:'Cormorant Garamond',serif; font-weight:400; font-size:24px;
+               letter-spacing:-.01em; margin-bottom:.9rem; line-height:1.2; }
+  .lp-sec h2 .n { color:var(--gold); font-size:15px; margin-right:.7rem; font-family:'Inter',sans-serif; font-weight:600; }
+  .lp-sec p { font-size:14px; line-height:1.95; color:var(--muted); font-weight:300; margin-bottom:.9rem; }
+  .lp-sec ul { list-style:none; margin:.4rem 0 1rem; }
+  .lp-sec li { font-size:14px; line-height:1.9; color:var(--muted); font-weight:300;
+               padding-left:1.3rem; position:relative; margin-bottom:.55rem; }
+  .lp-sec li::before { content:''; position:absolute; left:0; top:.75em; width:5px; height:5px;
+                       border-radius:50%; background:var(--gold); opacity:.55; }
+  .lp-sec a { color:var(--ink); text-decoration:none; border-bottom:1px solid rgba(201,164,98,.5); }
+  .lp-sec a:hover { color:var(--gold); }
+  .lp-sec b, .lp-sec strong { color:var(--ink); font-weight:500; }
+  .lp-note { background:#fafaf8; border:1px solid rgba(0,0,0,.08); border-left:3px solid var(--gold);
+             padding:1.5rem 1.7rem; margin:2rem 0; }
+  .lp-note p { font-size:13.5px; line-height:1.9; color:var(--muted); font-weight:300; margin:0; }
+  .lp-note b { color:var(--ink); font-weight:600; }
 </style>
 
 <style>
@@ -80,7 +98,6 @@
 </head>
 <body>
 
-<!-- NAV -->
 <nav id="nav">
   <div class="max-w-screen-xl mx-auto px-8 py-5 flex items-center justify-between gap-12 relative z-10">
     <a href="index.html" style="text-decoration:none;color:inherit;display:flex;align-items:center;gap:0.5rem;">
@@ -89,7 +106,7 @@
     </a>
     <div class="flex items-center gap-9">
       <div class="nav-links flex items-center gap-9">
-                <a href="pharma.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium whitespace-nowrap">Pharma Research</a>
+        <a href="pharma.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium whitespace-nowrap">Pharma Research</a>
         <div class="nav-dropdown" id="productsDropdown">
           <span class="nav-link-btn text-[11px] tracking-[.14em] uppercase font-medium cursor-pointer select-none whitespace-nowrap">What We Do</span>
           <div class="nav-dropdown-menu">
@@ -101,77 +118,71 @@
         <a href="research.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">Blogs</a>
         <a href="about.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">About</a>
       </div>
-      <a href="contact.html" class="border border-[var(--ink)] text-[var(--ink)] text-[11px] tracking-[.14em] uppercase px-5 py-2.5 font-medium bg-[var(--ink)] text-white whitespace-nowrap" style="text-decoration:none;">Book a Demo</a>
+      <a href="contact.html" class="border border-[var(--ink)] text-[var(--ink)] text-[11px] tracking-[.14em] uppercase px-5 py-2.5 font-medium hover:bg-[var(--ink)] hover:text-white transition-all duration-300 whitespace-nowrap" style="text-decoration:none;">Book a Demo</a>
     </div>
   </div>
 </nav>
 
-<!-- HERO + FORM -->
-<section class="relative z-10" style="background:#fff;padding:9rem 2rem 6rem;overflow:hidden;">
-  <div style="position:absolute;top:-100px;right:-60px;width:480px;height:480px;border-radius:50%;background:radial-gradient(circle,rgba(201,164,98,.06) 0%,transparent 70%);pointer-events:none;"></div>
-  <div class="max-w-screen-xl mx-auto">
-    <a href="pharma.html" id="contact-breadcrumb" style="display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;color:var(--muted);text-decoration:none;margin-bottom:3rem;transition:color .2s;opacity:0;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--muted)'">← Pharma Research</a>
+<section class="lp-hero">
+  <div class="lp-wrap">
+    <a href="index.html" style="display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;color:var(--muted);text-decoration:none;margin-bottom:2.6rem;">&larr; Home</a>
+    <div class="lp-eyebrow"><span>Legal</span></div>
+    <h1 class="lp-title">Cookie <em style="font-style:italic;color:var(--gold);">Policy</em></h1>
+    <p class="lp-meta">Last updated &middot; 24 August 2026</p>
+  </div>
+</section>
 
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;">
+<section class="lp-body">
+  <div class="lp-wrap">
+    <p class="lp-lead">How this website uses cookies and similar technologies, and how you can control them.</p>
 
-      <!-- Left: pitch -->
-      <div>
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:1.4rem;opacity:0;" id="contact-eye">
-          <span style="display:block;height:1px;width:28px;background:linear-gradient(90deg,var(--gold),transparent);"></span>
-          <span style="font-size:10px;letter-spacing:.28em;text-transform:uppercase;font-weight:500;color:var(--gold);">Book a Demo</span>
-        </div>
-        <h1 id="contact-h1" class="font-display font-light" style="font-size:clamp(2.6rem,4.2vw,4.8rem);line-height:1.05;letter-spacing:-0.025em;color:var(--ink);opacity:0;transform:translateY(28px);max-width:600px;">
-          See <em style="font-style:italic;color:var(--gold);">Pharma Research</em> on your own pipeline.
-        </h1>
-        <p id="contact-sub" class="text-[15px] leading-[1.9] text-[var(--muted)] font-light max-w-[520px]" style="margin-top:1.8rem;opacity:0;">
-          Our pharmaceutical and biotech research is where we work most closely with outside teams. Book a walkthrough of the FDA Calendar, the pharmaceutical knowledge graph, and the Diamond Hunter signal engine — with your own coverage universe, live.
-        </p>
-
-        <div id="contact-points" style="margin-top:2.8rem;display:flex;flex-direction:column;gap:1.4rem;opacity:0;">
-          <div style="display:flex;gap:14px;align-items:flex-start;">
-            <span class="gold-text" style="font-family:'Cormorant Garamond',serif;font-size:20px;flex-shrink:0;">01</span>
-            <p class="text-[13px] leading-[1.7] text-[var(--muted)] font-light">30-minute walkthrough of live FDA catalysts, trial intelligence, and the knowledge graph — on your desk's own tickers.</p>
-          </div>
-          <div style="display:flex;gap:14px;align-items:flex-start;">
-            <span class="gold-text" style="font-family:'Cormorant Garamond',serif;font-size:20px;flex-shrink:0;">02</span>
-            <p class="text-[13px] leading-[1.7] text-[var(--muted)] font-light">No commitment — this is a research preview, not a sales call for anything else on the site.</p>
-          </div>
-          <div style="display:flex;gap:14px;align-items:flex-start;">
-            <span class="gold-text" style="font-family:'Cormorant Garamond',serif;font-size:20px;flex-shrink:0;">03</span>
-            <p class="text-[13px] leading-[1.7] text-[var(--muted)] font-light">We reply within one business day with times, or an answer to whatever you asked.</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Right: form -->
-      <div id="contact-form-wrap" style="opacity:0;background:#fafafa;border:1px solid rgba(0,0,0,.06);padding:2.8rem;">
-        <form action="mailto:hello@sedgeventures.com" method="post" enctype="text/plain">
-          <div style="margin-bottom:1.4rem;">
-            <label class="field-label" for="cf-name">Full name</label>
-            <input class="field" type="text" id="cf-name" name="Name" placeholder="Jane Smith" required>
-          </div>
-          <div style="margin-bottom:1.4rem;">
-            <label class="field-label" for="cf-email">Work email</label>
-            <input class="field" type="email" id="cf-email" name="Email" placeholder="jane@fund.com" required>
-          </div>
-          <div style="margin-bottom:1.4rem;">
-            <label class="field-label" for="cf-firm">Firm</label>
-            <input class="field" type="text" id="cf-firm" name="Firm" placeholder="Fund or firm name">
-          </div>
-          <div style="margin-bottom:1.8rem;">
-            <label class="field-label" for="cf-msg">What would you like to see?</label>
-            <textarea class="field" id="cf-msg" name="Message" rows="4" placeholder="Coverage universe, use case, timing..."></textarea>
-          </div>
-          <button type="submit" class="border border-[var(--ink)] bg-[var(--ink)] text-white text-[12px] tracking-[.14em] uppercase px-6 py-3.5 font-medium hover:bg-transparent hover:text-[var(--ink)] transition-all duration-300 w-full">Request Demo</button>
-          <p class="text-[11px] text-[var(--muted)] font-light" style="margin-top:14px;">Submitting opens your email client, addressed to our research desk. We don't store anything typed here.</p>
-        </form>
-      </div>
-
+    <div class="lp-sec">
+      <h2><span class="n">01</span>What cookies are</h2>
+      <p>A cookie is a small text file placed on your device when you visit a website. Cookies are widely used to make sites work, to remember your preferences, and to provide information to the site operator. Similar technologies &mdash; such as local storage &mdash; do a comparable job, and this policy covers those too.</p>
+    </div>
+    <div class="lp-sec">
+      <h2><span class="n">02</span>Categories we use</h2>
+      <p>The cookies and similar technologies that may be used on this site fall into these categories:</p>
+      <ul>
+        <li><b>Strictly necessary.</b> Required for the site to load and function securely, and to remember your cookie choices. These cannot be switched off.</li>
+        <li><b>Preference.</b> Remember choices you make, such as a dismissed notice, so the site behaves consistently between visits.</li>
+        <li><b>Analytics.</b> Help us understand which pages are read and how the site performs, in aggregate, so we can improve it. These are only set with your consent.</li>
+      </ul>
+      <p>We do not use advertising, retargeting or cross-site tracking cookies, and we do not permit third parties to use cookies on this site to build advertising profiles of you.</p>
+    </div>
+    <div class="lp-sec">
+      <h2><span class="n">03</span>Third-party resources</h2>
+      <p>This website loads fonts, stylesheets and JavaScript libraries from third-party content delivery networks, including Google Fonts, cdnjs and jsDelivr. These are used to render the site, not to track you. However, requesting a file from a third-party network necessarily discloses your IP address and basic request headers to that provider, which processes them under its own privacy policy. If you would rather avoid this, you can block those domains in your browser, though the site may not display correctly.</p>
+    </div>
+    <div class="lp-sec">
+      <h2><span class="n">04</span>Managing and disabling cookies</h2>
+      <p>You can control cookies in several ways:</p>
+      <ul>
+        <li>Most browsers let you see what cookies are stored, block them, or delete them &mdash; usually under Settings, Privacy or Security.</li>
+        <li>You can set your browser to warn you before a cookie is stored, or to refuse cookies entirely.</li>
+        <li>You can delete cookies already stored at any time.</li>
+      </ul>
+      <p>Blocking strictly necessary cookies may stop parts of this website from working properly. Guidance for each major browser is available from its own support pages.</p>
+    </div>
+    <div class="lp-sec">
+      <h2><span class="n">05</span>Consent</h2>
+      <p>Where required by law, non-essential cookies are set only after you consent. You can withdraw consent at any time by clearing cookies in your browser and declining when next asked.</p>
+    </div>
+    <div class="lp-sec">
+      <h2><span class="n">06</span>Do Not Track</h2>
+      <p>There is no agreed industry standard for how sites should respond to browser Do Not Track signals, and we do not currently respond to them. The controls described above remain available to you.</p>
+    </div>
+    <div class="lp-sec">
+      <h2><span class="n">07</span>Changes to this policy</h2>
+      <p>We may update this Cookie Policy as the site changes. The &ldquo;last updated&rdquo; date above shows the current version.</p>
+    </div>
+    <div class="lp-sec">
+      <h2><span class="n">08</span>Contact</h2>
+      <p>Questions about cookies: <a href="mailto:hello@sedgeventures.com">hello@sedgeventures.com</a>. See also our <a href="privacy.html">Privacy Policy</a>.</p>
     </div>
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer class="sf">
   <div class="sf-in">
     <div class="sf-top">
@@ -234,21 +245,5 @@
   </div>
 </footer>
 
-<script>
-'use strict';
-gsap.registerPlugin(ScrollTrigger);
-const lenis = new Lenis({ duration:1.4, easing:t=>Math.min(1,1.001-Math.pow(2,-10*t)) });
-lenis.on('scroll', ScrollTrigger.update);
-gsap.ticker.add(t=>lenis.raf(t*1000));
-gsap.ticker.lagSmoothing(0);
-lenis.on('scroll', ({scroll})=>{ document.getElementById('nav').classList.toggle('stuck', scroll>50); });
-
-gsap.to('#contact-breadcrumb',{opacity:1,duration:.7,ease:'power2.out',delay:.15});
-gsap.to('#contact-eye',{opacity:1,duration:.8,ease:'power2.out',delay:.3});
-gsap.to('#contact-h1',{opacity:1,y:0,duration:1.1,ease:'power4.out',delay:.45});
-gsap.to('#contact-sub',{opacity:1,duration:1.0,ease:'power2.out',delay:.65});
-gsap.to('#contact-points',{opacity:1,duration:1.0,ease:'power2.out',delay:.8});
-gsap.to('#contact-form-wrap',{opacity:1,duration:1.0,ease:'power2.out',delay:.5});
-</script>
 </body>
 </html>

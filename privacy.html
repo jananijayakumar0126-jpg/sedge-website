@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — SEDGE Ventures</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = { theme: { extend: { fontFamily: { display: ['Cormorant Garamond','serif'], sans: ['Inter','sans-serif'] } } } }
+</script>
+<style>
+  :root { --gold:#c9a462; --gold-l:#e2bc79; --gold-d:#a07d3a; --ink:#0a0a0a; --muted:#5a5a5a; }
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Inter',sans-serif; background:#fff; color:var(--ink); overflow-x:hidden; }
+  #nav { position:fixed; top:0; left:0; right:0; z-index:900; background:rgba(255,255,255,.94);
+         backdrop-filter:blur(22px); border-bottom:1px solid rgba(0,0,0,.07); }
+  .nav-dropdown { position:relative; }
+  .nav-dropdown-menu { position:absolute; top:calc(100% + 16px); left:50%; transform:translateX(-50%) translateY(-6px); background:#fff; border:1px solid rgba(0,0,0,.08); box-shadow:0 16px 48px rgba(0,0,0,.1); min-width:270px; padding:8px 0; opacity:0; pointer-events:none; transition:opacity .25s ease,transform .25s ease; }
+  .nav-dropdown:hover .nav-dropdown-menu, .nav-dropdown-menu:hover { opacity:1; pointer-events:all; transform:translateX(-50%) translateY(0); }
+  .nav-dropdown-menu a { display:flex; align-items:flex-start; gap:10px; padding:11px 20px; font-size:11px; letter-spacing:.13em; text-transform:uppercase; font-weight:500; color:var(--muted); text-decoration:none; transition:background .2s,color .2s; }
+  .nav-dropdown-menu a:hover { background:#fafafa; color:var(--ink); }
+  .nav-dropdown-menu a .dd-dot { width:5px; height:5px; border-radius:50%; background:var(--gold); flex-shrink:0; margin-top:5px; }
+  .dd-label { display:flex; flex-direction:column; gap:2px; }
+  .dd-sub { font-size:9.5px; letter-spacing:.04em; text-transform:none; color:#9a9a9a; font-weight:400; opacity:.85; }
+  .nav-dropdown > .nav-link-btn::after { content:''; display:inline-block; width:5px; height:5px; border-right:1px solid currentColor; border-bottom:1px solid currentColor; transform:rotate(45deg) translateY(-2px); margin-left:5px; vertical-align:middle; }
+  .gold-text { color:var(--gold); }
+  @media (max-width:1000px) { .nav-links { display:none !important; } }
+
+  /* legal page */
+  .lp-hero { padding:9rem 2rem 3rem; }
+  .lp-wrap { max-width:820px; margin:0 auto; }
+  .lp-eyebrow { display:flex; align-items:center; gap:12px; margin-bottom:1.6rem; }
+  .lp-eyebrow::before { content:''; height:1px; width:28px; background:linear-gradient(90deg,var(--gold),transparent); }
+  .lp-eyebrow span { font-size:10px; letter-spacing:.28em; text-transform:uppercase; font-weight:500; color:var(--gold); }
+  .lp-title { font-family:'Cormorant Garamond',serif; font-weight:300; font-size:clamp(2.4rem,4vw,3.6rem);
+              line-height:1.08; letter-spacing:-.025em; }
+  .lp-meta { font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:#8a8a8a;
+             font-weight:500; margin-top:1.4rem; }
+  .lp-body { padding:1rem 2rem 6rem; }
+  .lp-lead { font-size:15px; line-height:1.95; color:var(--muted); font-weight:300;
+             padding-bottom:2.4rem; margin-bottom:2.6rem; border-bottom:1px solid rgba(0,0,0,.08); }
+  .lp-sec { margin-bottom:2.6rem; }
+  .lp-sec h2 { font-family:'Cormorant Garamond',serif; font-weight:400; font-size:24px;
+               letter-spacing:-.01em; margin-bottom:.9rem; line-height:1.2; }
+  .lp-sec h2 .n { color:var(--gold); font-size:15px; margin-right:.7rem; font-family:'Inter',sans-serif; font-weight:600; }
+  .lp-sec p { font-size:14px; line-height:1.95; color:var(--muted); font-weight:300; margin-bottom:.9rem; }
+  .lp-sec ul { list-style:none; margin:.4rem 0 1rem; }
+  .lp-sec li { font-size:14px; line-height:1.9; color:var(--muted); font-weight:300;
+               padding-left:1.3rem; position:relative; margin-bottom:.55rem; }
+  .lp-sec li::before { content:''; position:absolute; left:0; top:.75em; width:5px; height:5px;
+                       border-radius:50%; background:var(--gold); opacity:.55; }
+  .lp-sec a { color:var(--ink); text-decoration:none; border-bottom:1px solid rgba(201,164,98,.5); }
+  .lp-sec a:hover { color:var(--gold); }
+  .lp-sec b, .lp-sec strong { color:var(--ink); font-weight:500; }
+  .lp-note { background:#fafaf8; border:1px solid rgba(0,0,0,.08); border-left:3px solid var(--gold);
+             padding:1.5rem 1.7rem; margin:2rem 0; }
+  .lp-note p { font-size:13.5px; line-height:1.9; color:var(--muted); font-weight:300; margin:0; }
+  .lp-note b { color:var(--ink); font-weight:600; }
+</style>
+
+<style>
+  /* ── SITE FOOTER (shared) ── */
+  .sf { position:relative; z-index:10; background:#fafaf8; border-top:1px solid rgba(0,0,0,.08);
+        padding:4.5rem 2rem 2.2rem; font-family:'Inter',sans-serif; }
+  .sf-in { max-width:1280px; margin:0 auto; }
+  .sf-top { display:grid; grid-template-columns:1.6fr 1fr 1fr 1.15fr; gap:3rem;
+            padding-bottom:2.8rem; border-bottom:1px solid rgba(0,0,0,.07); }
+  .sf-logo { display:flex; align-items:center; gap:.5rem; margin-bottom:.9rem; }
+  .sf-logo span { font-family:'Cormorant Garamond',serif; font-weight:300; letter-spacing:.22em;
+                  font-size:16px; text-transform:uppercase; color:#0a0a0a; }
+  .sf-logo span.g { color:#c9a462; }
+  .sf-tag { font-size:12px; letter-spacing:.06em; color:#5a5a5a; font-weight:300; margin-bottom:1.6rem; }
+  .sf-entity { font-size:11.5px; line-height:1.85; color:#8a8a8a; font-weight:300; }
+  .sf-entity b { color:#5a5a5a; font-weight:500; }
+  .sf-h { font-size:9.5px; letter-spacing:.2em; text-transform:uppercase; color:#0a0a0a;
+          font-weight:600; margin-bottom:1.1rem; }
+  .sf-col a { display:block; font-size:12.5px; line-height:1.5; color:#5a5a5a; text-decoration:none;
+              font-weight:300; margin-bottom:.72rem; transition:color .2s; }
+  .sf-col a:hover { color:#c9a462; }
+  .sf-disc { padding:2.2rem 0; border-bottom:1px solid rgba(0,0,0,.07); }
+  .sf-disc p { font-size:11px; line-height:1.95; color:#8a8a8a; font-weight:300; max-width:1100px; }
+  .sf-disc b { color:#5a5a5a; font-weight:600; }
+  .sf-disc a { color:#5a5a5a; text-decoration:none; border-bottom:1px solid rgba(201,164,98,.5); }
+  .sf-disc a:hover { color:#c9a462; }
+  .sf-bot { display:flex; align-items:center; justify-content:space-between; gap:1.5rem;
+            flex-wrap:wrap; padding-top:1.6rem; }
+  .sf-copy { font-size:11px; letter-spacing:.06em; color:#8a8a8a; font-weight:300; }
+  .sf-legal { display:flex; gap:1.5rem; flex-wrap:wrap; }
+  .sf-legal a { font-size:11px; letter-spacing:.06em; color:#8a8a8a; text-decoration:none;
+                font-weight:400; transition:color .2s; }
+  .sf-legal a:hover { color:#c9a462; }
+  @media (max-width:900px) { .sf-top { grid-template-columns:1fr 1fr; gap:2.4rem; } }
+  @media (max-width:560px) { .sf-top { grid-template-columns:1fr; } .sf { padding:3.2rem 1.5rem 2rem; } }
+</style>
+
+</head>
+<body>
+
+<nav id="nav">
+  <div class="max-w-screen-xl mx-auto px-8 py-5 flex items-center justify-between gap-12 relative z-10">
+    <a href="index.html" style="text-decoration:none;color:inherit;display:flex;align-items:center;gap:0.5rem;">
+      <span class="font-display font-light tracking-[.22em] text-[17px] uppercase">SEDGE</span>
+      <span class="font-display font-light tracking-[.22em] text-[17px] uppercase gold-text ml-2">Ventures</span>
+    </a>
+    <div class="flex items-center gap-9">
+      <div class="nav-links flex items-center gap-9">
+        <a href="pharma.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium whitespace-nowrap">Pharma Research</a>
+        <div class="nav-dropdown" id="productsDropdown">
+          <span class="nav-link-btn text-[11px] tracking-[.14em] uppercase font-medium cursor-pointer select-none whitespace-nowrap">What We Do</span>
+          <div class="nav-dropdown-menu">
+            <a href="forex.html"><span class="dd-dot"></span><span class="dd-label"><span class="dd-name">Forex</span><span class="dd-sub">Macro &amp; currency research</span></span></a>
+            <a href="value-picks.html"><span class="dd-dot"></span><span class="dd-label"><span class="dd-name">Alpha Signals</span><span class="dd-sub">Equity screener</span></span></a>
+            <a href="mdos.html"><span class="dd-dot"></span><span class="dd-label"><span class="dd-name">Multi-Dimensional Options Screener</span><span class="dd-sub">Derivatives screener &amp; optimizer</span></span></a>
+          </div>
+        </div>
+        <a href="research.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">Blogs</a>
+        <a href="about.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">About</a>
+      </div>
+      <a href="contact.html" class="border border-[var(--ink)] text-[var(--ink)] text-[11px] tracking-[.14em] uppercase px-5 py-2.5 font-medium hover:bg-[var(--ink)] hover:text-white transition-all duration-300 whitespace-nowrap" style="text-decoration:none;">Book a Demo</a>
+    </div>
+  </div>
+</nav>
+
+<section class="lp-hero">
+  <div class="lp-wrap">
+    <a href="index.html" style="display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;color:var(--muted);text-decoration:none;margin-bottom:2.6rem;">&larr; Home</a>
+    <div class="lp-eyebrow"><span>Legal</span></div>
+    <h1 class="lp-title">Privacy <em style="font-style:italic;color:var(--gold);">Policy</em></h1>
+    <p class="lp-meta">Last updated &middot; 24 August 2026</p>
+  </div>
+</section>
+
+<section class="lp-body">
+  <div class="lp-wrap">
+    <p class="lp-lead">How SEDGE Ventures collects, uses and protects personal information when you use this website or get in touch with us.</p>
+
+    <div class="lp-sec">
+      <h2><span class="n">01</span>Purpose and scope</h2>
+      <p>This Privacy Policy explains how SEDGE Ventures FZ-LLC (&ldquo;SEDGE Ventures&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;) collects, uses, shares and protects personal information when you visit this website or contact us. It applies to sedgeventures.ae and to enquiries you send us.</p>
+      <p>We act as the controller of the personal information described here.</p>
+    </div>
+    <div class="lp-sec">
+      <h2><span class="n">02</span>Information we collect</h2>
+      <p>We collect:</p>
+      <ul>
+        <li><b>Information you give us.</b> Your name, email address, employer or firm, and anything you choose to write when you request a demo, send an enquiry, or correspond with us.</li>
+        <li><b>Technical information.</b> IP address, browser type and version, device and operating system, referring page, pages viewed, and date and time of access. This is generated automatically when you load the site.</li>
+        <li><b>Cookie and similar data.</b> As described in our <a href="cookies.html">Cookie Policy</a>.</li>
+      </ul>
+      <p>We do not ask for, and ask that you do not send us, financial account numbers, identity document numbers, payment card details, or any special-category personal data.</p>
+    </div>
+    <div class="lp-sec">
+      <h2><span class="n">03</span>How we use it</h2>
+      <p>We use personal information to:</p>
+      <ul>
+        <li>respond to your enquiry and arrange or deliver a requested walkthrough or demonstration;</li>
+        <li>maintain, secure, and improve this website and diagnose technical problems;</li>
+        <li>understand aggregate usage so we can improve our content;</li>
+        <li>keep records of our correspondence; and</li>
+        <li>comply with applicable law and enforce our <a href="terms.html">Terms of Use</a>.</li>
+      </ul>
+      <p>We do not sell personal information. We do not use it for automated decision-making that produces legal or similarly significant effects.</p>
+    </div>
+    <div class="lp-sec">
+      <h2><span class="n">04</span>Legal bases</h2>
+      <p>Where the EU or UK GDPR applies, we rely on: your <b>consent</b> (for non-essential cookies and marketing contact); the <b>performance of a contract</b> or steps taken at your request (responding to an enquiry); our <b>legitimate interests</b> in operating, securing and improving our website and business, balanced against your rights; and <b>compliance with a legal obligation</b> where one applies.</p>
+      <p>Where UAE Federal Decree-Law No. 45 of 2021 on the Protection of Personal Data applies, we process on the equivalent lawful bases available under that law.</p>
+    </div>
+    <div class="lp-sec">
+      <h2><span class="n">05</span>Sharing and disclosure</h2>
+      <p>We share personal information only with:</p>
+      <ul>
+        <li>service providers who host, secure or support this website and our email, acting on our instructions;</li>
+        <li>professional advisers such as lawyers, auditors and insurers, where required;</li>
+        <li>a purchaser or successor in the event of a reorganisation, merger or sale of the business; and</li>
+        <li>regulators, courts or law enforcement where we are required to disclose by law.</li>
+      </ul>
+      <p>We do not sell, rent or trade personal information to third parties for their own marketing.</p>
+    </div>
+    <div class="lp-sec">
+      <h2><span class="n">06</span>International transfers</h2>
+      <p>We are established in the United Arab Emirates. Our service providers may process personal information outside your country, including in jurisdictions whose data protection law differs from your own.</p>
+      <p>Where we transfer personal information out of the EEA, the UK, or the UAE, we put appropriate safeguards in place &mdash; such as standard contractual clauses or an equivalent mechanism recognised by the relevant regulator.</p>
+    </div>
+    <div class="lp-sec">
+      <h2><span class="n">07</span>Third-party resources loaded by this site</h2>
+      <p>This website loads fonts, stylesheets and JavaScript libraries from third-party content delivery networks, including Google Fonts, cdnjs and jsDelivr. When your browser requests those resources, your IP address and basic request headers are transmitted to those providers, who operate under their own privacy policies. We do not control that processing.</p>
+    </div>
+    <div class="lp-sec">
+      <h2><span class="n">08</span>Security</h2>
+      <p>We apply technical and organisational measures appropriate to the risk, including transport encryption, access control on a need-to-know basis, and supplier due diligence. No method of transmission or storage is completely secure, and we cannot guarantee absolute security. If we become aware of a breach affecting your personal information, we will notify you and the relevant regulator where the law requires it.</p>
+    </div>
+    <div class="lp-sec">
+      <h2><span class="n">09</span>Retention</h2>
+      <p>We keep personal information only as long as needed for the purpose it was collected, and then for as long as required to meet legal, accounting, tax or dispute-resolution obligations. Enquiry correspondence is generally retained for up to 24&nbsp;months from our last exchange with you, unless a longer period is required.</p>
+    </div>
+    <div class="lp-sec">
+      <h2><span class="n">10</span>Your rights</h2>
+      <p>Subject to applicable law, you may:</p>
+      <ul>
+        <li>request access to the personal information we hold about you;</li>
+        <li>ask us to correct information that is inaccurate or incomplete;</li>
+        <li>ask us to delete information where there is no continuing basis to keep it;</li>
+        <li>ask us to restrict or object to processing, including profiling;</li>
+        <li>request a portable copy of information you provided to us;</li>
+        <li>withdraw consent at any time, without affecting processing already carried out; and</li>
+        <li>complain to your local data protection authority, or to the UAE Data Office.</li>
+      </ul>
+      <p>To exercise any of these rights, email <a href="mailto:hello@sedgeventures.com">hello@sedgeventures.com</a>. We may need to verify your identity, and will respond within the period the applicable law allows.</p>
+    </div>
+    <div class="lp-sec">
+      <h2><span class="n">11</span>Children</h2>
+      <p>This website is directed at professional and institutional audiences and is not intended for children. We do not knowingly collect personal information from anyone under 18. If you believe a child has provided us information, contact us and we will delete it.</p>
+    </div>
+    <div class="lp-sec">
+      <h2><span class="n">12</span>Do Not Track</h2>
+      <p>There is no common industry standard for responding to browser Do Not Track signals. We do not currently respond to them. You can control cookies as described in our <a href="cookies.html">Cookie Policy</a>.</p>
+    </div>
+    <div class="lp-sec">
+      <h2><span class="n">13</span>Changes to this policy</h2>
+      <p>We may update this policy from time to time. The &ldquo;last updated&rdquo; date above shows when it was last revised. Material changes will be highlighted on this page.</p>
+    </div>
+    <div class="lp-sec">
+      <h2><span class="n">14</span>Contact us</h2>
+      <p>For privacy questions or requests: <a href="mailto:hello@sedgeventures.com">hello@sedgeventures.com</a>, or SEDGE Ventures FZ-LLC, SO-15, Shed no-18, TP Al Hamra Freezone, Al Hamra Industrial Freezone, Ras Al Khaimah, United Arab Emirates.</p>
+    </div>
+  </div>
+</section>
+
+<footer class="sf">
+  <div class="sf-in">
+    <div class="sf-top">
+      <div>
+        <div class="sf-logo"><span>SEDGE</span><span class="g">Ventures</span></div>
+        <p class="sf-tag">Systematic Equity Investment Management</p>
+        <p class="sf-entity">
+          <b>SEDGE Ventures FZ-LLC</b><br>
+          SO-15, Shed no-18, TP Al Hamra Freezone<br>
+          Al Hamra Industrial Freezone<br>
+          Ras Al Khaimah, United Arab Emirates
+        </p>
+      </div>
+      <div class="sf-col">
+        <div class="sf-h">What We Do</div>
+        <a href="pharma.html">Pharma Research</a>
+        <a href="forex.html">Forex</a>
+        <a href="value-picks.html">Alpha Signals</a>
+        <a href="mdos.html">Options Screener</a>
+      </div>
+      <div class="sf-col">
+        <div class="sf-h">Company</div>
+        <a href="research.html">Blogs</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="sf-col">
+        <div class="sf-h">Legal</div>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Use</a>
+        <a href="cookies.html">Cookie Policy</a>
+        <a href="disclaimer.html">Disclaimer &amp; Risk Disclosure</a>
+      </div>
+    </div>
+
+    <div class="sf-disc">
+      <p>
+        <b>Important disclosure.</b> SEDGE Ventures FZ-LLC is a proprietary research and trading firm. It is not a
+        licensed or regulated investment adviser, broker or fund manager, and does not manage external capital.
+        Nothing on this website is investment advice, a personal recommendation, or an offer or solicitation to buy
+        or sell any security or financial instrument. <b>All company names, tickers, prices, entry and watch ranges,
+        scores, probabilities, screen output, research extracts and performance figures shown anywhere on this site
+        are illustrative and are used only to demonstrate methodology — they are not recommendations and must not be
+        relied upon.</b> SEDGE Ventures and its personnel may hold positions in securities mentioned. Past performance
+        is not indicative of future results, and all investment involves risk including the loss of principal. Always
+        conduct your own due diligence and consult a qualified financial professional before making any investment
+        decision. See our full <a href="disclaimer.html">Disclaimer &amp; Risk Disclosure</a>.
+      </p>
+    </div>
+
+    <div class="sf-bot">
+      <p class="sf-copy">© 2026 SEDGE Ventures FZ-LLC. All rights reserved.</p>
+      <div class="sf-legal">
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+        <a href="cookies.html">Cookies</a>
+        <a href="disclaimer.html">Disclaimer</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

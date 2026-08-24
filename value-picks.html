@@ -28,12 +28,14 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 #nav{position:fixed;top:0;left:0;right:0;z-index:900;transition:background .45s,border-color .45s,backdrop-filter .45s;border-bottom:1px solid transparent;}
 #nav.stuck{background:rgba(255,255,255,.96);backdrop-filter:blur(24px);border-color:rgba(0,0,0,.06);}
 .nav-dropdown{position:relative;}
-.nav-dropdown-menu{position:absolute;top:calc(100% + 16px);left:50%;transform:translateX(-50%) translateY(-8px);background:#fff;border:1px solid rgba(0,0,0,.08);box-shadow:0 20px 56px rgba(0,0,0,.1);min-width:230px;padding:8px 0;opacity:0;pointer-events:none;transition:opacity .22s,transform .22s;}
+.nav-dropdown-menu{position:absolute;top:calc(100% + 16px);left:50%;transform:translateX(-50%) translateY(-8px);background:#fff;border:1px solid rgba(0,0,0,.08);box-shadow:0 20px 56px rgba(0,0,0,.1);min-width:270px;padding:8px 0;opacity:0;pointer-events:none;transition:opacity .22s,transform .22s;}
 .nav-dropdown:hover .nav-dropdown-menu,.nav-dropdown.open .nav-dropdown-menu{opacity:1;pointer-events:all;transform:translateX(-50%) translateY(0);}
-.nav-dropdown-menu a{display:flex;align-items:center;gap:10px;padding:11px 20px;font-size:11px;letter-spacing:.13em;text-transform:uppercase;font-weight:500;color:var(--muted);text-decoration:none;transition:background .18s,color .18s;}
+.nav-dropdown-menu a{display:flex;align-items:flex-start;gap:10px;padding:11px 20px;font-size:11px;letter-spacing:.13em;text-transform:uppercase;font-weight:500;color:var(--muted);text-decoration:none;transition:background .18s,color .18s;}
 .nav-dropdown-menu a:hover{background:#fafafa;color:var(--ink);}
 .nav-dropdown-menu a.active{color:var(--gold);}
-.nav-dropdown-menu a .dd-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0;}
+.nav-dropdown-menu a .dd-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:5px;}
+.dd-label{display:flex;flex-direction:column;gap:2px;}
+.dd-sub{font-size:9.5px;letter-spacing:.04em;text-transform:none;color:#9a9a9a;font-weight:400;opacity:.85;}
 .nav-dropdown>.nav-link-btn::after{content:'';display:inline-block;width:5px;height:5px;border-right:1px solid currentColor;border-bottom:1px solid currentColor;transform:rotate(45deg) translateY(-2px);margin-left:5px;vertical-align:middle;}
 
 
@@ -58,7 +60,14 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 /* ─── HERO ─── */
 .hero-wrap{min-height:100vh;padding-top:70px;position:relative;z-index:10;background:#fff;overflow:hidden;}
 .hero-inner{max-width:1280px;margin:0 auto;padding:0 40px;display:grid;grid-template-columns:1fr 500px;gap:60px;align-items:center;min-height:calc(100vh - 102px);}
-@media(max-width:900px){.hero-inner{grid-template-columns:1fr;}.hero-globe{display:none;}}
+@media(max-width:900px){.hero-inner{grid-template-columns:1fr;gap:2.2rem;}.hero-globe{max-width:460px;}}
+@media(max-width:620px){
+  .hero-stats{flex-wrap:wrap;}
+  .hero-stat{flex:1 1 50%;padding:.95rem .7rem;border-bottom:1px solid var(--border);}
+  .hero-stat:nth-child(2n){border-right:none;}
+  .hero-stat:nth-child(n+3){border-bottom:none;}
+  .hero-stat-n{font-size:1.6rem;}
+}
 .hero-kicker{display:inline-flex;align-items:center;gap:10px;font-size:10px;letter-spacing:.28em;text-transform:uppercase;font-weight:500;color:var(--muted);margin-bottom:2rem;}
 .hero-kicker-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);}
 h1.hero-title{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(2.6rem,4.2vw,4.8rem);line-height:.9;letter-spacing:-.035em;color:var(--ink);margin-bottom:2.4rem;}
@@ -66,13 +75,39 @@ h1.hero-title em{font-style:italic;color:var(--gold);}
 .hero-rule{height:1px;max-width:440px;background:linear-gradient(90deg,var(--gold) 0%,rgba(201,164,98,.2) 50%,transparent 80%);margin-bottom:1.6rem;}
 .hero-desc{font-size:15px;color:var(--muted);line-height:1.9;max-width:460px;font-weight:300;margin-bottom:2.4rem;}
 .hero-ctas{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:3rem;}
-.hero-stats{display:flex;align-items:center;gap:0;border:1px solid var(--border);max-width:440px;}
+.hero-inner>*{min-width:0;}
+.hero-stats{display:flex;align-items:center;gap:0;border:1px solid var(--border);max-width:440px;width:100%;}
 .hero-stat{flex:1;padding:1.1rem 1.4rem;border-right:1px solid var(--border);text-align:center;}
 .hero-stat:last-child{border-right:none;}
 .hero-stat-n{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:1.9rem;line-height:1;color:var(--gold);}
 .hero-stat-l{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:4px;}
 .hero-globe{position:relative;}
-#globe-container{width:100%;height:480px;}
+
+/* ─── HERO FUNNEL ─── */
+.fn{position:relative;width:100%;padding:.5rem 0;}
+.fn-row{position:relative;margin-bottom:1.15rem;}
+.fn-row:last-child{margin-bottom:0;}
+.fn-bar{position:relative;height:62px;margin:0 auto;overflow:hidden;
+  background:linear-gradient(135deg,#faf4e6 0%,#f4e9d3 100%);
+  border:1px solid rgba(201,164,98,.34);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 1.5rem;gap:1.2rem;
+  transform:scaleX(.4);opacity:0;transform-origin:center;
+  transition:transform 1s cubic-bezier(.22,1,.36,1),opacity .8s ease;}
+.fn-row.on .fn-bar{transform:scaleX(1);opacity:1;}
+.fn-row:last-child .fn-bar{background:linear-gradient(135deg,#c9a462 0%,#a07d3a 100%);
+  border-color:#a07d3a;box-shadow:0 12px 34px -14px rgba(160,125,58,.6);}
+.fn-n{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:2.2rem;line-height:1;
+  color:#8a6d31;letter-spacing:-.02em;white-space:nowrap;}
+.fn-row:last-child .fn-n{color:#fff;font-size:2.5rem;}
+.fn-l{font-size:9px;letter-spacing:.2em;text-transform:uppercase;font-weight:600;
+  color:#a08a5e;text-align:right;line-height:1.5;white-space:nowrap;}
+.fn-row:last-child .fn-l{color:rgba(255,255,255,.82);}
+.fn-tick{display:block;width:1px;height:14px;margin:0 auto;
+  background:rgba(201,164,98,.4);opacity:0;transition:opacity .5s ease;}
+.fn-row.on .fn-tick{opacity:1;}
+@media(max-width:1100px){.fn-bar{height:56px;padding:0 1.1rem;}.fn-n{font-size:1.9rem;}
+  .fn-row:last-child .fn-n{font-size:2.1rem;}}
 .hero-scroll-hint{position:absolute;bottom:2.4rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;opacity:.35;}
 .hero-scroll-hint span{font-size:8.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);}
 .scroll-arrow{width:1px;height:36px;background:linear-gradient(to bottom,var(--gold),transparent);animation:scrollFade 2s ease-in-out infinite;}
@@ -171,19 +206,26 @@ h1.hero-title em{font-style:italic;color:var(--gold);}
 .fb-fill.animated{transform:scaleX(1);}
 .fb-pct{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--gold);min-width:40px;text-align:right;}
 .fb-desc{font-size:11px;color:var(--muted);min-width:220px;line-height:1.4;}
+@media(max-width:820px){
+  .factor-bar-row{flex-wrap:wrap;gap:9px;}
+  .fb-label{min-width:0;flex:1 1 100%;}
+  .fb-track{flex:1 1 auto;min-width:60px;}
+  .fb-pct{min-width:36px;}
+  .fb-desc{min-width:0;flex:1 1 100%;}
+}
 
 /* ─── PERFORMANCE ─── */
-.perf-card{border:1px solid var(--border);background:#fff;box-shadow:0 28px 70px rgba(0,0,0,.06);padding:2.4rem 2.6rem;}
+.perf-card{border:1px solid var(--border);background:#fff;box-shadow:0 18px 48px rgba(0,0,0,.05);padding:1.9rem 2rem;max-width:900px;margin:0 auto;}
 @media(max-width:640px){.perf-card{padding:1.6rem 1.2rem;}}
 .perf-legend{display:flex;gap:28px;align-items:center;flex-wrap:wrap;}
 .perf-leg-item{display:flex;align-items:center;gap:9px;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:500;color:var(--muted);}
 .perf-leg-swatch{width:24px;height:2px;display:block;}
-.perf-stats{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--border);margin-top:1.8rem;}
+.perf-stats{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--border);margin-top:1.3rem;}
 @media(max-width:640px){.perf-stats{grid-template-columns:1fr;}}
-.perf-stat{padding:1.5rem 1rem;text-align:center;border-right:1px solid var(--border);}
+.perf-stat{padding:1.1rem 1rem;text-align:center;border-right:1px solid var(--border);}
 .perf-stat:last-child{border-right:none;}
 @media(max-width:640px){.perf-stat{border-right:none;border-bottom:1px solid var(--border);}.perf-stat:last-child{border-bottom:none;}}
-.perf-stat-n{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:2.4rem;color:var(--gold);line-height:1;margin-bottom:.4rem;}
+.perf-stat-n{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:1.85rem;color:var(--gold);line-height:1;margin-bottom:.4rem;}
 .perf-stat-l{font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);}
 .perf-axis{font-size:10px;fill:var(--muted-2);font-family:'Inter',sans-serif;}
 .perf-grid-line{stroke:rgba(0,0,0,.06);stroke-width:1;}
@@ -275,8 +317,44 @@ footer{background:#fff;border-top:1px solid var(--border);padding:3.5rem 40px;}
 [data-reveal-delay="1"]{transition-delay:.12s;}
 [data-reveal-delay="2"]{transition-delay:.24s;}
 [data-reveal-delay="3"]{transition-delay:.36s;}
-  @media (max-width:1000px) { .nav-links { display:none; } }
+  @media (max-width:1000px) { .nav-links { display:none !important; } }
 </style>
+
+<style>
+  /* ── SITE FOOTER (shared) ── */
+  .sf { position:relative; z-index:10; background:#fafaf8; border-top:1px solid rgba(0,0,0,.08);
+        padding:4.5rem 2rem 2.2rem; font-family:'Inter',sans-serif; }
+  .sf-in { max-width:1280px; margin:0 auto; }
+  .sf-top { display:grid; grid-template-columns:1.6fr 1fr 1fr 1.15fr; gap:3rem;
+            padding-bottom:2.8rem; border-bottom:1px solid rgba(0,0,0,.07); }
+  .sf-logo { display:flex; align-items:center; gap:.5rem; margin-bottom:.9rem; }
+  .sf-logo span { font-family:'Cormorant Garamond',serif; font-weight:300; letter-spacing:.22em;
+                  font-size:16px; text-transform:uppercase; color:#0a0a0a; }
+  .sf-logo span.g { color:#c9a462; }
+  .sf-tag { font-size:12px; letter-spacing:.06em; color:#5a5a5a; font-weight:300; margin-bottom:1.6rem; }
+  .sf-entity { font-size:11.5px; line-height:1.85; color:#8a8a8a; font-weight:300; }
+  .sf-entity b { color:#5a5a5a; font-weight:500; }
+  .sf-h { font-size:9.5px; letter-spacing:.2em; text-transform:uppercase; color:#0a0a0a;
+          font-weight:600; margin-bottom:1.1rem; }
+  .sf-col a { display:block; font-size:12.5px; line-height:1.5; color:#5a5a5a; text-decoration:none;
+              font-weight:300; margin-bottom:.72rem; transition:color .2s; }
+  .sf-col a:hover { color:#c9a462; }
+  .sf-disc { padding:2.2rem 0; border-bottom:1px solid rgba(0,0,0,.07); }
+  .sf-disc p { font-size:11px; line-height:1.95; color:#8a8a8a; font-weight:300; max-width:1100px; }
+  .sf-disc b { color:#5a5a5a; font-weight:600; }
+  .sf-disc a { color:#5a5a5a; text-decoration:none; border-bottom:1px solid rgba(201,164,98,.5); }
+  .sf-disc a:hover { color:#c9a462; }
+  .sf-bot { display:flex; align-items:center; justify-content:space-between; gap:1.5rem;
+            flex-wrap:wrap; padding-top:1.6rem; }
+  .sf-copy { font-size:11px; letter-spacing:.06em; color:#8a8a8a; font-weight:300; }
+  .sf-legal { display:flex; gap:1.5rem; flex-wrap:wrap; }
+  .sf-legal a { font-size:11px; letter-spacing:.06em; color:#8a8a8a; text-decoration:none;
+                font-weight:400; transition:color .2s; }
+  .sf-legal a:hover { color:#c9a462; }
+  @media (max-width:900px) { .sf-top { grid-template-columns:1fr 1fr; gap:2.4rem; } }
+  @media (max-width:560px) { .sf-top { grid-template-columns:1fr; } .sf { padding:3.2rem 1.5rem 2rem; } }
+</style>
+
 </head>
 <body>
 
@@ -289,19 +367,19 @@ footer{background:#fff;border-top:1px solid var(--border);padding:3.5rem 40px;}
     </a>
     <div class="flex items-center gap-9">
       <div class="nav-links flex items-center gap-9">
+                <a href="pharma.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium whitespace-nowrap">Pharma Research</a>
         <div class="nav-dropdown" id="productsDropdown">
-          <span class="nav-link-btn text-[11px] tracking-[.14em] uppercase font-medium cursor-pointer select-none" style="color:var(--gold);">Products</span>
+          <span class="nav-link-btn text-[11px] tracking-[.14em] uppercase font-medium cursor-pointer select-none whitespace-nowrap" style="color:var(--gold);">What We Do</span>
           <div class="nav-dropdown-menu">
-            <a href="pharma.html"><span class="dd-dot"></span>Pharma Research</a>
-            <a href="forex.html"><span class="dd-dot"></span>Forex</a>
-            <a href="value-picks.html" class="active"><span class="dd-dot"></span>Alpha Signals</a>
+            <a href="forex.html"><span class="dd-dot"></span><span class="dd-label"><span class="dd-name">Forex</span><span class="dd-sub">Macro &amp; currency research</span></span></a>
+            <a href="value-picks.html" class="active"><span class="dd-dot"></span><span class="dd-label"><span class="dd-name">Alpha Signals</span><span class="dd-sub">Equity screener</span></span></a>
+            <a href="mdos.html"><span class="dd-dot"></span><span class="dd-label"><span class="dd-name">Multi-Dimensional Options Screener</span><span class="dd-sub">Derivatives screener &amp; optimizer</span></span></a>
           </div>
         </div>
-        <a href="research.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">Research</a>
-        <a href="mdos.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">MDOS</a>
+        <a href="research.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">Blogs</a>
         <a href="about.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">About</a>
       </div>
-      <a href="contact.html" class="border border-[var(--ink)] text-[var(--ink)] text-[11px] tracking-[.14em] uppercase px-5 py-2.5 font-medium hover:bg-[var(--ink)] hover:text-white transition-all duration-300 whitespace-nowrap" style="text-decoration:none;">Book a Demo</a>
+      <a href="contact.html" class="border border-[var(--ink)] text-[var(--ink)] text-[11px] tracking-[.14em] uppercase px-5 py-2.5 font-medium hover:bg-[var(--ink)] hover:text-white transition-all duration-300 whitespace-nowrap" style="text-decoration:none;">Contact</a>
     </div>
   </div>
 </nav>
@@ -312,7 +390,7 @@ footer{background:#fff;border-top:1px solid var(--border);padding:3.5rem 40px;}
     <!-- Left -->
     <div>
       <div class="hero-kicker">
-        <a href="index.html#our-products" style="display:inline-flex;align-items:center;gap:8px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;font-weight:500;color:var(--muted);text-decoration:none;transition:color .2s;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--muted)'">← Our Products</a>
+        <a href="index.html#what-we-do" style="display:inline-flex;align-items:center;gap:8px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;font-weight:500;color:var(--muted);text-decoration:none;transition:color .2s;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--muted)'">← What We Do</a>
       </div>
       <div class="flex items-center gap-4 mb-5">
         <span class="g-rule w-8"></span>
@@ -341,9 +419,37 @@ footer{background:#fff;border-top:1px solid var(--border);padding:3.5rem 40px;}
       </div>
     </div>
 
-    <!-- Right: 3D Globe -->
+    <!-- Right: live screener -->
     <div class="hero-globe">
-      <div id="globe-container"></div>
+      <div class="fn" id="fn">
+      <div class="fn-row" data-fn>
+        <div class="fn-bar" style="width:100%">
+          <span class="fn-n" data-to="5000" data-suffix="+">0+</span>
+          <span class="fn-l">US equities screened</span>
+        </div>
+      </div>
+      <span class="fn-tick"></span>
+      <div class="fn-row" data-fn>
+        <div class="fn-bar" style="width:88%">
+          <span class="fn-n" data-to="40" data-suffix="+">0+</span>
+          <span class="fn-l">Quality factors</span>
+        </div>
+      </div>
+      <span class="fn-tick"></span>
+      <div class="fn-row" data-fn>
+        <div class="fn-bar" style="width:74%">
+          <span class="fn-n" data-to="80" data-suffix="%">0%</span>
+          <span class="fn-l">Eliminated</span>
+        </div>
+      </div>
+      <span class="fn-tick"></span>
+      <div class="fn-row" data-fn>
+        <div class="fn-bar" style="width:58%">
+          <span class="fn-n" data-to="9" data-suffix="">0</span>
+          <span class="fn-l">Shortlist</span>
+        </div>
+      </div>
+      </div>
     </div>
   </div>
 
@@ -392,7 +498,7 @@ footer{background:#fff;border-top:1px solid var(--border);padding:3.5rem 40px;}
         </div>
         <div class="section-eyebrow mb-3">Quality Score</div>
         <h3 class="font-display font-light text-[1.9rem] mb-3 leading-tight">Balance sheet strength</h3>
-        <p class="text-[13px] text-[var(--muted)] leading-relaxed">Composite scoring across ROIC, debt structure, accruals, and earnings stability. Separate durable compounders from value traps before you deploy capital.</p>
+        <p class="text-[13px] text-[var(--muted)] leading-relaxed">Composite scoring across ROIC, debt structure, accruals, and earnings stability. Separate durable compounders from value traps before capital is deployed.</p>
       </div>
       <div class="pcard" data-card data-reveal data-reveal-delay="3">
         <div class="pcard-icon">
@@ -459,7 +565,7 @@ footer{background:#fff;border-top:1px solid var(--border);padding:3.5rem 40px;}
 </section>
 
 <!-- ─── METHODOLOGY ─── -->
-<section id="methodology" class="relative z-10 py-28 px-10" style="background:var(--bg-2);border-top:1px solid var(--border);scroll-margin-top:110px;">
+<section id="methodology" class="relative z-10 py-24 px-10" style="background:var(--bg-2);border-top:1px solid var(--border);scroll-margin-top:110px;">
   <div class="max-w-screen-xl mx-auto">
     <div class="mb-20 text-center" data-reveal>
       <div class="slabel justify-center mb-6">
@@ -544,9 +650,9 @@ footer{background:#fff;border-top:1px solid var(--border);padding:3.5rem 40px;}
 </section>
 
 <!-- ─── PERFORMANCE ─── -->
-<section class="relative z-10 py-28 px-10" style="background:#fff;">
+<section class="relative z-10 py-24 px-10" style="background:#fff;">
   <div class="max-w-screen-xl mx-auto">
-    <div class="mb-14 text-center" data-reveal>
+    <div class="mb-10 text-center" data-reveal>
       <div class="slabel justify-center mb-6">
         <span class="sl sl-l"></span>
         <span class="section-eyebrow">Model Performance</span>
@@ -563,7 +669,7 @@ footer{background:#fff;border-top:1px solid var(--border);padding:3.5rem 40px;}
         </div>
         <span class="chip">36-Month Simulation</span>
       </div>
-      <svg id="perfSvg" viewBox="0 0 920 380" width="100%" preserveAspectRatio="xMidYMid meet"></svg>
+      <svg id="perfSvg" viewBox="0 0 920 250" width="100%" preserveAspectRatio="xMidYMid meet"></svg>
       <div class="perf-stats">
         <div class="perf-stat">
           <div class="perf-stat-n" id="psA" data-suffix="%" data-prefix="+">+0%</div>
@@ -578,7 +684,7 @@ footer{background:#fff;border-top:1px solid var(--border);padding:3.5rem 40px;}
           <div class="perf-stat-l">Excess return</div>
         </div>
       </div>
-      <p style="font-size:10px;color:var(--muted-2);margin-top:1.2rem;opacity:.65;line-height:1.6;">Hypothetical, simulated performance shown for illustration of methodology only. Does not represent actual client returns, does not reflect fees or transaction costs, and is not a guarantee of future results.</p>
+      <p style="font-size:10px;color:var(--muted-2);margin-top:1.2rem;opacity:.65;line-height:1.6;">Hypothetical, simulated performance shown for illustration of methodology only. Does not represent actual trading returns, does not reflect fees or transaction costs, and is not a guarantee of future results.</p>
     </div>
   </div>
 </section>
@@ -629,13 +735,65 @@ footer{background:#fff;border-top:1px solid var(--border);padding:3.5rem 40px;}
 </section>
 
 <!-- ─── FOOTER ─── -->
-<footer class="relative z-10 border-t border-gray-100 py-14 px-8">
-  <div class="max-w-screen-xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-    <div>
-      <div class="flex items-center gap-2 mb-2"><span class="font-display font-light tracking-[.22em] text-[16px] uppercase">SEDGE</span><span class="font-display font-light tracking-[.22em] text-[16px] uppercase gold-text">Ventures</span></div>
-      <p class="text-[12px] text-[var(--muted)] font-light tracking-[.06em]">Systematic Equity Investment Management</p>
+<footer class="sf">
+  <div class="sf-in">
+    <div class="sf-top">
+      <div>
+        <div class="sf-logo"><span>SEDGE</span><span class="g">Ventures</span></div>
+        <p class="sf-tag">Systematic Equity Investment Management</p>
+        <p class="sf-entity">
+          <b>SEDGE Ventures FZ-LLC</b><br>
+          SO-15, Shed no-18, TP Al Hamra Freezone<br>
+          Al Hamra Industrial Freezone<br>
+          Ras Al Khaimah, United Arab Emirates
+        </p>
+      </div>
+      <div class="sf-col">
+        <div class="sf-h">What We Do</div>
+        <a href="pharma.html">Pharma Research</a>
+        <a href="forex.html">Forex</a>
+        <a href="value-picks.html">Alpha Signals</a>
+        <a href="mdos.html">Options Screener</a>
+      </div>
+      <div class="sf-col">
+        <div class="sf-h">Company</div>
+        <a href="research.html">Blogs</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="sf-col">
+        <div class="sf-h">Legal</div>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Use</a>
+        <a href="cookies.html">Cookie Policy</a>
+        <a href="disclaimer.html">Disclaimer &amp; Risk Disclosure</a>
+      </div>
     </div>
-    <p class="text-[11px] text-[var(--muted)] font-light tracking-[.08em]">© 2026 SEDGE Ventures. All rights reserved.</p>
+
+    <div class="sf-disc">
+      <p>
+        <b>Important disclosure.</b> SEDGE Ventures FZ-LLC is a proprietary research and trading firm. It is not a
+        licensed or regulated investment adviser, broker or fund manager, and does not manage external capital.
+        Nothing on this website is investment advice, a personal recommendation, or an offer or solicitation to buy
+        or sell any security or financial instrument. <b>All company names, tickers, prices, entry and watch ranges,
+        scores, probabilities, screen output, research extracts and performance figures shown anywhere on this site
+        are illustrative and are used only to demonstrate methodology — they are not recommendations and must not be
+        relied upon.</b> SEDGE Ventures and its personnel may hold positions in securities mentioned. Past performance
+        is not indicative of future results, and all investment involves risk including the loss of principal. Always
+        conduct your own due diligence and consult a qualified financial professional before making any investment
+        decision. See our full <a href="disclaimer.html">Disclaimer &amp; Risk Disclosure</a>.
+      </p>
+    </div>
+
+    <div class="sf-bot">
+      <p class="sf-copy">© 2026 SEDGE Ventures FZ-LLC. All rights reserved.</p>
+      <div class="sf-legal">
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+        <a href="cookies.html">Cookies</a>
+        <a href="disclaimer.html">Disclaimer</a>
+      </div>
+    </div>
   </div>
 </footer>
 
@@ -695,7 +853,7 @@ ScrollTrigger.create({trigger:'.cred-grid',start:'top 82%',once:true,onEnter(){
 (function(){
   const svg=document.getElementById('perfSvg');
   if(!svg) return;
-  const W=920,H=380,L=58,R=86,T=26,Bm=44;
+  const W=920,H=250,L=54,R=84,T=18,Bm=34;
   const aSteps=[2.1,1.4,3.2,-1.8,2.6,4.1,1.2,-2.4,3.8,2.2,5.1,-1.1,2.9,3.4,-3.2,4.6,2.8,1.9,-1.4,5.2,3.1,2.4,-2.1,4.4,3.6,1.8,4.9,-1.6,3.2,5.4,2.1,-2.8,4.1,3.8,2.6,4.4];
   const bSteps=[1.2,0.8,1.6,-2.2,1.4,2.1,0.6,-3.1,2.2,1.1,2.6,-1.8,1.5,1.9,-4.1,2.4,1.6,1.0,-2.2,2.8,1.7,1.2,-2.6,2.2,1.9,0.9,2.4,-2.1,1.6,2.7,1.1,-3.4,2.1,1.9,1.3,2.2];
   const A=[100],B=[100];
@@ -711,7 +869,7 @@ ScrollTrigger.create({trigger:'.cred-grid',start:'top 82%',once:true,onEnter(){
     const v=100+p;
     if(v>=mn&&v<=mx) grid+=`<line class="perf-grid-line" x1="${L}" x2="${W-R}" y1="${Y(v)}" y2="${Y(v)}"/><text class="perf-axis" x="${L-10}" y="${Y(v)+3}" text-anchor="end">${p>0?'+':''}${p}%</text>`;
   });
-  [0,12,24,36].forEach(m=>{ grid+=`<text class="perf-axis" x="${X(m)}" y="${H-14}" text-anchor="middle">M${m}</text>`; });
+  [0,12,24,36].forEach(m=>{ grid+=`<text class="perf-axis" x="${X(m)}" y="${H-10}" text-anchor="middle">M${m}</text>`; });
   const areaD=toPath(A)+`L${X(n).toFixed(1)} ${Y(mn).toFixed(1)} L${X(0).toFixed(1)} ${Y(mn).toFixed(1)} Z`;
   const eA=Math.round(A[n]-100), eB=Math.round(B[n]-100);
   svg.innerHTML=`<defs>
@@ -798,105 +956,51 @@ const termObs=new IntersectionObserver((entries)=>{
 const termSection=document.querySelector('.scan-section');
 if(termSection) termObs.observe(termSection);
 
-// ── THREE.JS ARMILLARY SPHERE ──────────────────────────────────
+// ── HERO FUNNEL ───────────────────────────────────────────────
+// Universe -> factors -> cut -> shortlist. Counts animate up on view.
+// (earlier hero visuals archived in assets/archive/)
 (function(){
-  const container=document.getElementById('globe-container');
-  if(!container||typeof THREE==='undefined') return;
-  const W=container.clientWidth||500, H=container.clientHeight||480;
-  const scene=new THREE.Scene();
-  const camera=new THREE.PerspectiveCamera(40,W/H,0.1,100);
-  camera.position.set(0,0.4,9.6);
-  camera.lookAt(0,0,0);
-  const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
-  renderer.setSize(W,H);
-  renderer.setClearColor(0x000000,0);
-  container.appendChild(renderer.domElement);
-  scene.add(new THREE.AmbientLight(0xffffff,0.9));
-  const sun=new THREE.DirectionalLight(0xd4af6e,0.85);
-  sun.position.set(4,6,3);
-  scene.add(sun);
-  const fill=new THREE.DirectionalLight(0xfff4e0,0.3);
-  fill.position.set(-4,-2,-3);
-  scene.add(fill);
-  const outer=new THREE.Group();
-  scene.add(outer);
+  var host=document.getElementById('fn');
+  if(!host) return;
+  var rows=[].slice.call(host.querySelectorAll('[data-fn]'));
 
-  // ── core: faceted value nucleus ──
-  const core=new THREE.Group();
-  core.add(new THREE.Mesh(new THREE.IcosahedronGeometry(0.62,1),new THREE.MeshPhongMaterial({color:0xc9a462,transparent:true,opacity:0.16,shininess:60})));
-  core.add(new THREE.Mesh(new THREE.IcosahedronGeometry(0.62,1),new THREE.MeshBasicMaterial({color:0xe2bc79,wireframe:true,transparent:true,opacity:0.5})));
-  core.add(new THREE.Mesh(new THREE.IcosahedronGeometry(0.3,0),new THREE.MeshBasicMaterial({color:0xf4e6c8,transparent:true,opacity:0.85})));
-  outer.add(core);
-
-  // ── three orbital rings at classic armillary tilts, each spinning independently ──
-  const ringDefs=[
-    {r:2.15,tube:0.018,tiltX:1.4,tiltZ:0.08,opacity:0.5, spin:0.006},
-    {r:2.75,tube:0.014,tiltX:0.35,tiltZ:1.15,opacity:0.32,spin:-0.0038},
-    {r:3.3, tube:0.011,tiltX:0.95,tiltZ:-0.9,opacity:0.2, spin:0.0022},
-  ];
-  const rings=ringDefs.map(def=>{
-    const holder=new THREE.Group();
-    holder.rotation.x=def.tiltX; holder.rotation.z=def.tiltZ;
-    const mesh=new THREE.Mesh(new THREE.TorusGeometry(def.r,def.tube,10,120),new THREE.MeshBasicMaterial({color:0xc9a462,transparent:true,opacity:def.opacity}));
-    holder.add(mesh);
-    holder.userData.spin=def.spin;
-    outer.add(holder);
-    return holder;
-  });
-
-  // ── decorative nodes riding the inner ring ──
-  const nodeHolder=rings[0];
-  const nodeMeshes=[];
-  const NODE_COUNT=6;
-  for(let i=0;i<NODE_COUNT;i++){
-    const angle=(i/NODE_COUNT)*Math.PI*2;
-    const r=ringDefs[0].r;
-    const size=0.09;
-    const node=new THREE.Mesh(new THREE.SphereGeometry(size,16,16),new THREE.MeshPhongMaterial({color:0xc9a462,transparent:true,opacity:0.9,shininess:70}));
-    node.position.set(Math.cos(angle)*r,0,Math.sin(angle)*r);
-    nodeHolder.add(node);
-    nodeMeshes.push(node);
-    const halo=new THREE.Mesh(new THREE.RingGeometry(size*1.5,size*1.9,20),new THREE.MeshBasicMaterial({color:0xc9a462,transparent:true,opacity:0.28,side:THREE.DoubleSide}));
-    halo.position.copy(node.position);
-    nodeHolder.add(halo);
+  function countUp(el){
+    var to=parseFloat(el.dataset.to), suf=el.dataset.suffix||'';
+    var t0=null, dur=1100;
+    function step(ts){
+      if(!t0) t0=ts;
+      var p=Math.min((ts-t0)/dur,1);
+      var e=1-Math.pow(1-p,3);
+      var v=Math.round(to*e);
+      el.textContent=v.toLocaleString('en-US')+suf;
+      if(p<1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
   }
 
-  // ── ambient stardust shell ──
-  const N=420, dust=new Float32Array(N*3);
-  for(let i=0;i<N;i++){
-    const phi=Math.acos(2*Math.random()-1), th=Math.random()*Math.PI*2, r=4.1+Math.random()*0.7;
-    dust[i*3]=r*Math.sin(phi)*Math.cos(th);
-    dust[i*3+1]=r*Math.cos(phi);
-    dust[i*3+2]=r*Math.sin(phi)*Math.sin(th);
-  }
-  const dustGeo=new THREE.BufferGeometry();
-  dustGeo.setAttribute('position',new THREE.BufferAttribute(dust,3));
-  const dustMesh=new THREE.Points(dustGeo,new THREE.PointsMaterial({color:0xe2bc79,size:0.028,transparent:true,opacity:0.45}));
-  outer.add(dustMesh);
-
-  let rotY=0.15, rotX=-0.08;
-  let frame=0;
-  (function tick(){
-    requestAnimationFrame(tick);
-    frame++;
-    rotY+=0.0016;
-    outer.rotation.y=rotY;
-    outer.rotation.x=rotX;
-    rings.forEach(r=>{ r.children[0].rotation.z+=r.userData.spin; });
-    core.rotation.y+=0.004;
-    core.children[1].rotation.x-=0.0025;
-    nodeMeshes.forEach((node,i)=>{
-      const pulse=1+Math.sin(frame*0.03+i*1.3)*0.12;
-      node.scale.setScalar(pulse);
+  function run(){
+    rows.forEach(function(r,i){
+      setTimeout(function(){
+        r.classList.add('on');
+        countUp(r.querySelector('.fn-n'));
+      }, i*260);
     });
-    dustMesh.rotation.y-=0.0006;
-    renderer.render(scene,camera);
-  })();
-  window.addEventListener('resize',()=>{
-    const w=container.clientWidth,h=container.clientHeight;
-    camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h);
-  });
+  }
+  function reset(){
+    rows.forEach(function(r){
+      r.classList.remove('on');
+      var n=r.querySelector('.fn-n');
+      n.textContent='0'+(n.dataset.suffix||'');
+    });
+  }
+
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(e.isIntersecting){ run(); }
+      else { reset(); }
+    });
+  },{threshold:.3});
+  io.observe(host);
 })();
 
 // ── SCAN SECTION 3D — ROTATING DATA SPHERE ────────────────────

@@ -25,11 +25,13 @@
   #nav { position:fixed; top:0; left:0; right:0; z-index:900; transition:background .45s ease,border-color .45s ease,backdrop-filter .45s ease; border-bottom:1px solid transparent; }
   #nav.stuck { background:rgba(255,255,255,.92); backdrop-filter:blur(22px); border-color:rgba(0,0,0,.07); }
   .nav-dropdown { position:relative; }
-  .nav-dropdown-menu { position:absolute; top:calc(100% + 16px); left:50%; transform:translateX(-50%) translateY(-6px); background:#fff; border:1px solid rgba(0,0,0,.08); box-shadow:0 16px 48px rgba(0,0,0,.1); min-width:220px; padding:8px 0; opacity:0; pointer-events:none; transition:opacity .25s ease,transform .25s ease; }
+  .nav-dropdown-menu { position:absolute; top:calc(100% + 16px); left:50%; transform:translateX(-50%) translateY(-6px); background:#fff; border:1px solid rgba(0,0,0,.08); box-shadow:0 16px 48px rgba(0,0,0,.1); min-width:270px; padding:8px 0; opacity:0; pointer-events:none; transition:opacity .25s ease,transform .25s ease; }
   .nav-dropdown:hover .nav-dropdown-menu, .nav-dropdown-menu:hover { opacity:1; pointer-events:all; transform:translateX(-50%) translateY(0); }
-  .nav-dropdown-menu a { display:flex; align-items:center; gap:10px; padding:11px 20px; font-size:11px; letter-spacing:.13em; text-transform:uppercase; font-weight:500; color:var(--muted); text-decoration:none; transition:background .2s,color .2s; }
+  .nav-dropdown-menu a { display:flex; align-items:flex-start; gap:10px; padding:11px 20px; font-size:11px; letter-spacing:.13em; text-transform:uppercase; font-weight:500; color:var(--muted); text-decoration:none; transition:background .2s,color .2s; }
   .nav-dropdown-menu a:hover { background:#fafafa; color:var(--ink); }
-  .nav-dropdown-menu a .dd-dot { width:5px; height:5px; border-radius:50%; background:var(--gold); flex-shrink:0; }
+  .nav-dropdown-menu a .dd-dot { width:5px; height:5px; border-radius:50%; background:var(--gold); flex-shrink:0; margin-top:5px; }
+  .dd-label { display:flex; flex-direction:column; gap:2px; }
+  .dd-sub { font-size:9.5px; letter-spacing:.04em; text-transform:none; color:#9a9a9a; font-weight:400; opacity:.85; }
   .nav-dropdown > .nav-link-btn::after { content:''; display:inline-block; width:5px; height:5px; border-right:1px solid currentColor; border-bottom:1px solid currentColor; transform:rotate(45deg) translateY(-2px); margin-left:5px; vertical-align:middle; }
   .gold-text { color:var(--gold); }
   .eyebrow { font-size:10px; letter-spacing:.28em; text-transform:uppercase; font-weight:500; color:var(--gold); }
@@ -43,8 +45,44 @@
   .dim-desc { font-size:13px; color:var(--muted); font-weight:300; margin-top:4px; line-height:1.6; }
   .dims.dimmed .dim-row { opacity:.32; }
   .dims.dimmed .dim-row.on { opacity:1; }
-  @media (max-width:1000px) { .nav-links { display:none; } }
+  @media (max-width:1000px) { .nav-links { display:none !important; } }
 </style>
+
+<style>
+  /* ── SITE FOOTER (shared) ── */
+  .sf { position:relative; z-index:10; background:#fafaf8; border-top:1px solid rgba(0,0,0,.08);
+        padding:4.5rem 2rem 2.2rem; font-family:'Inter',sans-serif; }
+  .sf-in { max-width:1280px; margin:0 auto; }
+  .sf-top { display:grid; grid-template-columns:1.6fr 1fr 1fr 1.15fr; gap:3rem;
+            padding-bottom:2.8rem; border-bottom:1px solid rgba(0,0,0,.07); }
+  .sf-logo { display:flex; align-items:center; gap:.5rem; margin-bottom:.9rem; }
+  .sf-logo span { font-family:'Cormorant Garamond',serif; font-weight:300; letter-spacing:.22em;
+                  font-size:16px; text-transform:uppercase; color:#0a0a0a; }
+  .sf-logo span.g { color:#c9a462; }
+  .sf-tag { font-size:12px; letter-spacing:.06em; color:#5a5a5a; font-weight:300; margin-bottom:1.6rem; }
+  .sf-entity { font-size:11.5px; line-height:1.85; color:#8a8a8a; font-weight:300; }
+  .sf-entity b { color:#5a5a5a; font-weight:500; }
+  .sf-h { font-size:9.5px; letter-spacing:.2em; text-transform:uppercase; color:#0a0a0a;
+          font-weight:600; margin-bottom:1.1rem; }
+  .sf-col a { display:block; font-size:12.5px; line-height:1.5; color:#5a5a5a; text-decoration:none;
+              font-weight:300; margin-bottom:.72rem; transition:color .2s; }
+  .sf-col a:hover { color:#c9a462; }
+  .sf-disc { padding:2.2rem 0; border-bottom:1px solid rgba(0,0,0,.07); }
+  .sf-disc p { font-size:11px; line-height:1.95; color:#8a8a8a; font-weight:300; max-width:1100px; }
+  .sf-disc b { color:#5a5a5a; font-weight:600; }
+  .sf-disc a { color:#5a5a5a; text-decoration:none; border-bottom:1px solid rgba(201,164,98,.5); }
+  .sf-disc a:hover { color:#c9a462; }
+  .sf-bot { display:flex; align-items:center; justify-content:space-between; gap:1.5rem;
+            flex-wrap:wrap; padding-top:1.6rem; }
+  .sf-copy { font-size:11px; letter-spacing:.06em; color:#8a8a8a; font-weight:300; }
+  .sf-legal { display:flex; gap:1.5rem; flex-wrap:wrap; }
+  .sf-legal a { font-size:11px; letter-spacing:.06em; color:#8a8a8a; text-decoration:none;
+                font-weight:400; transition:color .2s; }
+  .sf-legal a:hover { color:#c9a462; }
+  @media (max-width:900px) { .sf-top { grid-template-columns:1fr 1fr; gap:2.4rem; } }
+  @media (max-width:560px) { .sf-top { grid-template-columns:1fr; } .sf { padding:3.2rem 1.5rem 2rem; } }
+</style>
+
 </head>
 <body>
 
@@ -57,19 +95,19 @@
     </a>
     <div class="flex items-center gap-9">
       <div class="nav-links flex items-center gap-9">
+                <a href="pharma.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium whitespace-nowrap">Pharma Research</a>
         <div class="nav-dropdown" id="productsDropdown">
-          <span class="nav-link-btn text-[11px] tracking-[.14em] uppercase font-medium cursor-pointer select-none" style="">Products</span>
+          <span class="nav-link-btn text-[11px] tracking-[.14em] uppercase font-medium cursor-pointer select-none whitespace-nowrap" style="color:var(--gold);">What We Do</span>
           <div class="nav-dropdown-menu">
-            <a href="pharma.html"><span class="dd-dot"></span>Pharma Research</a>
-            <a href="forex.html"><span class="dd-dot"></span>Forex</a>
-            <a href="value-picks.html"><span class="dd-dot"></span>Alpha Signals</a>
+            <a href="forex.html"><span class="dd-dot"></span><span class="dd-label"><span class="dd-name">Forex</span><span class="dd-sub">Macro &amp; currency research</span></span></a>
+            <a href="value-picks.html"><span class="dd-dot"></span><span class="dd-label"><span class="dd-name">Alpha Signals</span><span class="dd-sub">Equity screener</span></span></a>
+            <a href="mdos.html" class="active"><span class="dd-dot"></span><span class="dd-label"><span class="dd-name">Multi-Dimensional Options Screener</span><span class="dd-sub">Derivatives screener &amp; optimizer</span></span></a>
           </div>
         </div>
-        <a href="research.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">Research</a>
-        <a href="mdos.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--gold)] font-medium">MDOS</a>
+        <a href="research.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">Blogs</a>
         <a href="about.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">About</a>
       </div>
-      <a href="contact.html" class="border border-[var(--ink)] text-[var(--ink)] text-[11px] tracking-[.14em] uppercase px-5 py-2.5 font-medium hover:bg-[var(--ink)] hover:text-white transition-all duration-300 whitespace-nowrap" style="text-decoration:none;">Book a Demo</a>
+      <a href="contact.html" class="border border-[var(--ink)] text-[var(--ink)] text-[11px] tracking-[.14em] uppercase px-5 py-2.5 font-medium hover:bg-[var(--ink)] hover:text-white transition-all duration-300 whitespace-nowrap" style="text-decoration:none;">Contact</a>
     </div>
   </div>
 </nav>
@@ -84,7 +122,7 @@
       <div>
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:1.6rem;opacity:0;" id="h-eye">
           <span style="display:block;height:1px;width:28px;background:linear-gradient(90deg,var(--gold),transparent);"></span>
-          <span class="eyebrow">Built in-house · Not for sale</span>
+          <span class="eyebrow">Built and run in-house</span>
         </div>
         <h1 id="h-title" class="font-display font-light" style="font-size:clamp(2.6rem,4.2vw,4.8rem);line-height:1.04;letter-spacing:-.025em;opacity:0;transform:translateY(28px);">
           Every option in the chain, scored on the <em style="font-style:italic;color:var(--gold);">same five questions</em>.
@@ -166,11 +204,11 @@
           </div>
           <div class="dim-row" data-d="2">
             <span class="dim-key">D3</span>
-            <div><div class="dim-name">Skew Edge</div><div class="dim-desc">Which side of the smile you're buying.</div></div>
+            <div><div class="dim-name">Skew Edge</div><div class="dim-desc">Which side of the smile the trade sits on.</div></div>
           </div>
           <div class="dim-row" data-d="3">
             <span class="dim-key">D4</span>
-            <div><div class="dim-name">Delta Fit</div><div class="dim-desc">The exposure you actually wanted.</div></div>
+            <div><div class="dim-name">Delta Fit</div><div class="dim-desc">The exposure the view actually calls for.</div></div>
           </div>
           <div class="dim-row" data-d="4">
             <span class="dim-key">D5</span>
@@ -205,13 +243,65 @@
 </section>
 
 <!-- FOOTER -->
-<footer class="relative z-10 border-t border-gray-100 py-14 px-8">
-  <div class="max-w-screen-xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-    <div>
-      <div class="flex items-center gap-2 mb-2"><span class="font-display font-light tracking-[.22em] text-[16px] uppercase">SEDGE</span><span class="font-display font-light tracking-[.22em] text-[16px] uppercase gold-text">Ventures</span></div>
-      <p class="text-[12px] text-[var(--muted)] font-light tracking-[.06em]">Systematic Equity Investment Management</p>
+<footer class="sf">
+  <div class="sf-in">
+    <div class="sf-top">
+      <div>
+        <div class="sf-logo"><span>SEDGE</span><span class="g">Ventures</span></div>
+        <p class="sf-tag">Systematic Equity Investment Management</p>
+        <p class="sf-entity">
+          <b>SEDGE Ventures FZ-LLC</b><br>
+          SO-15, Shed no-18, TP Al Hamra Freezone<br>
+          Al Hamra Industrial Freezone<br>
+          Ras Al Khaimah, United Arab Emirates
+        </p>
+      </div>
+      <div class="sf-col">
+        <div class="sf-h">What We Do</div>
+        <a href="pharma.html">Pharma Research</a>
+        <a href="forex.html">Forex</a>
+        <a href="value-picks.html">Alpha Signals</a>
+        <a href="mdos.html">Options Screener</a>
+      </div>
+      <div class="sf-col">
+        <div class="sf-h">Company</div>
+        <a href="research.html">Blogs</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="sf-col">
+        <div class="sf-h">Legal</div>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Use</a>
+        <a href="cookies.html">Cookie Policy</a>
+        <a href="disclaimer.html">Disclaimer &amp; Risk Disclosure</a>
+      </div>
     </div>
-    <p class="text-[11px] text-[var(--muted)] font-light tracking-[.08em]">© 2026 SEDGE Ventures. All rights reserved.</p>
+
+    <div class="sf-disc">
+      <p>
+        <b>Important disclosure.</b> SEDGE Ventures FZ-LLC is a proprietary research and trading firm. It is not a
+        licensed or regulated investment adviser, broker or fund manager, and does not manage external capital.
+        Nothing on this website is investment advice, a personal recommendation, or an offer or solicitation to buy
+        or sell any security or financial instrument. <b>All company names, tickers, prices, entry and watch ranges,
+        scores, probabilities, screen output, research extracts and performance figures shown anywhere on this site
+        are illustrative and are used only to demonstrate methodology — they are not recommendations and must not be
+        relied upon.</b> SEDGE Ventures and its personnel may hold positions in securities mentioned. Past performance
+        is not indicative of future results, and all investment involves risk including the loss of principal. Always
+        conduct your own due diligence and consult a qualified financial professional before making any investment
+        decision. See our full <a href="disclaimer.html">Disclaimer &amp; Risk Disclosure</a>.
+      </p>
+    </div>
+
+    <div class="sf-bot">
+      <p class="sf-copy">© 2026 SEDGE Ventures FZ-LLC. All rights reserved.</p>
+      <div class="sf-legal">
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+        <a href="cookies.html">Cookies</a>
+        <a href="disclaimer.html">Disclaimer</a>
+      </div>
+    </div>
   </div>
 </footer>
 
