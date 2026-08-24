@@ -72,6 +72,51 @@
 
   /* dropdown stays pinned open on click until you click elsewhere */
   .nav-dropdown.open > .nav-dropdown-menu{opacity:1 !important;pointer-events:all !important;transform:translateX(-50%) translateY(0) !important}
+
+/* ══ CANONICAL SITE HEADER (identical on every page) ══ */
+#nav{position:fixed;top:0;left:0;right:0;z-index:900;border-bottom:1px solid transparent;
+  background:transparent;transition:background .45s ease,border-color .45s ease,backdrop-filter .45s ease}
+#nav.stuck{background:rgba(255,255,255,.94);backdrop-filter:blur(22px);border-bottom-color:rgba(0,0,0,.07)}
+#nav .nav-in{max-width:1280px;margin:0 auto;padding:1.25rem 2rem;height:auto;display:flex;align-items:center;
+  justify-content:space-between;gap:3rem;position:relative;z-index:10}
+#nav .nav-brand{display:flex;align-items:center;gap:.5rem;text-decoration:none}
+#nav .nav-brand span{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:17px;
+  letter-spacing:.22em;text-transform:uppercase;color:#0a0a0a;line-height:1}
+#nav .nav-brand span.g{color:#c9a462}
+#nav .nav-right{display:flex;align-items:center;gap:2.25rem}
+#nav .nav-links{display:flex;align-items:center;gap:2.25rem}
+#nav .nav-link{font-family:'Inter',sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  font-weight:500;color:#5a5a5a;text-decoration:none;white-space:nowrap;transition:color .2s;
+  display:inline-flex;align-items:center;line-height:1}
+#nav .nav-link:hover{color:#0a0a0a}
+#nav .nav-link.is-active{color:#c9a462}
+#nav .nav-link-btn{cursor:pointer;user-select:none}
+#nav .nav-link-btn::after{content:'';display:inline-block;width:5px;height:5px;
+  border-right:1px solid currentColor;border-bottom:1px solid currentColor;
+  transform:rotate(45deg) translateY(-2px);margin-left:6px}
+#nav .nav-cta{font-family:'Inter',sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  font-weight:500;color:#0a0a0a;text-decoration:none;border:1px solid #0a0a0a;padding:.65rem 1.25rem;
+  white-space:nowrap;transition:background .3s,color .3s;line-height:1}
+#nav .nav-cta:hover{background:#0a0a0a;color:#fff}
+#nav .nav-dropdown{position:relative}
+#nav .nav-dropdown-menu{position:absolute;top:calc(100% + 16px);left:50%;
+  transform:translateX(-50%) translateY(-6px);background:#fff;border:1px solid rgba(0,0,0,.08);
+  box-shadow:0 16px 48px rgba(0,0,0,.1);min-width:270px;padding:8px 0;opacity:0;pointer-events:none;
+  transition:opacity .25s ease,transform .25s ease}
+#nav .nav-dropdown:hover .nav-dropdown-menu,
+#nav .nav-dropdown.open>.nav-dropdown-menu{opacity:1;pointer-events:all;transform:translateX(-50%) translateY(0)}
+#nav .nav-dropdown-menu a{display:flex;align-items:flex-start;gap:10px;padding:11px 20px;
+  font-family:'Inter',sans-serif;font-size:11px;letter-spacing:.13em;text-transform:uppercase;
+  font-weight:500;color:#5a5a5a;text-decoration:none;transition:background .2s,color .2s}
+#nav .nav-dropdown-menu a:hover{background:#fafafa;color:#0a0a0a}
+#nav .nav-dropdown-menu a.is-active{color:#c9a462}
+#nav .nav-dropdown-menu .dd-dot{width:5px;height:5px;border-radius:50%;background:#c9a462;
+  flex-shrink:0;margin-top:5px}
+#nav .dd-label{display:flex;flex-direction:column;gap:2px}
+#nav .dd-sub{font-size:9.5px;letter-spacing:.04em;text-transform:none;color:#9a9a9a;
+  font-weight:400;opacity:.85}
+@media (max-width:1000px){#nav .nav-links{display:none}}
+@media (max-width:560px){#nav .nav-in{padding:1rem 1.25rem;gap:1rem}}
 </style>
 
 <style>
@@ -114,26 +159,23 @@
 
 <!-- NAV -->
 <nav id="nav">
-  <div class="max-w-screen-xl mx-auto px-8 py-5 flex items-center justify-between gap-12 relative z-10">
-    <a href="index.html" style="text-decoration:none;color:inherit;display:flex;align-items:center;gap:0.5rem;">
-      <span class="font-display font-light tracking-[.22em] text-[17px] uppercase">SEDGE</span>
-      <span class="font-display font-light tracking-[.22em] text-[17px] uppercase gold-text ml-2">Ventures</span>
-    </a>
-    <div class="flex items-center gap-9">
-      <div class="nav-links flex items-center gap-9">
-                <a href="pharma.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--gold)] transition-colors duration-200 font-medium whitespace-nowrap">Pharma Research</a>
-        <div class="nav-dropdown" id="productsDropdown">
-          <span class="nav-link-btn text-[11px] tracking-[.14em] uppercase font-medium cursor-pointer select-none whitespace-nowrap">What We Do</span>
+  <div class="nav-in">
+    <a class="nav-brand" href="index.html"><span>SEDGE</span><span class="g">Ventures</span></a>
+    <div class="nav-right">
+      <div class="nav-links">
+        <a class="nav-link is-active" href="pharma.html">Pharma Research</a>
+        <div class="nav-dropdown">
+          <span class="nav-link nav-link-btn">What We Do</span>
           <div class="nav-dropdown-menu">
             <a href="forex.html"><span class="dd-dot"></span><span class="dd-label"><span class="dd-name">Forex</span><span class="dd-sub">Macro &amp; currency research</span></span></a>
             <a href="value-picks.html"><span class="dd-dot"></span><span class="dd-label"><span class="dd-name">Alpha Signals</span><span class="dd-sub">Equity screener</span></span></a>
             <a href="mdos.html"><span class="dd-dot"></span><span class="dd-label"><span class="dd-name">Multi-Dimensional Options Screener</span><span class="dd-sub">Derivatives screener &amp; optimizer</span></span></a>
           </div>
         </div>
-        <a href="research.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">Blogs</a>
-        <a href="about.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">About</a>
+        <a class="nav-link" href="research.html">Blogs</a>
+        <a class="nav-link" href="about.html">About</a>
       </div>
-      <a href="contact.html" class="border border-[var(--ink)] text-[var(--ink)] text-[11px] tracking-[.14em] uppercase px-5 py-2.5 font-medium hover:bg-[var(--ink)] hover:text-white transition-all duration-300 whitespace-nowrap" style="text-decoration:none;">Book a Demo</a>
+      <a class="nav-cta" href="contact.html">Book a Demo</a>
     </div>
   </div>
 </nav>
