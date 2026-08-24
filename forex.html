@@ -326,6 +326,9 @@
   @keyframes fadeUp{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
   .hero .anim{opacity:0;animation:fadeUp .9s cubic-bezier(.2,.7,.2,1) forwards}
   .hero .d1{animation-delay:.05s}.hero .d2{animation-delay:.2s}.hero .d3{animation-delay:.36s}.hero .d4{animation-delay:.5s}
+
+  /* dropdown stays pinned open on click until you click elsewhere */
+  .nav-dropdown.open > .nav-dropdown-menu{opacity:1 !important;pointer-events:all !important;transform:translateX(-50%) translateY(0) !important}
 </style>
 
 <style>
@@ -698,16 +701,48 @@
   var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.1,rootMargin:'0px 0px -40px 0px'});
   document.querySelectorAll('.rv').forEach(function(el,i){el.style.transitionDelay=(i%4*0.06)+'s';io.observe(el);});
 </script>
+
+
+
+
+<!-- ── NAV DROPDOWN: click to pin open ─────────────────────── -->
 <script>
 (function(){
-  var d=document.getElementById('productsDropdown'); if(!d) return;
-  var t=null;
-  d.addEventListener('mouseenter',function(){ if(t){clearTimeout(t);t=null;} d.classList.add('open'); });
-  d.addEventListener('mouseleave',function(){ t=setTimeout(function(){ d.classList.remove('open');t=null; },5000); });
-  d.querySelectorAll('.nav-dropdown-menu a').forEach(function(a){ a.addEventListener('click',function(){ if(t){clearTimeout(t);t=null;} d.classList.remove('open'); }); });
+  var dds = [].slice.call(document.querySelectorAll('.nav-dropdown'));
+  if (!dds.length) return;
+
+  function closeAll(except){
+    dds.forEach(function(d){ if (d !== except) d.classList.remove('open'); });
+  }
+
+  dds.forEach(function(dd){
+    var trig = dd.querySelector('.nav-link-btn') || dd.firstElementChild;
+    if (!trig) return;
+    trig.style.cursor = 'pointer';
+
+    trig.addEventListener('click', function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      var isOpen = dd.classList.contains('open');
+      closeAll(dd);
+      dd.classList.toggle('open', !isOpen);
+    });
+
+    // let clicks inside the panel through, but close once a link is taken
+    var menu = dd.querySelector('.nav-dropdown-menu');
+    if (menu) {
+      menu.addEventListener('click', function(e){ e.stopPropagation(); });
+      menu.querySelectorAll('a').forEach(function(a){
+        a.addEventListener('click', function(){ dd.classList.remove('open'); });
+      });
+    }
+  });
+
+  document.addEventListener('click', function(){ closeAll(null); });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' || e.keyCode === 27) closeAll(null);
+  });
 })();
 </script>
-
-
 </body>
 </html>

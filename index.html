@@ -305,6 +305,9 @@
 
   @media (max-width:1000px) { .nav-links { display:none !important; } }
   @media (max-width:600px) { .rh-item { grid-template-columns:1fr; gap:.5rem; } }
+
+  /* dropdown stays pinned open on click until you click elsewhere */
+  .nav-dropdown.open > .nav-dropdown-menu{opacity:1 !important;pointer-events:all !important;transform:translateX(-50%) translateY(0) !important}
 </style>
 
 <style>
@@ -1406,34 +1409,44 @@ gsap.set(['#phg-title','#phg-body','#phg-badges'], { y: 20 });
 </script>
 
 <!-- Keep the Products dropdown open for a few seconds after the mouse leaves -->
+
+
+<!-- ── NAV DROPDOWN: click to pin open ─────────────────────── -->
 <script>
-(function () {
-  var dropdown = document.getElementById('productsDropdown');
-  if (!dropdown) return;
-  var closeDelay = 5000; // stay open at least 5s after mouse leaves
-  var timer = null;
+(function(){
+  var dds = [].slice.call(document.querySelectorAll('.nav-dropdown'));
+  if (!dds.length) return;
 
-  function open() {
-    if (timer) { clearTimeout(timer); timer = null; }
-    dropdown.classList.add('open');
-  }
-  function scheduleClose() {
-    if (timer) clearTimeout(timer);
-    timer = setTimeout(function () {
-      dropdown.classList.remove('open');
-      timer = null;
-    }, closeDelay);
+  function closeAll(except){
+    dds.forEach(function(d){ if (d !== except) d.classList.remove('open'); });
   }
 
-  dropdown.addEventListener('mouseenter', open);
-  dropdown.addEventListener('mouseleave', scheduleClose);
+  dds.forEach(function(dd){
+    var trig = dd.querySelector('.nav-link-btn') || dd.firstElementChild;
+    if (!trig) return;
+    trig.style.cursor = 'pointer';
 
-  // If a link inside is clicked, close immediately so navigation feels snappy
-  dropdown.querySelectorAll('.nav-dropdown-menu a').forEach(function (link) {
-    link.addEventListener('click', function () {
-      if (timer) { clearTimeout(timer); timer = null; }
-      dropdown.classList.remove('open');
+    trig.addEventListener('click', function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      var isOpen = dd.classList.contains('open');
+      closeAll(dd);
+      dd.classList.toggle('open', !isOpen);
     });
+
+    // let clicks inside the panel through, but close once a link is taken
+    var menu = dd.querySelector('.nav-dropdown-menu');
+    if (menu) {
+      menu.addEventListener('click', function(e){ e.stopPropagation(); });
+      menu.querySelectorAll('a').forEach(function(a){
+        a.addEventListener('click', function(){ dd.classList.remove('open'); });
+      });
+    }
+  });
+
+  document.addEventListener('click', function(){ closeAll(null); });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' || e.keyCode === 27) closeAll(null);
   });
 })();
 </script>

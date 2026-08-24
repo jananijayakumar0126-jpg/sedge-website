@@ -59,6 +59,9 @@
   @media (max-width:900px) { .two-col { grid-template-columns:1fr; gap:3rem; } .offices-grid { grid-template-columns:1fr; } }
 
   @media (max-width:1000px) { .nav-links { display:none !important; } }
+
+  /* dropdown stays pinned open on click until you click elsewhere */
+  .nav-dropdown.open > .nav-dropdown-menu{opacity:1 !important;pointer-events:all !important;transform:translateX(-50%) translateY(0) !important}
 </style>
 
 <style>
@@ -392,6 +395,46 @@ ScrollTrigger.create({ trigger:'#v-lead', start:'top 85%', once:true, onEnter(){
 ScrollTrigger.create({ trigger:'#team', start:'top 82%', once:true, onEnter(){
   gsap.from('#team .member', {opacity:0,y:26,duration:.85,ease:'power3.out',stagger:.09});
 }});
+</script>
+
+<!-- ── NAV DROPDOWN: click to pin open ─────────────────────── -->
+<script>
+(function(){
+  var dds = [].slice.call(document.querySelectorAll('.nav-dropdown'));
+  if (!dds.length) return;
+
+  function closeAll(except){
+    dds.forEach(function(d){ if (d !== except) d.classList.remove('open'); });
+  }
+
+  dds.forEach(function(dd){
+    var trig = dd.querySelector('.nav-link-btn') || dd.firstElementChild;
+    if (!trig) return;
+    trig.style.cursor = 'pointer';
+
+    trig.addEventListener('click', function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      var isOpen = dd.classList.contains('open');
+      closeAll(dd);
+      dd.classList.toggle('open', !isOpen);
+    });
+
+    // let clicks inside the panel through, but close once a link is taken
+    var menu = dd.querySelector('.nav-dropdown-menu');
+    if (menu) {
+      menu.addEventListener('click', function(e){ e.stopPropagation(); });
+      menu.querySelectorAll('a').forEach(function(a){
+        a.addEventListener('click', function(){ dd.classList.remove('open'); });
+      });
+    }
+  });
+
+  document.addEventListener('click', function(){ closeAll(null); });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' || e.keyCode === 27) closeAll(null);
+  });
+})();
 </script>
 </body>
 </html>

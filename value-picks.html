@@ -318,6 +318,9 @@ footer{background:#fff;border-top:1px solid var(--border);padding:3.5rem 40px;}
 [data-reveal-delay="2"]{transition-delay:.24s;}
 [data-reveal-delay="3"]{transition-delay:.36s;}
   @media (max-width:1000px) { .nav-links { display:none !important; } }
+
+  /* dropdown stays pinned open on click until you click elsewhere */
+  .nav-dropdown.open > .nav-dropdown-menu{opacity:1 !important;pointer-events:all !important;transform:translateX(-50%) translateY(0) !important}
 </style>
 
 <style>
@@ -1107,13 +1110,45 @@ if(termSection) termObs.observe(termSection);
   });
 })();
 </script>
+
+
+<!-- ── NAV DROPDOWN: click to pin open ─────────────────────── -->
 <script>
 (function(){
-  var d=document.getElementById('productsDropdown'); if(!d) return;
-  var t=null;
-  d.addEventListener('mouseenter',function(){ if(t){clearTimeout(t);t=null;} d.classList.add('open'); });
-  d.addEventListener('mouseleave',function(){ t=setTimeout(function(){ d.classList.remove('open');t=null; },5000); });
-  d.querySelectorAll('.nav-dropdown-menu a').forEach(function(a){ a.addEventListener('click',function(){ if(t){clearTimeout(t);t=null;} d.classList.remove('open'); }); });
+  var dds = [].slice.call(document.querySelectorAll('.nav-dropdown'));
+  if (!dds.length) return;
+
+  function closeAll(except){
+    dds.forEach(function(d){ if (d !== except) d.classList.remove('open'); });
+  }
+
+  dds.forEach(function(dd){
+    var trig = dd.querySelector('.nav-link-btn') || dd.firstElementChild;
+    if (!trig) return;
+    trig.style.cursor = 'pointer';
+
+    trig.addEventListener('click', function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      var isOpen = dd.classList.contains('open');
+      closeAll(dd);
+      dd.classList.toggle('open', !isOpen);
+    });
+
+    // let clicks inside the panel through, but close once a link is taken
+    var menu = dd.querySelector('.nav-dropdown-menu');
+    if (menu) {
+      menu.addEventListener('click', function(e){ e.stopPropagation(); });
+      menu.querySelectorAll('a').forEach(function(a){
+        a.addEventListener('click', function(){ dd.classList.remove('open'); });
+      });
+    }
+  });
+
+  document.addEventListener('click', function(){ closeAll(null); });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' || e.keyCode === 27) closeAll(null);
+  });
 })();
 </script>
 </body>
