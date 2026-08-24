@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Six-Hour Cure vs. The Lifetime Prescription — SEDGE Ventures</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = { theme: { extend: { fontFamily: { display:['Cormorant Garamond','serif'], sans:['Inter','sans-serif'] } } } }
+</script>
+<style>
+  :root { --gold:#c9a462; --gold-l:#e2bc79; --ink:#0a0a0a; --muted:#5a5a5a; }
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Inter',sans-serif; background:#fff; color:var(--ink); overflow-x:hidden; }
+  body::before {
+    content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
+    background-image:
+      linear-gradient(rgba(0,0,0,0.032) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,0,0,0.032) 1px, transparent 1px);
+    background-size:44px 44px;
+  }
+
+  /* Nav */
+  #nav { position:fixed; top:0; left:0; right:0; z-index:900; transition:background .45s ease, border-color .45s ease; border-bottom:1px solid transparent; }
+  #nav.stuck { background:rgba(255,255,255,.94); backdrop-filter:blur(22px); border-color:rgba(0,0,0,.07); }
+  .nav-dropdown { position:relative; }
+  .nav-dropdown-menu { position:absolute; top:calc(100% + 16px); left:50%; background:#fff; border:1px solid rgba(0,0,0,.08); box-shadow:0 16px 48px rgba(0,0,0,.1); min-width:220px; padding:8px 0; opacity:0; pointer-events:none; transform:translateX(-50%) translateY(-6px); transition:opacity .25s ease, transform .25s ease; }
+  .nav-dropdown:hover .nav-dropdown-menu, .nav-dropdown-menu:hover { opacity:1; pointer-events:all; transform:translateX(-50%) translateY(0); }
+  .nav-dropdown-menu a { display:flex; align-items:center; gap:10px; padding:11px 20px; font-size:11px; letter-spacing:.13em; text-transform:uppercase; font-weight:500; color:var(--muted); text-decoration:none; transition:background .2s, color .2s; }
+  .nav-dropdown-menu a:hover { background:#fafafa; color:var(--ink); }
+  .nav-dropdown-menu a .dd-dot { width:5px; height:5px; border-radius:50%; background:var(--gold); flex-shrink:0; }
+  .nav-dropdown > .nav-link-btn::after { content:''; display:inline-block; width:5px; height:5px; border-right:1px solid currentColor; border-bottom:1px solid currentColor; transform:rotate(45deg) translateY(-2px); margin-left:5px; vertical-align:middle; }
+  .nav-active { color:var(--ink) !important; }
+
+  /* Reading progress */
+  #progress { position:fixed; top:0; left:0; height:2px; width:0; z-index:950; background:linear-gradient(90deg,var(--gold),var(--gold-l)); transition:width .1s linear; }
+
+  .gold-text { color:var(--gold); }
+  .g-rule { display:block; height:1px; background:linear-gradient(90deg, var(--gold), transparent); }
+  .tag { display:inline-block; font-size:10px; letter-spacing:.18em; text-transform:uppercase; padding:4px 11px; border:1px solid rgba(201,164,98,.32); color:var(--gold); }
+  .meta { font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:#9a9a9a; font-weight:500; }
+
+  /* Article body */
+  .prose { max-width:700px; margin:0 auto; }
+  .prose p { font-size:16.5px; line-height:1.95; color:#2b2b2b; font-weight:300; margin-bottom:1.7rem; letter-spacing:.002em; }
+  .prose p strong { font-weight:600; color:var(--ink); }
+  .prose h2 {
+    font-family:'Cormorant Garamond',serif; font-weight:300;
+    font-size:clamp(1.9rem,3vw,2.5rem); line-height:1.2;
+    margin:4.2rem 0 1.6rem; letter-spacing:-.015em;
+  }
+  .prose h2::before { content:''; display:block; width:38px; height:1px; background:var(--gold); margin-bottom:1.4rem; }
+  .prose h3 { font-size:13px; letter-spacing:.16em; text-transform:uppercase; font-weight:600; color:var(--ink); margin:2.6rem 0 1rem; }
+  .prose .lede { font-size:19px; line-height:1.8; color:#1c1c1c; font-weight:300; }
+  .prose .dropcap::first-letter {
+    font-family:'Cormorant Garamond',serif; float:left; font-size:64px; line-height:.86;
+    padding:6px 14px 0 0; font-weight:300; color:var(--gold);
+  }
+
+  /* Pull quote */
+  .pq {
+    margin:3.2rem 0; padding:0 0 0 2rem; border-left:2px solid var(--gold);
+  }
+  .pq p { font-family:'Cormorant Garamond',serif; font-size:clamp(1.5rem,2.4vw,1.95rem); line-height:1.42; font-weight:300; color:var(--ink); font-style:italic; margin:0; }
+
+  /* Figures */
+  figure { margin:3.2rem 0; }
+  figure img { width:100%; display:block; border:1px solid rgba(0,0,0,.07); }
+  figcaption { font-size:12px; line-height:1.7; color:#8e8e8e; margin-top:.9rem; font-weight:300; }
+  .wide { max-width:940px; margin-left:auto; margin-right:auto; }
+
+  /* Stat strip */
+  .stat-strip { display:grid; gap:1px; background:rgba(0,0,0,.08); border:1px solid rgba(0,0,0,.08); margin:3rem 0; }
+  .stat-cell { background:#fff; padding:1.9rem 1.5rem; }
+  .stat-n { font-family:'Cormorant Garamond',serif; font-weight:300; font-size:clamp(2rem,3.4vw,2.9rem); line-height:1; letter-spacing:-.03em; }
+  .stat-l { font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); margin-top:.7rem; font-weight:500; }
+  .stat-d { font-size:11.5px; color:#9a9a9a; margin-top:.35rem; font-weight:300; line-height:1.5; }
+
+  /* Callout card */
+  .callout { border:1px solid rgba(0,0,0,.08); background:#fbfaf8; padding:2rem 2.1rem; margin:2.8rem 0; }
+  .callout .kicker { font-size:10px; letter-spacing:.22em; text-transform:uppercase; font-weight:600; color:var(--gold); margin-bottom:.9rem; }
+  .callout p { font-size:14.5px; line-height:1.85; color:#3a3a3a; margin:0; font-weight:300; }
+  .callout p + p { margin-top:.9rem; }
+
+  /* Pipeline rows */
+  .pipe-row { display:grid; grid-template-columns:1fr auto; gap:1.5rem; align-items:baseline; padding:1rem 0; border-bottom:1px solid rgba(0,0,0,.07); }
+  .pipe-row:first-child { border-top:1px solid rgba(0,0,0,.07); }
+  .pipe-name { font-size:14.5px; font-weight:400; }
+  .pipe-name span { color:var(--muted); font-weight:300; font-size:13px; }
+  .pipe-status { font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; font-weight:500; white-space:nowrap; }
+  .st-done { color:#3f9e63; } .st-live { color:var(--gold); } .st-plan { color:#9a9a9a; }
+
+  /* Verdict block */
+  .verdict { border:1px solid rgba(201,164,98,.35); background:linear-gradient(180deg,rgba(201,164,98,.05),rgba(201,164,98,0)); padding:2.6rem 2.4rem; margin:3.4rem 0; }
+
+  .disclosure { font-size:11.5px; line-height:1.85; color:#9a9a9a; font-weight:300; border-top:1px solid rgba(0,0,0,.08); padding-top:1.6rem; margin-top:4rem; }
+
+  .rv { opacity:0; transform:translateY(20px); transition:opacity .9s cubic-bezier(.22,1,.36,1), transform .9s cubic-bezier(.22,1,.36,1); }
+  .rv.in { opacity:1; transform:none; }
+
+  @media (min-width:760px) { .stat-strip { grid-template-columns:repeat(4,1fr); } }
+  @media (max-width:1000px) { .nav-links { display:none; } }
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="max-w-screen-xl mx-auto px-8 py-5 flex items-center justify-between gap-12 relative z-10">
+    <a href="index.html" style="text-decoration:none;color:inherit;display:flex;align-items:center;gap:0.5rem;">
+      <span class="font-display font-light tracking-[.22em] text-[17px] uppercase">SEDGE</span>
+      <span class="font-display font-light tracking-[.22em] text-[17px] uppercase gold-text ml-2">Ventures</span>
+    </a>
+    <div class="flex items-center gap-9">
+      <div class="nav-links flex items-center gap-9">
+        <div class="nav-dropdown">
+          <span class="nav-link-btn text-[11px] tracking-[.14em] uppercase font-medium cursor-pointer select-none">Products</span>
+          <div class="nav-dropdown-menu">
+            <a href="pharma.html"><span class="dd-dot"></span>Pharma Research</a>
+            <a href="forex.html"><span class="dd-dot"></span>Forex</a>
+            <a href="value-picks.html"><span class="dd-dot"></span>Alpha Signals</a>
+          </div>
+        </div>
+        <a href="research.html" class="text-[11px] tracking-[.14em] uppercase nav-active font-medium">Research</a>
+        <a href="mdos.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">MDOS</a>
+        <a href="about.html" class="text-[11px] tracking-[.14em] uppercase text-[var(--muted)] hover:text-[var(--ink)] transition-colors duration-200 font-medium">About</a>
+      </div>
+      <a href="contact.html" class="border border-[var(--ink)] text-[var(--ink)] text-[11px] tracking-[.14em] uppercase px-5 py-2.5 font-medium hover:bg-[var(--ink)] hover:text-white transition-all duration-300 whitespace-nowrap" style="text-decoration:none;">Book a Demo</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ARTICLE HEADER -->
+<article class="relative z-10 px-8" style="padding-top:9.5rem;">
+  <div class="prose">
+    <a href="research.html" style="display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;color:var(--muted);text-decoration:none;margin-bottom:2.6rem;">
+      ← Research
+    </a>
+
+    <div class="flex flex-wrap gap-2 mb-7">
+      <span class="tag">Biotech</span>
+      <span class="tag">Clinical Trials</span>
+      <span class="tag">Investing</span>
+    </div>
+
+    <h1 class="font-display font-light text-[clamp(2.4rem,4.6vw,3.7rem)] leading-[1.08] tracking-[-.022em] mb-5">
+      The Six-Hour Cure vs.<br>The Lifetime Prescription
+    </h1>
+    <p class="font-display font-light text-[clamp(1.15rem,2vw,1.5rem)] leading-[1.45] text-[var(--muted)] italic mb-9">
+      How Definium Therapeutics is rewriting the economics of psychiatry
+    </p>
+
+    <div class="flex items-center gap-4 pb-10 mb-12" style="border-bottom:1px solid rgba(0,0,0,.08);">
+      <span class="meta">SEDGE Research Desk</span>
+      <span style="width:3px;height:3px;border-radius:50%;background:#ccc;"></span>
+      <span class="meta">15 Aug 2026</span>
+      <span style="width:3px;height:3px;border-radius:50%;background:#ccc;"></span>
+      <span class="meta">8 Min Read</span>
+    </div>
+  </div>
+
+  <!-- Hero image -->
+  <figure class="wide rv" style="margin-top:0;">
+    <img src="assets/research/dt120-01.png" alt="Blister packs of daily prescription medication">
+    <figcaption class="prose" style="max-width:700px;">The maintenance business: SSRIs mean daily pills, often for decades.</figcaption>
+  </figure>
+
+  <!-- BODY -->
+  <div class="prose">
+
+    <p class="lede">One tablet. Six hours. A brain that rebuilds itself.</p>
+
+    <p class="lede">While SSRIs keep 50 million Americans on a hamster wheel of daily pills, Definium's DT120 just posted Phase 3 data so strong that every single analyst on Wall Street rates it a Buy — and the stock has already run 1,000%.</p>
+
+    <p class="dropcap">Sarah has been on Zoloft for eleven years. Starting at 25 milligrams, then 50, and then 100. And when the numbness came — unable to cry at her mother's funeral, the lack of libido, the 30 pounds weight gain — her psychiatrist added Wellbutrin. Then Buspar. Then lithium for just a few months, and a disastrous experience. At the age of 34, Sarah took four pills every day just to be able to feel "functional melancholy" — get up from bed, answer some emails. She could not be happy anymore, and she did not even know why.</p>
+
+    <p>This is the tragedy of modern psychiatry. We spend around $15 billion on the maintenance business. On average, each person taking SSRIs consumes about 730 pills per year, every year, usually for decades. The drugs work — at least for some patients and partially — but they are not curing depression. They treat its symptoms, manage it. And the reason for that comes back to a simple truth: antidepressants do not heal the brain. They irrigate it.</p>
+
+    <p>Definium Therapeutics, formerly known as MindMed, bets everything on a radically new technology. Its lead drug is <strong>DT120 ODT</strong>, 100 microgram orally disintegrating tablets of lysergide D-tartrate — a partial agonist at the 5-HT2A serotonin receptor. Once it is consumed, the patient spends about six hours in a controlled clinical environment. According to two completed Phase 3 trials, the brain starts to transform within days.</p>
+
+    <p>The stock market has noticed. DFTX rose by 244% this year and by 1,000% over the last three years. It trades at around $46 with a $6.13 billion market cap, and no revenue from the product. Seventeen analysts cover the stock; all of them give a Buy rating. What Wall Street is buying is not another pill. It is a completely different physics of healing.</p>
+
+    <figure>
+      <img src="assets/research/dt120-02.png" alt="DFTX one-year price chart">
+      <figcaption>DFTX one-year price chart — Definium Therapeutics Inc, up more than 330% over the past year.</figcaption>
+    </figure>
+
+    <h2>How regular antidepressants actually work — and why they take forever</h2>
+
+    <p>In order to explain why DT120 is unique, you first have to understand how antidepressants like Prozac, Zoloft, or Lexapro work. They all fall into one group: SSRIs — selective serotonin reuptake inhibitors.</p>
+
+    <p>Inside the brain, neurons release chemicals known as neurotransmitters into the microscopic space between cells. Serotonin is one such neurotransmitter. Normally SERT — a specialised protein — reabsorbs it back into the cell that released it, like a vacuum cleaner clearing the mess. SSRIs block this process. Serotonin spends extra time outside the neuron. Over four to six weeks, the brain is nudged, through a very complex and slow process, into repair mode — involving BDNF growth factor and its receptor TrkB.</p>
+
+    <figure>
+      <img src="assets/research/dt120-03.png" alt="Diagram of serotonin signalling at the synapse">
+      <figcaption>Serotonin signaling at the synapse: serotonin can only activate 5-HT2A receptors on the outer cell membrane, which is why SSRIs act indirectly and slowly.</figcaption>
+    </figure>
+
+    <p>The problem with that mechanism is that it is indirect. The drug doesn't flip the repair switch; it simply raises serotonin levels and hopes the brain notices. This is insufficient in many cases, especially in chronic and treatment-resistant depression, where indirect action cannot reverse the actual structural changes caused by the illness.</p>
+
+    <p>And there are structural changes. Depression alters the architecture of the brain. The branches of neural cells get weaker. Connections between brain cells degrade. Synapses deteriorate. SSRIs essentially hold the brain in place. They keep chemical levels stable and prevent further decline, but they do not restore the damaged cellular architecture. That is why people take them for years, even decades. They manage symptoms without fixing the underlying issue.</p>
+
+    <h2>DT120: stepping inside the brain</h2>
+
+    <p>DT120 is a 5-HT2A partial agonist. Serotonin, the neurotransmitter your body makes naturally, is water soluble. It cannot pass through the lipophilic membrane of the cell. So it activates only the receptors present on the external surface of neurons. It knocks on the door.</p>
+
+    <div class="pq">
+      <p>The lysergide component is lipophilic. It crosses the cell membrane and activates the 5-HT2A receptors inside neurons — the ones serotonin can never reach.</p>
+    </div>
+
+    <p>From there it triggers a direct signalling cascade: BDNF → TrkB → mTOR. The mTOR pathway regulates protein synthesis and cellular growth. In animal models, dendritic spine density increases by 10% within 24 hours of administration. Dendritic spines are the small structures neurons use to connect to each other. More spines mean more connections. The brain rebuilds itself.</p>
+
+    <p>DT120 also disrupts the neural circuit of rumination. Neuroscientists identified the default mode network (DMN), or "self" network, in the brain. In depression it becomes a broken wheel, endlessly spinning the story of a person's life in a negative light. Neuroimaging shows that psychedelic compounds like DT120 reduce the rigidity of DMN connectivity while increasing communication with other brain networks. These structural changes persist after the drug has cleared the bloodstream.</p>
+
+    <p>When lysergide binds to the 5-HT2A receptor, an extracellular loop folds over it like a cap, trapping the compound inside the receptor. That is why six hours of subjective effects yield weeks of benefit. The brain got renovated. Where SSRIs maintain steady chemistry day by day and manage symptoms without rebuilding circuits, DT120 does the work once — and effectively.</p>
+
+    <figure class="wide">
+      <img src="assets/research/dt120-04.png" alt="DT120 mechanism of action: cellular signalling and default mode network reset">
+      <figcaption class="prose" style="max-width:700px;">DT120's mechanism of action: cellular signaling (left) and the default mode network reset (right) that together drive structural brain plasticity.</figcaption>
+    </figure>
+
+    <h2>Phase 3 results</h2>
+
+    <p><strong>The Emerge Trial (MDD).</strong> 149 patients on a single dose. MADRS depression scores fell by 13.3 points versus 5.2 for placebo — a mean difference of 8.1 (p&lt;0.0001). Efficacy was observed by Week 1 and maintained through Week 12. CEO Rob Barrow called it "an unprecedented and highly differentiated efficacy."</p>
+
+    <p><strong>The Voyage Trial (GAD).</strong> 214 patients showed an 11.6-point HAM-A reduction compared to 6.2 for placebo. Effect size of 0.81 — one of the largest ever seen in psychiatry. Separation from placebo was evident on Day 2.</p>
+
+    <div class="stat-strip">
+      <div class="stat-cell">
+        <div class="stat-n gold-text">8.1</div>
+        <div class="stat-l">MADRS Delta</div>
+        <div class="stat-d">vs. placebo, p&lt;0.0001</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-n gold-text">0.81</div>
+        <div class="stat-l">Effect Size</div>
+        <div class="stat-d">Voyage, GAD</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-n gold-text">99%</div>
+        <div class="stat-l">Mild–Moderate AEs</div>
+        <div class="stat-d">dosing day only</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-n gold-text">6 hrs</div>
+        <div class="stat-l">Single Session</div>
+        <div class="stat-d">no daily tablets</div>
+      </div>
+    </div>
+
+    <figure>
+      <img src="assets/research/dt120-05.png" alt="Phase 3 symptom reduction versus placebo">
+      <figcaption>Phase 3 symptom reduction versus placebo across the Emerge (MDD) and Voyage (GAD) trials.</figcaption>
+    </figure>
+
+    <div class="callout">
+      <div class="kicker">Safety Profile</div>
+      <p>99% of side effects are mild to moderate, occurring only during the dosing day and clearing up quickly. One six-hour medically supervised session. No daily tablets. No sexual dysfunction. No weight gain. No emotional blunting.</p>
+    </div>
+
+    <h2>The pipeline: more than one drug</h2>
+
+    <p>Definium has constructed a comprehensive pipeline on the same platform. DT120 alone runs across five Phase 3 trials.</p>
+
+    <div style="margin:2.4rem 0;">
+      <div class="pipe-row">
+        <div class="pipe-name">Voyage <span>— generalised anxiety disorder</span></div>
+        <div class="pipe-status st-done">Readout Q2 2026 · Done</div>
+      </div>
+      <div class="pipe-row">
+        <div class="pipe-name">Emerge <span>— major depressive disorder</span></div>
+        <div class="pipe-status st-done">Readout mid-2026 · Done</div>
+      </div>
+      <div class="pipe-row">
+        <div class="pipe-name">Panorama <span>— generalised anxiety disorder</span></div>
+        <div class="pipe-status st-live">Active · H2 2026</div>
+      </div>
+      <div class="pipe-row">
+        <div class="pipe-name">Ascend <span>— major depressive disorder</span></div>
+        <div class="pipe-status st-live">Recruiting</div>
+      </div>
+      <div class="pipe-row">
+        <div class="pipe-name">PTSD programme</div>
+        <div class="pipe-status st-plan">Exploratory</div>
+      </div>
+    </div>
+
+    <p>Four active Phase 3 studies with another underway is exceptional for a pre-revenue company. Alongside them, DT402 — the R-enantiomer of MDMA — is in Phase 2a development for autism spectrum disorder. First patient dosed in 2025; data expected in 2026. Assuming the mechanism works as predicted, the platform may extend to PTSD, substance use disorders and other difficult-to-treat indications.</p>
+
+    <h2>The investment case</h2>
+
+    <p>The traditional pharma investor craves recurring revenue. Definium offers the exact opposite — a single-shot intervention that might be repeated after months. The stock has fluctuated between $8.70 and $49.70 over a year. Short interest sits at 10.94%, down 26.68% month-over-month as the naysayers fold.</p>
+
+    <p>DT120 is going to need regulated clinical infrastructure — therapists, dedicated settings, integration training. Definium is building a session-based business, not just a molecule. And should it get approval, all it needs to do is reach the millions who have run through SSRI trials and still wake up every morning puzzled why happiness didn't come knocking.</p>
+
+    <p>Definium was MindMed before January 12, 2026. The rebranding signals the move to a late-stage pharma company with FDA Breakthrough Therapy designation. There are 45+ psychedelic companies worldwide; only a few have reached Phase 3. Definium is one of the most advanced.</p>
+
+    <div class="verdict">
+      <div class="flex items-center gap-4 mb-5">
+        <span class="g-rule w-9"></span>
+        <span class="text-[10px] tracking-[.24em] uppercase font-semibold gold-text">The Bottom Line</span>
+      </div>
+      <div class="font-display font-light text-[clamp(2rem,3.4vw,2.8rem)] leading-[1.1] mb-6">Buy</div>
+      <p class="text-[14.5px] leading-[1.9] text-[#3a3a3a] font-light mb-4">
+        All 17 analysts covering DFTX have a Buy or Strong Buy rating. No Holds. No Sells.
+        The average price target is $60–$62, roughly 30% upside. The lowest target is $25 —
+        reasonable only if the FDA turns it down. The highest is $75, set by Baird and Piper
+        Sandler after the Emerge data.
+      </p>
+      <p class="text-[14.5px] leading-[1.9] text-[#3a3a3a] font-light">
+        Stifel Nicolaus raised its target from $30 to $60 on the MDD data, calling it an opportunity
+        worth at least $4 billion in peak revenue. Needham went to $66. Leerink Partners to $52.
+        These are not minor adjustments. This is recalibration around blockbuster potential.
+      </p>
+    </div>
+
+    <p>It is a binary outcome, but with asymmetric potential on the positive side. The FDA can reject the drug. The company will continue burning cash. With a beta of 2.26, there will be plenty of volatility. But with $1.08 billion in cash, Definium is well financed. With four Phase 3 studies, there are several chances for success. Breakthrough Therapy designation means an expedited pathway.</p>
+
+    <p>If DT120 is approved for depression or anxiety, the market opportunity is enormous. More than 50 million Americans suffer from these conditions, and nearly a third of them find existing drugs ineffective. That would open an entirely new market — single-dose, session-based therapy for psychiatric disorders.</p>
+
+    <div class="pq">
+      <p>In an industry optimised for lifelong prescriptions, the most disruptive innovation is the product that requires a person to come once and leave changed.</p>
+    </div>
+
+    <p>For patients like Sarah, there will be one morning, one pill, and six hours to rebuild the brain from the inside out. That is not how pharmaceutical companies are supposed to work. That is exactly why it might.</p>
+
+    <p><strong>Rating: Buy.</strong> The science is solid. The pipeline is strong. The analyst consensus is unanimous. And even after a 1,000% rally, the stock has room to run if the FDA agrees that this is not just a better antidepressant, but a completely different kind of medicine.</p>
+
+    <div class="disclosure">
+      <strong style="color:var(--muted);font-weight:600;">Disclosure.</strong>
+      The desk holds no stock, option or similar derivative position in any of the companies mentioned,
+      and has no plans to initiate any such position within the next 72 hours. This note was written
+      in-house and expresses our own opinions. No compensation was received for it, and we have no
+      business relationship with any company whose stock is mentioned. Research published by SEDGE
+      Ventures is for informational purposes and is not investment advice.
+    </div>
+  </div>
+</article>
+
+<!-- NEXT ARTICLE -->
+<section class="relative z-10 px-8 pt-24 pb-6">
+  <div class="prose">
+    <div class="flex items-center gap-4 mb-8">
+      <span class="g-rule w-10"></span>
+      <span class="text-[11px] tracking-[.28em] uppercase font-medium gold-text">Next Note</span>
+    </div>
+    <a href="article-rare.html" style="text-decoration:none;color:inherit;display:block;border:1px solid rgba(0,0,0,.08);padding:2.2rem;transition:border-color .3s, transform .3s;" onmouseover="this.style.borderColor='rgba(201,164,98,.4)';this.style.transform='translateY(-3px)'" onmouseout="this.style.borderColor='rgba(0,0,0,.08)';this.style.transform='none'">
+      <div class="meta mb-3">Gene Therapy · FDA Catalyst</div>
+      <div class="font-display font-light text-[1.8rem] leading-tight mb-2">Not One Drug, One Platform</div>
+      <p class="text-[13.5px] text-[var(--muted)] leading-relaxed">What Ultragenyx's August 23 decision actually tests — and why it isn't the drug.</p>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="relative z-10 border-t border-gray-100 py-14 px-8 mt-20">
+  <div class="max-w-screen-xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+    <div>
+      <div class="flex items-center gap-2 mb-2">
+        <span class="font-display font-light tracking-[.22em] text-[16px] uppercase">SEDGE</span>
+        <span class="font-display font-light tracking-[.22em] text-[16px] uppercase gold-text">Ventures</span>
+      </div>
+      <p class="text-[12px] text-[var(--muted)] font-light tracking-[.06em]">Systematic Equity Investment Management</p>
+    </div>
+    <p class="text-[11px] text-[var(--muted)] font-light tracking-[.08em]">© 2026 SEDGE Ventures. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+  const bar = document.getElementById('progress');
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + '%';
+    nav.classList.toggle('stuck', window.scrollY > 50);
+  });
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold:.1 });
+  document.querySelectorAll('.rv').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
