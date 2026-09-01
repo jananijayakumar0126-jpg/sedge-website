@@ -309,11 +309,35 @@
   .rh-card {
     display:grid; grid-template-columns:400px 1fr; gap:3.5rem; align-items:center;
   }
-  .rh-card-body { min-width:0; }
+  .rh-card-body { min-width:0; display:flex; align-items:center; justify-content:space-between; gap:2.75rem; }
+  .rh-card-text { flex:1 1 380px; max-width:460px; }
   .rh-cover { display:block; text-decoration:none; }
+
+  /* the card's right side reads sparse on wide screens — anchor a couple of
+     the note's headline numbers there rather than leaving it empty */
+  .rh-card-stats {
+    flex-shrink:0; display:flex; flex-direction:column; gap:1.15rem;
+    padding-left:2.25rem; border-left:1px solid rgba(242,239,233,.14);
+  }
+  .rh-stat-n {
+    font-family:'Cormorant Garamond',serif; font-weight:300;
+    font-size:clamp(1.6rem,2.4vw,2.2rem); line-height:1; letter-spacing:-.02em;
+    color:var(--gold-l);
+  }
+  .rh-stat-l { font-size:9.5px; letter-spacing:.17em; text-transform:uppercase; color:rgba(242,239,233,.55); margin-top:.45rem; font-weight:500; }
+  .rh-stat-d { font-size:10.5px; color:rgba(242,239,233,.4); margin-top:.15rem; font-weight:300; }
+
   @media (max-width:860px){
     .rh-card { grid-template-columns:1fr; gap:2rem; }
     .rh-cover { max-width:480px; }
+  }
+  @media (max-width:640px){
+    .rh-card-body { flex-direction:column; align-items:flex-start; gap:1.6rem; }
+    .rh-card-stats {
+      flex-direction:row; width:100%; gap:2.2rem;
+      padding-left:0; padding-top:1.4rem;
+      border-left:none; border-top:1px solid rgba(242,239,233,.14);
+    }
   }
   .rh-cover-frame { position:relative; overflow:hidden; border:1px solid rgba(242,239,233,.16); }
   .rh-cover img {
@@ -801,20 +825,39 @@
         </span>
       </a>
 
-      <!-- RIGHT — heading and a short summary -->
+      <!-- RIGHT — heading, a short summary, and the note's headline numbers -->
       <div class="rh-card-body">
-        <h2 class="font-display font-light text-[clamp(1.6rem,2.4vw,2.3rem)] leading-[1.15] tracking-[-.02em] mb-4">
-          The Six-Hour Cure vs.<br>The Lifetime Prescription
-        </h2>
-        <p class="text-[14px] leading-[1.8] font-light mb-6" style="color:rgba(242,239,233,.66);max-width:460px;">
-          SSRIs keep 50 million Americans on roughly 730 pills a year — managing symptoms
-          without repairing the damage. DT120 is one tablet, one supervised session, and a
-          signalling cascade that rebuilds the synapse directly.
-        </p>
-        <a href="research.html" class="rh-ghost">
-          Read On The Blog
-          <svg width="13" height="13" viewBox="0 0 18 18" fill="none"><path d="M3 15L15 3M15 3H7M15 3V11" stroke="currentColor" stroke-width="1.3"/></svg>
-        </a>
+        <div class="rh-card-text">
+          <h2 class="font-display font-light text-[clamp(1.6rem,2.4vw,2.3rem)] leading-[1.15] tracking-[-.02em] mb-4">
+            The Six-Hour Cure vs.<br>The Lifetime Prescription
+          </h2>
+          <p class="text-[14px] leading-[1.8] font-light mb-6" style="color:rgba(242,239,233,.66);">
+            SSRIs keep 50 million Americans on roughly 730 pills a year — managing symptoms
+            without repairing the damage. DT120 is one tablet, one supervised session, and a
+            signalling cascade that rebuilds the synapse directly.
+          </p>
+          <a href="research.html" class="rh-ghost">
+            Read On The Blog
+            <svg width="13" height="13" viewBox="0 0 18 18" fill="none"><path d="M3 15L15 3M15 3H7M15 3V11" stroke="currentColor" stroke-width="1.3"/></svg>
+          </a>
+        </div>
+        <div class="rh-card-stats">
+          <div>
+            <div class="rh-stat-n">8.1</div>
+            <div class="rh-stat-l">MADRS Delta</div>
+            <div class="rh-stat-d">vs. placebo, p&lt;0.0001</div>
+          </div>
+          <div>
+            <div class="rh-stat-n">17/17</div>
+            <div class="rh-stat-l">Buy Ratings</div>
+            <div class="rh-stat-d">all covering analysts</div>
+          </div>
+          <div>
+            <div class="rh-stat-n">6 hrs</div>
+            <div class="rh-stat-l">Single Session</div>
+            <div class="rh-stat-d">no daily tablets</div>
+          </div>
+        </div>
       </div>
     </div>
 
