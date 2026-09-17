@@ -1,0 +1,1419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SEDGE Ventures — Your Edge in Every Market</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="assets/vendor/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          display: ['Cormorant Garamond','serif'],
+          sans: ['Inter','sans-serif'],
+        }
+      }
+    }
+  }
+</script>
+<style>
+  :root {
+    --gold: #c9a462;
+    --gold-l: #e2bc79;
+    --cyan: #00d4c8;
+    --em: #4dbb77;
+    --ink: #0a0a0a;
+    --muted: #5a5a5a;
+  }
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  html { height:auto; }
+  html.lenis { height:auto; }
+  .lenis.lenis-smooth { scroll-behavior:auto; }
+  body {
+    font-family:'Inter',sans-serif;
+    background:#fff;
+    color:var(--ink);
+    overflow-x:hidden;
+  }
+
+  /* Mathematical grid */
+  body::before {
+    content:'';
+    position:fixed;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    background-image:
+      linear-gradient(rgba(0,0,0,0.038) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,0,0,0.038) 1px, transparent 1px);
+    background-size:44px 44px;
+  }
+
+  /* Nav */
+  #nav {
+    position:fixed; top:0; left:0; right:0; z-index:900;
+    transition: background .45s ease, border-color .45s ease, backdrop-filter .45s ease;
+    border-bottom: 1px solid transparent;
+  }
+  #nav.stuck {
+    background:rgba(255,255,255,.92);
+    backdrop-filter:blur(22px);
+    border-color:rgba(0,0,0,.07);
+  }
+
+  /* Products dropdown */
+  .nav-dropdown { position:relative; }
+  .nav-dropdown-menu {
+    position:absolute; top:calc(100% + 16px); left:50%; transform:translateX(-50%);
+    background:#fff; border:1px solid rgba(0,0,0,.08);
+    box-shadow:0 16px 48px rgba(0,0,0,.1);
+    min-width:270px; padding:8px 0;
+    opacity:0; pointer-events:none; transform:translateX(-50%) translateY(-6px);
+    transition: opacity .25s ease, transform .25s ease;
+  }
+  .nav-dropdown:hover .nav-dropdown-menu,
+  .nav-dropdown-menu:hover,
+  .nav-dropdown.open .nav-dropdown-menu {
+    opacity:1; pointer-events:all; transform:translateX(-50%) translateY(0);
+  }
+  .nav-dropdown-menu a {
+    display:flex; align-items:flex-start; gap:10px;
+    padding:11px 20px;
+    font-size:11px; letter-spacing:.13em; text-transform:uppercase; font-weight:500;
+    color:var(--muted); text-decoration:none;
+    transition:background .2s, color .2s;
+  }
+  .nav-dropdown-menu a:hover { background:#fafafa; color:var(--ink); }
+  .nav-dropdown-menu a .dd-dot {
+    width:5px; height:5px; border-radius:50%; background:var(--gold); flex-shrink:0; margin-top:5px; }
+  .dd-label { display:flex; flex-direction:column; gap:2px; }
+  .dd-sub { font-size:9.5px; letter-spacing:.04em; text-transform:none; color:#9a9a9a; font-weight:400; opacity:.85; }
+  .nav-dropdown > .nav-link-btn::after {
+    content:''; display:inline-block; width:5px; height:5px;
+    border-right:1px solid currentColor; border-bottom:1px solid currentColor;
+    transform:rotate(45deg) translateY(-2px); margin-left:5px; vertical-align:middle;
+  }
+
+  /* Product section cards */
+  .product-card {
+    border:1px solid rgba(0,0,0,.07); padding:2.5rem;
+    background:#fff; position:relative; overflow:hidden;
+    transition: border-color .35s, transform .35s, box-shadow .35s;
+    cursor:pointer;
+  }
+  .product-card::before {
+    content:''; position:absolute; bottom:0; left:0;
+    width:0; height:2px;
+    background:linear-gradient(90deg,var(--gold),var(--gold-l));
+    transition:width .55s ease;
+  }
+  .product-card:hover { border-color:rgba(201,164,98,.35); transform:translateY(-3px); box-shadow:0 18px 48px rgba(0,0,0,.06); }
+  .product-card:hover::before { width:100%; }
+  .product-card.is-flagship { background:linear-gradient(160deg,#fbf5e8 0%,#f6ecd8 100%); border-color:rgba(201,164,98,.4); color:var(--ink); }
+  .product-card.is-flagship::before { background:linear-gradient(90deg,#a07d3a,var(--gold)); }
+  .product-card.is-flagship h3 { color:var(--ink); }
+  .product-card.is-flagship p { color:#6b5f45 !important; }
+  .product-card.is-flagship .card-tag { color:#a07d3a !important; }
+  .product-card.is-flagship span[class*="border-"] { border-color:rgba(160,125,58,.4) !important; color:#a07d3a !important; background:rgba(255,255,255,.5) !important; }
+  .product-card.is-flagship svg { opacity:.55 !important; color:#a07d3a; }
+
+  /* Gold gradient text */
+  .gold-text { color: var(--gold); }
+
+  /* Thin gold rule */
+  .g-rule { display:block; height:1px; background:linear-gradient(90deg, var(--gold), transparent); }
+
+  /* Reveal lines */
+  .rline { display:block; overflow:hidden; }
+  .rinner, .omni-rinner { display:block; }
+
+  /* Pillar card */
+  .pcard {
+    padding:2.5rem;
+    border:1px solid rgba(0,0,0,.07);
+    background:#fff;
+    position:relative;
+    transition: border-color .35s, transform .35s, box-shadow .35s;
+    overflow:hidden;
+  }
+  .pcard::before {
+    content:'';
+    position:absolute; bottom:0; left:0;
+    width:0; height:2px;
+    background:linear-gradient(90deg,var(--gold),var(--gold-l));
+    transition:width .55s ease;
+  }
+  .pcard:hover { border-color:rgba(201,164,98,.35); transform:translateY(-3px); box-shadow:0 18px 48px rgba(0,0,0,.06); }
+  .pcard:hover::before { width:100%; }
+
+  /* Sector card */
+  .scard {
+    border:1px solid rgba(0,0,0,.07);
+    background:#fff;
+    overflow:hidden;
+    transition: border-color .35s, box-shadow .35s, transform .35s;
+  }
+  .scard:hover { border-color:rgba(201,164,98,.4); box-shadow:0 20px 60px rgba(0,0,0,.08); transform:translateY(-4px); }
+  .scard canvas { display:block; }
+
+  /* Scroll cue */
+  @keyframes nudge { 0%,100%{transform:translateY(0)} 55%{transform:translateY(7px)} }
+  .scroll-cue { animation:nudge 2.2s ease-in-out infinite; }
+
+  /* Section fade helpers — set by GSAP */
+
+  /* ── Pharma Proof Bar ──────────────────────────────────────────────────────── */
+  .stat-num { font-family:'Cormorant Garamond',serif; font-weight:300; font-size:clamp(40px,4.8vw,66px); color:var(--ink); line-height:1; letter-spacing:-0.03em; }
+  .stat-sub  { font-size:10.5px; letter-spacing:.2em; text-transform:uppercase; font-weight:500; color:var(--muted); margin-top:9px; }
+  .stat-desc { font-size:11px; letter-spacing:.06em; color:#9a9a9a; margin-top:3px; font-weight:300; }
+  .stat-divider { width:1px; align-self:stretch; background:linear-gradient(to bottom, transparent 0%, rgba(201,164,98,.45) 50%, transparent 100%); flex-shrink:0; }
+
+  /* ── Knowledge Graph ──────────────────────────────────────────────────────── */
+  .therapy-badge { display:inline-flex; align-items:center; gap:5px; padding:4px 14px; border-radius:99px; font-size:10px; letter-spacing:.12em; text-transform:uppercase; font-weight:500; border:1px solid; }
+
+  /* ── FDA Calendar ────────────────────────────────────────────────────────── */
+  .fda-card {
+    border:1px solid rgba(0,0,0,.07); background:#fff;
+    padding:1.8rem 1.5rem 1.5rem; overflow:hidden; position:relative;
+    transition:border-color .35s, transform .35s, box-shadow .35s;
+  }
+  .fda-card:hover { border-color:rgba(201,164,98,.35); transform:translateY(-4px); box-shadow:0 20px 52px rgba(0,0,0,.07); }
+  .fda-card::before { content:''; position:absolute; bottom:0; left:0; width:0; height:2px; background:linear-gradient(90deg,var(--gold),var(--gold-l)); transition:width .55s ease; }
+  .fda-card:hover::before { width:100%; }
+
+  /* ── Research Browser Frame ──────────────────────────────────────────────── */
+  .browser-frame {
+    border-radius:13px; overflow:hidden; background:#141418;
+    border:1px solid rgba(255,255,255,.07);
+    box-shadow:0 48px 96px rgba(0,0,0,.24), 0 8px 24px rgba(0,0,0,.16);
+    transform-style:preserve-3d;
+  }
+  .browser-chrome {
+    display:flex; align-items:center; gap:8px;
+    padding:12px 18px; background:#0e0e11;
+    border-bottom:1px solid rgba(255,255,255,.06);
+  }
+  .phr-tab {
+    padding:5px 16px; border-radius:6px 6px 0 0; font-size:11px; font-weight:500;
+    letter-spacing:.04em; color:rgba(255,255,255,.36); background:transparent; cursor:default;
+    opacity:0; transform:translateY(6px);
+  }
+  .phr-tab-active { background:#1c1c22; color:rgba(255,255,255,.82); border:1px solid rgba(255,255,255,.07); border-bottom-color:#1c1c22; }
+  .phr-tag {
+    display:inline-flex; align-items:center; gap:6px; padding:5px 14px; border-radius:99px;
+    font-size:10px; letter-spacing:.12em; text-transform:uppercase; font-weight:600;
+    border:1px solid rgba(201,164,98,.38); color:var(--gold); background:rgba(201,164,98,.07);
+  }
+
+  /* ── Pharma intro section ─────────────────────────────────────────────────── */
+  .ph-feature-tab {
+    display:inline-flex; align-items:center; gap:8px; padding:10px 18px;
+    border:1px solid rgba(0,0,0,.08); background:#fff; border-radius:8px;
+    font-size:11px; font-weight:500; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--muted); cursor:default; transition:border-color .3s, color .3s, background .3s;
+  }
+  .ph-feature-tab:hover { border-color:rgba(201,164,98,.4); color:var(--gold); background:rgba(201,164,98,.04); }
+  .ph-feature-dot { width:6px; height:6px; border-radius:50%; background:var(--gold); flex-shrink:0; }
+
+  /* ── Diamond Hunter (white theme) ─────────────────────────────────────────── */
+  .dark-section { background:#080c14; color:#e8e4dc; } /* kept for compat, not used */
+  .diamond-card {
+    border:1px solid rgba(77,187,119,.18);
+    background:#fff;
+    padding:1.5rem 1.6rem;
+    border-left:3px solid #4dbb77;
+    position:relative; overflow:hidden;
+    box-shadow:0 4px 20px rgba(77,187,119,.06);
+    transition:border-color .3s, box-shadow .3s, transform .3s;
+  }
+  .diamond-card:hover { border-color:rgba(77,187,119,.4); box-shadow:0 12px 40px rgba(77,187,119,.10); transform:translateY(-2px); }
+  .diamond-card::after {
+    content:''; position:absolute; top:-80%; left:-10%; width:120%; height:40%;
+    background:linear-gradient(180deg, transparent 0%, rgba(77,187,119,.04) 50%, transparent 100%);
+    animation:scan 3.6s ease-in-out infinite;
+    pointer-events:none;
+  }
+  @keyframes scan { 0%{top:-80%} 100%{top:160%} }
+  .score-bar-track { height:4px; background:rgba(0,0,0,.06); border-radius:2px; overflow:hidden; }
+  .score-bar-fill  { height:100%; border-radius:2px; background:linear-gradient(90deg,#4dbb77,var(--gold)); width:0; transition:width 1.4s cubic-bezier(.22,1,.36,1); }
+  /* ── Research Highlight ───────────────────────────────────────────────────── */
+  .rh-section { background:#0a0a0d; color:#f2efe9; position:relative; overflow:hidden; }
+  .rh-section::before {
+    content:''; position:absolute; inset:0; pointer-events:none;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.028) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.028) 1px, transparent 1px);
+    background-size:44px 44px;
+  }
+  .rh-glow {
+    position:absolute; width:620px; height:620px; border-radius:50%; pointer-events:none;
+    background:radial-gradient(circle, rgba(201,164,98,.13) 0%, rgba(201,164,98,0) 68%);
+    top:-180px; right:-140px;
+  }
+  .rh-rule { display:block; height:1px; background:linear-gradient(90deg, var(--gold), transparent); }
+  .rh-tag {
+    display:inline-block; font-size:10px; letter-spacing:.18em; text-transform:uppercase;
+    padding:4px 11px; border:1px solid rgba(201,164,98,.34); color:var(--gold-l);
+  }
+  .rh-quote {
+    font-family:'Cormorant Garamond',serif; font-weight:300; font-style:italic;
+    font-size:clamp(1.15rem,1.7vw,1.4rem); line-height:1.55; color:rgba(242,239,233,.78);
+    padding-left:1.4rem; border-left:1px solid rgba(201,164,98,.5);
+  }
+  /* highlight ledger */
+  .rh-ledger { border-top:1px solid rgba(255,255,255,.1); }
+  .rh-item {
+    display:grid; grid-template-columns:96px 1fr; gap:1.6rem; align-items:baseline;
+    padding:1.35rem 0; border-bottom:1px solid rgba(255,255,255,.1);
+    transition:padding-left .4s ease;
+  }
+  .rh-item:hover { padding-left:.5rem; }
+  .rh-item .rh-n {
+    font-family:'Cormorant Garamond',serif; font-weight:300; font-size:clamp(1.7rem,2.4vw,2.15rem);
+    line-height:1; letter-spacing:-.03em; color:var(--gold-l);
+  }
+  .rh-item .rh-t { font-size:13px; line-height:1.7; color:rgba(242,239,233,.62); font-weight:300; }
+  .rh-item .rh-t b { color:rgba(242,239,233,.95); font-weight:500; }
+  .rh-cta {
+    display:inline-flex; align-items:center; gap:11px;
+    font-size:11px; letter-spacing:.18em; text-transform:uppercase; font-weight:500;
+    color:#0a0a0d; background:var(--gold); padding:.95rem 1.7rem;
+    text-decoration:none; transition:background .3s ease, transform .3s ease;
+  }
+  .rh-cta:hover { background:var(--gold-l); transform:translateY(-2px); }
+  .rh-cta svg { transition:transform .3s ease; }
+  .rh-cta:hover svg { transform:translate(3px,-3px); }
+  .rh-ghost {
+    display:inline-flex; align-items:center; gap:9px;
+    font-size:11px; letter-spacing:.18em; text-transform:uppercase; font-weight:500;
+    color:rgba(242,239,233,.6); text-decoration:none; transition:color .3s ease;
+  }
+  .rh-ghost:hover { color:var(--gold-l); }
+  .rh-chip {
+    display:inline-flex; align-items:baseline; gap:9px;
+    font-family:'Fira Mono','Courier New',monospace; font-size:11px; letter-spacing:.04em;
+    padding:6px 12px; border:1px solid rgba(255,255,255,.14); background:rgba(255,255,255,.04);
+    color:rgba(242,239,233,.85);
+  }
+
+  @media (max-width:1000px) { .nav-links { display:none !important; } }
+  @media (max-width:600px) { .rh-item { grid-template-columns:1fr; gap:.5rem; } }
+
+  /* dropdown stays pinned open on click until you click elsewhere */
+  .nav-dropdown.open > .nav-dropdown-menu{opacity:1 !important;pointer-events:all !important;transform:translateX(-50%) translateY(0) !important}
+
+/* ══ CANONICAL SITE HEADER (identical on every page) ══ */
+#nav{position:fixed;top:0;left:0;right:0;z-index:900;border-bottom:1px solid transparent;
+  background:transparent;transition:background .45s ease,border-color .45s ease,backdrop-filter .45s ease}
+#nav.stuck{background:rgba(255,255,255,.94);backdrop-filter:blur(22px);border-bottom-color:rgba(0,0,0,.07)}
+#nav .nav-in{max-width:1280px;margin:0 auto;padding:1.25rem 2rem;height:auto;display:flex;align-items:center;
+  justify-content:space-between;gap:3rem;position:relative;z-index:10}
+#nav .nav-brand{display:flex;align-items:center;gap:.5rem;text-decoration:none}
+#nav .nav-brand span{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:17px;
+  letter-spacing:.22em;text-transform:uppercase;color:#0a0a0a;line-height:1}
+#nav .nav-brand span.g{color:#c9a462}
+#nav .nav-right{display:flex;align-items:center;gap:2.25rem}
+#nav .nav-links{display:flex;align-items:center;gap:2.25rem}
+#nav .nav-link{font-family:'Inter',sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  font-weight:500;color:#5a5a5a;text-decoration:none;white-space:nowrap;transition:color .2s;
+  display:inline-flex;align-items:center;line-height:1}
+#nav .nav-link:hover{color:#0a0a0a}
+#nav .nav-link.is-active{color:#c9a462}
+#nav .nav-link-btn{cursor:pointer;user-select:none}
+#nav .nav-link-btn::after{content:'';display:inline-block;width:5px;height:5px;
+  border-right:1px solid currentColor;border-bottom:1px solid currentColor;
+  transform:rotate(45deg) translateY(-2px);margin-left:6px}
+#nav .nav-cta{font-family:'Inter',sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  font-weight:500;color:#0a0a0a;text-decoration:none;border:1px solid #0a0a0a;padding:.65rem 1.25rem;
+  white-space:nowrap;transition:background .3s,color .3s;line-height:1}
+#nav .nav-cta:hover{background:#0a0a0a;color:#fff}
+#nav .nav-dropdown{position:relative}
+#nav .nav-dropdown-menu{position:absolute;top:calc(100% + 14px);left:50%;
+  transform:translateX(-50%) translateY(-6px);background:#fff;border:1px solid rgba(0,0,0,.08);
+  box-shadow:0 16px 48px rgba(0,0,0,.1);min-width:270px;padding:8px 0;opacity:0;pointer-events:none;
+  /* closes after a short grace period so a slightly-off mouse path doesn't kill it */
+  transition:opacity .2s ease .22s,transform .2s ease .22s}
+/* invisible bridge across the gap between trigger and panel, so hover never breaks */
+#nav .nav-dropdown-menu::before{content:'';position:absolute;left:0;right:0;top:-16px;height:16px}
+/* keep the whole trigger row hoverable, including the gap below it */
+#nav .nav-dropdown::after{content:'';position:absolute;left:0;right:0;top:100%;height:16px}
+#nav .nav-dropdown:hover .nav-dropdown-menu,
+#nav .nav-dropdown:focus-within .nav-dropdown-menu{opacity:1;pointer-events:all;
+  transform:translateX(-50%) translateY(0);transition-delay:0s}
+#nav .nav-dropdown-menu a{display:flex;align-items:flex-start;gap:10px;padding:11px 20px;
+  font-family:'Inter',sans-serif;font-size:11px;letter-spacing:.13em;text-transform:uppercase;
+  font-weight:500;color:#5a5a5a;text-decoration:none;transition:background .2s,color .2s}
+#nav .nav-dropdown-menu a:hover{background:#fafafa;color:#0a0a0a}
+#nav .nav-dropdown-menu a.is-active{color:#c9a462}
+#nav .nav-dropdown-menu .dd-dot{width:5px;height:5px;border-radius:50%;background:#c9a462;
+  flex-shrink:0;margin-top:5px}
+#nav .dd-label{display:flex;flex-direction:column;gap:2px}
+#nav .dd-sub{font-size:9.5px;letter-spacing:.04em;text-transform:none;color:#9a9a9a;
+  font-weight:400;opacity:.85}
+@media (max-width:1000px){#nav .nav-links{display:none}}
+@media (max-width:560px){#nav .nav-in{padding:1rem 1.25rem;gap:1rem}}
+</style>
+
+<style>
+  /* ── SITE FOOTER (shared) ── */
+  .sf { position:relative; z-index:10; background:#fafaf8; border-top:1px solid rgba(0,0,0,.08);
+        padding:4.5rem 2rem 2.2rem; font-family:'Inter',sans-serif; }
+  .sf-in { max-width:1280px; margin:0 auto; }
+  .sf-top { display:grid; grid-template-columns:1.6fr 1fr 1fr 1.15fr; gap:3rem;
+            padding-bottom:2.8rem; border-bottom:1px solid rgba(0,0,0,.07); }
+  .sf-logo { display:flex; align-items:center; gap:.5rem; margin-bottom:.9rem; }
+  .sf-logo span { font-family:'Cormorant Garamond',serif; font-weight:300; letter-spacing:.22em;
+                  font-size:16px; text-transform:uppercase; color:#0a0a0a; }
+  .sf-logo span.g { color:#c9a462; }
+  .sf-tag { font-size:12px; letter-spacing:.06em; color:#5a5a5a; font-weight:300; margin-bottom:1.6rem; }
+  .sf-entity { font-size:11.5px; line-height:1.85; color:#8a8a8a; font-weight:300; }
+  .sf-entity b { color:#5a5a5a; font-weight:500; }
+  .sf-h { font-size:9.5px; letter-spacing:.2em; text-transform:uppercase; color:#0a0a0a;
+          font-weight:600; margin-bottom:1.1rem; }
+  .sf-col a { display:block; font-size:12.5px; line-height:1.5; color:#5a5a5a; text-decoration:none;
+              font-weight:300; margin-bottom:.72rem; transition:color .2s; }
+  .sf-col a:hover { color:#c9a462; }
+  .sf-disc { padding:2.2rem 0; border-bottom:1px solid rgba(0,0,0,.07); }
+  .sf-disc p { font-size:11px; line-height:1.95; color:#8a8a8a; font-weight:300; max-width:1100px; }
+  .sf-disc b { color:#5a5a5a; font-weight:600; }
+  .sf-disc a { color:#5a5a5a; text-decoration:none; border-bottom:1px solid rgba(201,164,98,.5); }
+  .sf-disc a:hover { color:#c9a462; }
+  .sf-bot { display:flex; align-items:center; justify-content:space-between; gap:1.5rem;
+            flex-wrap:wrap; padding-top:1.6rem; }
+  .sf-copy { font-size:11px; letter-spacing:.06em; color:#8a8a8a; font-weight:300; }
+  .sf-legal { display:flex; gap:1.5rem; flex-wrap:wrap; }
+  .sf-legal a { font-size:11px; letter-spacing:.06em; color:#8a8a8a; text-decoration:none;
+                font-weight:400; transition:color .2s; }
+  .sf-legal a:hover { color:#c9a462; }
+  @media (max-width:900px) { .sf-top { grid-template-columns:1fr 1fr; gap:2.4rem; } }
+  @media (max-width:560px) { .sf-top { grid-template-columns:1fr; } .sf { padding:3.2rem 1.5rem 2rem; } }
+</style>
+
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-in">
+    <a class="nav-brand" href="index.html"><span>SEDGE</span><span class="g">Ventures</span></a>
+    <div class="nav-right">
+      <div class="nav-links">
+        <a class="nav-link" href="pharma.html">Pharma Research</a>
+        <div class="nav-dropdown">
+          <span class="nav-link nav-link-btn">What We Do</span>
+          <div class="nav-dropdown-menu">
+            <a href="forex.html"><span class="dd-dot"></span><span class="dd-label"><span class="dd-name">Forex</span><span class="dd-sub">Macro &amp; currency research</span></span></a>
+            <a href="value-picks.html"><span class="dd-dot"></span><span class="dd-label"><span class="dd-name">Alpha Signals</span><span class="dd-sub">Equity screener</span></span></a>
+            <a href="mdos.html"><span class="dd-dot"></span><span class="dd-label"><span class="dd-name">Multi-Dimensional Options Screener</span><span class="dd-sub">Derivatives screener &amp; optimizer</span></span></a>
+          </div>
+        </div>
+        <a class="nav-link" href="research.html">Blogs</a>
+        <a class="nav-link" href="about.html">About</a>
+      </div>
+      <a class="nav-cta" href="contact.html">Book a Demo</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════════════════════════
+     SECTION 1 — HERO (SEDGE AI TERMINAL)
+═══════════════════════════════════════════════════════════ -->
+<!-- ══════════════════════════════════════════════════════════
+     SECTION 1 — HERO (helix → market)
+═══════════════════════════════════════════════════════════ -->
+<style>
+  /* hero entrance */
+  .hero-rinner{display:block;transform:translateY(108%);opacity:0;}
+  .hero-in .hero-rinner{animation:heroRise 1.28s cubic-bezier(.22,1,.36,1) forwards;}
+  .hero-in .hero-l1 .hero-rinner{animation-delay:.22s;}
+  .hero-in .hero-l2 .hero-rinner{animation-delay:.36s;}
+
+  #hero-eyebrow,#hero-p,#hero-pills{opacity:0;transform:translateY(22px);}
+  .hero-in #hero-eyebrow{animation:heroFade .90s .10s cubic-bezier(.22,1,.36,1) forwards;}
+  .hero-in #hero-p{animation:heroFade .95s .62s cubic-bezier(.22,1,.36,1) forwards;}
+  .hero-in #hero-pills{animation:heroFade .95s .78s cubic-bezier(.22,1,.36,1) forwards;}
+
+  /* gold sweep across the payoff word */
+  .hero-wipe{position:relative;display:inline-block;}
+  .hero-wipe::after{content:'';position:absolute;inset:-2px -1px;background:#fff;transform:scaleX(1);transform-origin:right center;}
+  .hero-in .hero-wipe::after{animation:heroWipe .62s 1.02s cubic-bezier(.65,0,.35,1) forwards;}
+
+  @keyframes heroRise{to{transform:translateY(0);opacity:1;}}
+  @keyframes heroFade{to{opacity:1;transform:translateY(0);}}
+  @keyframes heroWipe{to{transform:scaleX(0);}}
+
+  /* evidence domains */
+  .hero-domain{transition:transform .45s cubic-bezier(.22,1,.36,1),border-color .45s ease,background .45s ease,box-shadow .45s ease;}
+  .hero-domain-dot,.hero-domain-label{transition:background .45s ease,color .45s ease,box-shadow .45s ease;}
+  .hero-domain.is-active{transform:translateY(-2px);}
+  .hero-domain[data-domain="0"].is-active{border-color:rgba(77,187,119,.42)!important;background:rgba(77,187,119,.08)!important;box-shadow:0 8px 24px rgba(77,187,119,.08);}
+  .hero-domain[data-domain="0"].is-active .hero-domain-dot{background:#4dbb77!important;box-shadow:0 0 0 4px rgba(77,187,119,.10);}
+  .hero-domain[data-domain="0"].is-active .hero-domain-label{color:#4dbb77!important;}
+  .hero-domain[data-domain="1"].is-active{border-color:rgba(201,164,98,.42)!important;background:rgba(201,164,98,.08)!important;box-shadow:0 8px 24px rgba(201,164,98,.08);}
+  .hero-domain[data-domain="1"].is-active .hero-domain-dot{background:#c9a462!important;box-shadow:0 0 0 4px rgba(201,164,98,.10);}
+  .hero-domain[data-domain="1"].is-active .hero-domain-label{color:#a98544!important;}
+  .hero-domain[data-domain="2"].is-active{border-color:rgba(0,174,166,.34)!important;background:rgba(0,174,166,.065)!important;box-shadow:0 8px 24px rgba(0,174,166,.07);}
+  .hero-domain[data-domain="2"].is-active .hero-domain-dot{background:#00aea6!important;box-shadow:0 0 0 4px rgba(0,174,166,.09);}
+  .hero-domain[data-domain="2"].is-active .hero-domain-label{color:#008f89!important;}
+
+  @media(max-width:620px){
+    #hero-copy{padding:8.2rem 1.25rem 0!important;}
+    #hero-pills{gap:4px!important;}
+    #hero-pills>div:not(.hero-domain){display:none!important;}
+    #hero-pills .hero-domain{padding:6px 9px!important;}
+    #hero-pills .hero-domain-label{font-size:8.5px!important;letter-spacing:.06em!important;}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    .hero-rinner{transform:none;opacity:1;}
+    #hero-eyebrow,#hero-p,#hero-pills{opacity:1;transform:none;}
+    .hero-wipe::after{display:none;}
+    .hero-in .hero-rinner,.hero-in #hero-eyebrow,.hero-in #hero-p,.hero-in #hero-pills{animation:none;}
+    .hero-domain{transition:none;}
+  }
+</style>
+
+<div id="hero-wrap" style="height:170vh;position:relative;">
+  <section id="hero-pin" class="relative z-10 overflow-hidden" style="position:sticky;top:0;height:100vh;background:#fff;">
+
+    <canvas id="hero-cv" style="position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;"></canvas>
+
+    <div id="hero-copy" style="position:absolute;left:0;right:0;top:0;padding:9.5rem 2rem 0;text-align:center;z-index:2;pointer-events:none;">
+
+      <div id="hero-eyebrow" class="inline-flex items-center gap-4 mb-8">
+        <span style="display:block;height:1px;width:32px;background:linear-gradient(90deg,transparent,var(--gold));"></span>
+        <span class="text-[11px] tracking-[.28em] uppercase font-medium gold-text">Sedge Ventures</span>
+        <span style="display:block;height:1px;width:32px;background:linear-gradient(90deg,var(--gold),transparent);"></span>
+      </div>
+
+      <h1 class="font-display font-light text-[clamp(38px,4.6vw,70px)] leading-[1.06] tracking-[-0.025em] mb-7">
+        <span class="rline hero-l1"><span class="hero-rinner">The future of investment research</span></span>
+        <span class="rline hero-l2"><span class="hero-rinner">is <span class="gold-text hero-wipe">science.</span></span></span>
+      </h1>
+
+      <p id="hero-p" class="text-[15px] leading-[1.9] text-[var(--muted)] max-w-[560px] mx-auto font-light tracking-[0.01em]">
+        Deep research on drug trials, currencies and equities — built for investors who move on evidence.
+      </p>
+
+      <div id="hero-pills" style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:28px;pointer-events:none;">
+        <div class="hero-domain is-active" data-domain="0" style="display:flex;align-items:center;gap:7px;padding:7px 16px;border-radius:99px;border:1px solid rgba(0,0,0,.07);background:rgba(255,255,255,.72);">
+          <span class="hero-domain-dot" style="width:5px;height:5px;border-radius:50%;background:#ccc;display:inline-block;"></span>
+          <span class="hero-domain-label" style="font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:500;color:#bbb;">Drug Discovery</span>
+        </div>
+        <div style="width:18px;height:1px;background:rgba(0,0,0,.1);"></div>
+        <div class="hero-domain" data-domain="1" style="display:flex;align-items:center;gap:7px;padding:7px 16px;border-radius:99px;border:1px solid rgba(0,0,0,.07);background:rgba(255,255,255,.72);">
+          <span class="hero-domain-dot" style="width:5px;height:5px;border-radius:50%;background:#ccc;display:inline-block;"></span>
+          <span class="hero-domain-label" style="font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:500;color:#bbb;">Forex Trading</span>
+        </div>
+        <div style="width:18px;height:1px;background:rgba(0,0,0,.1);"></div>
+        <div class="hero-domain" data-domain="2" style="display:flex;align-items:center;gap:7px;padding:7px 16px;border-radius:99px;border:1px solid rgba(0,0,0,.07);background:rgba(255,255,255,.72);">
+          <span class="hero-domain-dot" style="width:5px;height:5px;border-radius:50%;background:#ccc;display:inline-block;"></span>
+          <span class="hero-domain-label" style="font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:500;color:#bbb;">Stock Picks</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll-down cue -->
+    <div id="hero-cue" style="position:absolute;bottom:2.5rem;left:calc(50% - 12px);opacity:0;" class="scroll-cue">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 4L12 20M6 14l6 6 6-6" stroke="rgba(0,0,0,0.22)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <!-- Bottom gold accent rule -->
+    <div style="position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 0%,rgba(201,164,98,.28) 50%,transparent 100%);pointer-events:none;"></div>
+  </section>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     WHAT WE DO — OVERVIEW
+═══════════════════════════════════════════════════════════ -->
+<section id="what-we-do" class="relative z-10 py-32 px-8" style="background:#fff;border-top:1px solid rgba(0,0,0,.06);">
+  <div class="max-w-screen-xl mx-auto">
+
+    <!-- Header -->
+    <div class="mb-20 max-w-[720px]">
+      <div class="flex items-center gap-4 mb-8">
+        <span class="g-rule w-10"></span>
+        <span class="text-[11px] tracking-[.28em] uppercase font-medium gold-text">What We Do</span>
+      </div>
+      <h2 class="font-display font-light text-[clamp(2.4rem,4vw,3.6rem)] leading-[1.12] mb-6">
+        Deep in pharma.<br>Fluent across the market.
+      </h2>
+      <p class="text-[15px] text-[var(--muted)] leading-relaxed max-w-[560px]">
+        Pharmaceutical and biotech research is where our work goes deepest — clinical and scientific analysis carried through to the investment case. Forex, Alpha Signals and MDOS are the desk capabilities we run alongside it.
+      </p>
+    </div>
+
+    <!-- Product cards grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+      <!-- Pharma Research -->
+      <a href="pharma.html" class="product-card is-flagship block no-underline" style="text-decoration:none;color:inherit;">
+        <div class="flex items-start justify-between mb-6">
+          <span class="card-tag text-[10px] tracking-[.22em] uppercase font-semibold gold-text">Core Research</span>
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style="opacity:.3"><path d="M3 15L15 3M15 3H7M15 3V11" stroke="currentColor" stroke-width="1.2"/></svg>
+        </div>
+        <h3 class="font-display font-light text-[1.9rem] leading-tight mb-3">Pharma Research</h3>
+        <p class="text-[13px] text-[var(--muted)] leading-relaxed mb-6">FDA catalysts, knowledge graphs, clinical trial intelligence and the Diamond Hunter signal engine for biotech multi-baggers.</p>
+        <div class="flex flex-wrap gap-2">
+          <span class="text-[10px] tracking-[.18em] uppercase px-3 py-1 border border-[rgba(201,164,98,.3)] text-[var(--gold)]">FDA Calendar</span>
+          <span class="text-[10px] tracking-[.18em] uppercase px-3 py-1 border border-[rgba(201,164,98,.3)] text-[var(--gold)]">Knowledge Graph</span>
+          <span class="text-[10px] tracking-[.18em] uppercase px-3 py-1 border border-[rgba(201,164,98,.3)] text-[var(--gold)]">Diamond Hunter</span>
+        </div>
+      </a>
+
+      <!-- Forex -->
+      <a href="forex.html" class="product-card block no-underline" style="text-decoration:none;color:inherit;">
+        <div class="flex items-start justify-between mb-6">
+          <span class="card-tag text-[10px] tracking-[.22em] uppercase font-semibold" style="color:var(--muted);">Desk Capability</span>
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style="opacity:.3"><path d="M3 15L15 3M15 3H7M15 3V11" stroke="currentColor" stroke-width="1.2"/></svg>
+        </div>
+        <h3 class="font-display font-light text-[1.9rem] leading-tight mb-3">Forex</h3>
+        <p class="text-[13px] text-[var(--muted)] leading-relaxed mb-6">Macro-driven currency momentum signals, central bank divergence tracking, and EUR/USD through EM pair coverage with real-time positioning data.</p>
+        <div class="flex flex-wrap gap-2">
+          <span class="text-[10px] tracking-[.18em] uppercase px-3 py-1 border border-[rgba(201,164,98,.3)] text-[var(--gold)]">Macro Signals</span>
+          <span class="text-[10px] tracking-[.18em] uppercase px-3 py-1 border border-[rgba(201,164,98,.3)] text-[var(--gold)]">FX Momentum</span>
+          <span class="text-[10px] tracking-[.18em] uppercase px-3 py-1 border border-[rgba(201,164,98,.3)] text-[var(--gold)]">CB Divergence</span>
+        </div>
+      </a>
+
+      <!-- Alpha Signals -->
+      <a href="value-picks.html" class="product-card block no-underline" style="text-decoration:none;color:inherit;">
+        <div class="flex items-start justify-between mb-6">
+          <span class="card-tag text-[10px] tracking-[.22em] uppercase font-semibold" style="color:var(--muted);">Desk Capability</span>
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style="opacity:.3"><path d="M3 15L15 3M15 3H7M15 3V11" stroke="currentColor" stroke-width="1.2"/></svg>
+        </div>
+        <h3 class="font-display font-light text-[1.9rem] leading-tight mb-3">Alpha Signals</h3>
+        <p class="text-[13px] text-[var(--muted)] leading-relaxed mb-6">Systematic screening across US equities. FCF yield ranking, balance sheet quality scores, and contrarian ideas the market has structurally mis-priced.</p>
+        <div class="flex flex-wrap gap-2">
+          <span class="text-[10px] tracking-[.18em] uppercase px-3 py-1 border border-[rgba(201,164,98,.3)] text-[var(--gold)]">FCF Screening</span>
+          <span class="text-[10px] tracking-[.18em] uppercase px-3 py-1 border border-[rgba(201,164,98,.3)] text-[var(--gold)]">Value Scores</span>
+          <span class="text-[10px] tracking-[.18em] uppercase px-3 py-1 border border-[rgba(201,164,98,.3)] text-[var(--gold)]">Equity Picks</span>
+        </div>
+      </a>
+
+      <!-- MDOS -->
+      <a href="mdos.html" class="product-card block no-underline" style="text-decoration:none;color:inherit;">
+        <div class="flex items-start justify-between mb-6">
+          <span class="card-tag text-[10px] tracking-[.22em] uppercase font-semibold" style="color:var(--muted);">Desk Capability</span>
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style="opacity:.3"><path d="M3 15L15 3M15 3H7M15 3V11" stroke="currentColor" stroke-width="1.2"/></svg>
+        </div>
+        <h3 class="font-display font-light text-[1.9rem] leading-tight mb-3">Multi-Dimensional Options Screener</h3>
+        <p class="text-[13px] text-[var(--muted)] leading-relaxed mb-6">Our multi-dimensional options screener and optimizer — five-factor contract ranking, risk-gated sizing, and a charter-procurement module for freight and bunker options. Built and run in-house for our own desk.</p>
+        <div class="flex flex-wrap gap-2">
+          <span class="text-[10px] tracking-[.18em] uppercase px-3 py-1 border border-[rgba(201,164,98,.3)] text-[var(--gold)]">Options Scoring</span>
+          <span class="text-[10px] tracking-[.18em] uppercase px-3 py-1 border border-[rgba(201,164,98,.3)] text-[var(--gold)]">Risk Engine</span>
+          <span class="text-[10px] tracking-[.18em] uppercase px-3 py-1 border border-[rgba(201,164,98,.3)] text-[var(--gold)]">Internal R&amp;D</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════
+     RESEARCH HIGHLIGHT — DFTX / DT120
+═══════════════════════════════════════════════════════════ -->
+<section id="research-highlight" class="rh-section relative z-10 py-28 px-8">
+  <div class="rh-glow"></div>
+  <div class="max-w-screen-xl mx-auto relative" style="z-index:2;">
+
+    <!-- Section label -->
+    <div class="flex items-center justify-between gap-6 flex-wrap mb-16">
+      <div class="flex items-center gap-4">
+        <span class="rh-rule w-10"></span>
+        <span class="text-[11px] tracking-[.28em] uppercase font-medium" style="color:var(--gold-l);">Research Highlight</span>
+      </div>
+      <a href="research.html" class="rh-ghost">
+        All Research
+        <svg width="13" height="13" viewBox="0 0 18 18" fill="none"><path d="M3 15L15 3M15 3H7M15 3V11" stroke="currentColor" stroke-width="1.3"/></svg>
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-[1.05fr_1fr] gap-16 lg:gap-24 items-start">
+
+      <!-- LEFT — the story -->
+      <div>
+        <div class="flex flex-wrap items-center gap-3 mb-7">
+          <span class="rh-chip">DFTX <span style="color:#6fcf97;">+337% 1Y</span></span>
+          <span class="rh-tag">Biotech</span>
+          <span class="rh-tag">Phase 3</span>
+        </div>
+
+        <h2 class="font-display font-light text-[clamp(2.3rem,4vw,3.4rem)] leading-[1.1] tracking-[-.02em] mb-5">
+          The Six-Hour Cure vs.<br>The Lifetime Prescription
+        </h2>
+        <p class="font-display font-light italic text-[clamp(1.05rem,1.6vw,1.3rem)] leading-[1.5] mb-9" style="color:rgba(242,239,233,.55);">
+          How Definium Therapeutics is rewriting the economics of psychiatry
+        </p>
+
+        <p class="text-[14.5px] leading-[1.95] font-light mb-8" style="color:rgba(242,239,233,.68);max-width:520px;">
+          SSRIs keep 50 million Americans on roughly 730 pills a year, often for decades — managing
+          symptoms without repairing the damage. DT120 is one tablet, one six-hour supervised session,
+          and a signalling cascade that rebuilds the synapse directly. Two Phase 3 readouts landed
+          this year. All seventeen covering analysts now rate it a Buy.
+        </p>
+
+        <div class="rh-quote mb-10">
+          In an industry optimised for lifelong prescriptions, the most disruptive innovation
+          is the product that requires a person to come once and leave changed.
+        </div>
+
+        <div class="flex flex-wrap items-center gap-7">
+          <a href="article-dt120.html" class="rh-cta">
+            Read The Full Note
+            <svg width="13" height="13" viewBox="0 0 18 18" fill="none"><path d="M3 15L15 3M15 3H7M15 3V11" stroke="currentColor" stroke-width="1.4"/></svg>
+          </a>
+          <span class="text-[10.5px] tracking-[.16em] uppercase font-medium" style="color:rgba(242,239,233,.36);">15 Aug 2026 · 8 Min Read</span>
+        </div>
+      </div>
+
+      <!-- RIGHT — the highlights ledger -->
+      <div>
+        <div class="text-[10px] tracking-[.24em] uppercase font-semibold mb-6" style="color:rgba(242,239,233,.4);">What The Note Covers</div>
+        <div class="rh-ledger">
+          <div class="rh-item">
+            <div class="rh-n">8.1</div>
+            <div class="rh-t"><b>MADRS points over placebo</b> in the Emerge trial (MDD, n=149), p&lt;0.0001 — separation visible by Week 1 and held through Week 12.</div>
+          </div>
+          <div class="rh-item">
+            <div class="rh-n">0.81</div>
+            <div class="rh-t"><b>Effect size in anxiety</b> — Voyage (GAD, n=214), one of the largest ever recorded in psychiatry. Placebo separation on Day 2.</div>
+          </div>
+          <div class="rh-item">
+            <div class="rh-n">6 hrs</div>
+            <div class="rh-t"><b>One supervised session</b>, not a daily regime. No sexual dysfunction, no weight gain, no emotional blunting — 99% of AEs mild to moderate.</div>
+          </div>
+          <div class="rh-item">
+            <div class="rh-n">17 / 17</div>
+            <div class="rh-t"><b>Unanimous Buy coverage.</b> No Holds, no Sells. Average target $60–62 against a $1.08bn cash position and four active Phase 3 studies.</div>
+          </div>
+        </div>
+
+        <p class="text-[11.5px] leading-[1.75] font-light mt-7" style="color:rgba(242,239,233,.34);">
+          Mechanism, trial data, pipeline and the full investment case — including where the
+          thesis breaks — are set out in the note.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="sf">
+  <div class="sf-in">
+    <div class="sf-top">
+      <div>
+        <div class="sf-logo"><span>SEDGE</span><span class="g">Ventures</span></div>
+        <p class="sf-tag">Systematic Equity Investment Management</p>
+        <p class="sf-entity">
+          <b>SEDGE Ventures FZ-LLC</b><br>
+          SO-15, Shed no-18, TP Al Hamra Freezone<br>
+          Al Hamra Industrial Freezone<br>
+          Ras Al Khaimah, United Arab Emirates
+        </p>
+      </div>
+      <div class="sf-col">
+        <div class="sf-h">What We Do</div>
+        <a href="pharma.html">Pharma Research</a>
+        <a href="forex.html">Forex</a>
+        <a href="value-picks.html">Alpha Signals</a>
+        <a href="mdos.html">Options Screener</a>
+      </div>
+      <div class="sf-col">
+        <div class="sf-h">Company</div>
+        <a href="research.html">Blogs</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="sf-col">
+        <div class="sf-h">Legal</div>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Use</a>
+        <a href="cookies.html">Cookie Policy</a>
+        <a href="disclaimer.html">Disclaimer &amp; Risk Disclosure</a>
+      </div>
+    </div>
+
+    <div class="sf-disc">
+      <p>
+        <b>Important disclosure.</b> SEDGE Ventures FZ-LLC is a proprietary research and trading firm. It is not a
+        licensed or regulated investment adviser, broker or fund manager, and does not manage external capital.
+        Nothing on this website is investment advice, a personal recommendation, or an offer or solicitation to buy
+        or sell any security or financial instrument. <b>All company names, tickers, prices, entry and watch ranges,
+        scores, probabilities, screen output, research extracts and performance figures shown anywhere on this site
+        are illustrative and are used only to demonstrate methodology — they are not recommendations and must not be
+        relied upon.</b> SEDGE Ventures and its personnel may hold positions in securities mentioned. Past performance
+        is not indicative of future results, and all investment involves risk including the loss of principal. Always
+        conduct your own due diligence and consult a qualified financial professional before making any investment
+        decision. See our full <a href="disclaimer.html">Disclaimer &amp; Risk Disclosure</a>.
+      </p>
+    </div>
+
+    <div class="sf-bot">
+      <p class="sf-copy">© 2026 SEDGE Ventures FZ-LLC. All rights reserved.</p>
+      <div class="sf-legal">
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+        <a href="cookies.html">Cookies</a>
+        <a href="disclaimer.html">Disclaimer</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ══════════════════════════════════════════════════════════
+     SCRIPTS
+═══════════════════════════════════════════════════════════ -->
+<script>
+'use strict';
+gsap.registerPlugin(ScrollTrigger);
+
+// ─── LENIS ────────────────────────────────────────────────────────────────────
+const lenis = new Lenis({ duration: 1.4, easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
+lenis.on('scroll', ScrollTrigger.update);
+gsap.ticker.add(t => lenis.raf(t * 1000));
+gsap.ticker.lagSmoothing(0);
+
+// Nav stuck state
+lenis.on('scroll', ({ scroll }) => {
+  document.getElementById('nav').classList.toggle('stuck', scroll > 50);
+});
+
+
+// ─── GSAP ENTRANCE ANIMATIONS ─────────────────────────────────────────────────
+
+// Omni hero entrance is handled inside the omni console script (immediate on load)
+
+// Bento tilt
+document.querySelectorAll('[data-tilt]').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    const mx = (e.clientX - r.left) / r.width - 0.5;
+    const my = (e.clientY - r.top) / r.height - 0.5;
+    card.style.transform = `perspective(900px) rotateY(${mx*5}deg) rotateX(${-my*3}deg) scale(1.015)`;
+    card.style.zIndex = '2';
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = 'perspective(900px) rotateY(0deg) rotateX(0deg) scale(1)';
+    card.style.zIndex = '';
+  });
+});
+
+// ─── PHARMA SECTION ANIMATIONS ────────────────────────────────────────────────
+
+// PH-INTRO — pharma title entrance
+(function() {
+  gsap.set(['#phi-title','#phi-body','#phi-tabs'], { y: 22 });
+  ScrollTrigger.create({
+    trigger: '#ph-intro',
+    start: 'top 76%',
+    onEnter() {
+      gsap.to('#phi-eye',  { opacity:1, duration:.9, ease:'power2.out' });
+      gsap.to('#phi-title',{ opacity:1, y:0, duration:1.1, ease:'power4.out', delay:.1 });
+      gsap.to('#phi-body', { opacity:1, y:0, duration:1.0, ease:'power3.out', delay:.24 });
+      gsap.to('#phi-tabs', { opacity:1, y:0, duration:.9, ease:'power3.out', delay:.38 });
+    }
+  });
+})();
+
+// PH-STATS — count-up numbers
+(function() {
+  function animateCount(el, target, duration) {
+    const start = performance.now();
+    function tick(now) {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const ease = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.round(ease * target).toLocaleString();
+      if (progress < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+  let statsTriggered = false;
+  ScrollTrigger.create({
+    trigger: '#ph-stats',
+    start: 'top 80%',
+    onEnter() {
+      if (statsTriggered) return;
+      statsTriggered = true;
+      document.querySelectorAll('.stat-count').forEach(el => {
+        const target = parseInt(el.dataset.target, 10);
+        animateCount(el, target, target > 100 ? 1600 : 900);
+      });
+      gsap.from('[data-stat]', { opacity: 0, y: 24, duration: .9, ease: 'power3.out', stagger: .12 });
+    }
+  });
+})();
+
+// PH-GRAPH — knowledge graph section entrance
+ScrollTrigger.create({
+  trigger: '#ph-graph',
+  start: 'top 74%',
+  onEnter() {
+    gsap.to('#phg-eye',    { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out' });
+    gsap.to('#phg-title',  { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out', delay: .12 });
+    gsap.to('#phg-body',   { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out', delay: .24 });
+    gsap.to('#phg-badges', { opacity: 1, y: 0, duration: .9,  ease: 'power3.out', delay: .38 });
+  }
+});
+gsap.set(['#phg-title','#phg-body','#phg-badges'], { y: 20 });
+
+// PH-FDA — card stagger + arc animations
+(function() {
+  let fdaTriggered = false;
+  ScrollTrigger.create({
+    trigger: '#ph-fda',
+    start: 'top 74%',
+    onEnter() {
+      if (fdaTriggered) return;
+      fdaTriggered = true;
+
+      // Header text
+      gsap.to('#phf-eye',   { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out' });
+      gsap.to('#phf-title', { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out', delay: .12 });
+      gsap.to('#phf-body',  { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out', delay: .24 });
+      gsap.set(['#phf-title','#phf-body'], { y: 18 });
+
+      // Card stagger
+      gsap.from('[data-fda]', {
+        opacity: 0, y: 44, duration: .9, ease: 'power3.out', stagger: .12, delay: .35
+      });
+
+      // Arcs + number count-up after card entrance
+      setTimeout(() => {
+        document.querySelectorAll('[data-fda]').forEach(card => {
+          const prob = parseInt(card.dataset.prob, 10);
+          const circ = 201.1;
+          const arc  = card.querySelector('.fda-arc');
+          const numEl = card.querySelector('.arc-num');
+          // Animate dashoffset
+          const offset = circ - (circ * prob / 100);
+          arc.style.strokeDashoffset = offset;
+          // Count-up number
+          let current = 0;
+          const step = () => {
+            current = Math.min(current + 2, prob);
+            numEl.textContent = current;
+            if (current < prob) requestAnimationFrame(step);
+          };
+          requestAnimationFrame(step);
+        });
+      }, 600);
+    }
+  });
+  gsap.set(['#phf-eye'], { y: 0 });
+})();
+
+// PH-RESEARCH — mockup entrance + mouse tilt + tab stagger
+(function() {
+  let researchTriggered = false;
+  ScrollTrigger.create({
+    trigger: '#ph-research',
+    start: 'top 74%',
+    onEnter() {
+      if (researchTriggered) return;
+      researchTriggered = true;
+
+      gsap.to('#phr-eye',        { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out' });
+      gsap.to('#phr-title',      { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out', delay: .12 });
+      gsap.to('#phr-body',       { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out', delay: .24 });
+      gsap.to('#phr-tags',       { opacity: 1, y: 0, duration: .9,  ease: 'power3.out', delay: .36 });
+      gsap.to('#phr-frame-wrap', { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out', delay: .22 });
+      gsap.set(['#phr-title','#phr-body','#phr-tags'], { y: 18 });
+      gsap.set('#phr-frame-wrap', { y: 28 });
+
+      // Tab stagger
+      const tabs = ['#tab0','#tab1','#tab2','#tab3','#tab4'];
+      gsap.to(tabs, { opacity: 1, y: 0, duration: .6, ease: 'power3.out', stagger: .1, delay: .55 });
+
+      // Verdict card
+      setTimeout(() => {
+        gsap.to('#phr-verdict', { opacity: 1, duration: .7, ease: 'power2.out' });
+      }, 1100);
+    }
+  });
+
+  // Perspective tilt on hover
+  const wrap = document.getElementById('phr-frame-wrap');
+  const frame = document.getElementById('phr-frame');
+  if (wrap && frame) {
+    wrap.addEventListener('mousemove', e => {
+      const r = wrap.getBoundingClientRect();
+      const mx = (e.clientX - r.left) / r.width  - 0.5;
+      const my = (e.clientY - r.top)  / r.height - 0.5;
+      frame.style.transform = `rotateY(${mx * 8}deg) rotateX(${-my * 5}deg)`;
+    });
+    wrap.addEventListener('mouseleave', () => {
+      frame.style.transform = 'rotateY(0deg) rotateX(0deg)';
+    });
+  }
+})();
+
+// PH-DIAMOND — white section entrance + score bars
+(function() {
+  let diamondTriggered = false;
+  gsap.set(['#phd-title','#phd-title2','#phd-body'], { y: 22 });
+
+  ScrollTrigger.create({
+    trigger: '#ph-diamond',
+    start: 'top 74%',
+    onEnter() {
+      if (diamondTriggered) return;
+      diamondTriggered = true;
+
+      // Header
+      gsap.to('#phd-eye',    { opacity: 1, duration: .9, ease: 'power2.out' });
+      gsap.to('#phd-title',  { opacity: 1, y: 0, duration: 1.1, ease: 'power4.out', delay: .1 });
+      gsap.to('#phd-title2', { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out', delay: .2 });
+      gsap.to('#phd-body',   { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out', delay: .3 });
+
+      // Cards stagger in
+      gsap.to('#phd-cards-wrap', { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out', delay: .44 });
+      gsap.set('#phd-cards-wrap', { y: 28 });
+      gsap.from('[data-dcard]', { opacity: 0, y: 32, duration: .85, ease: 'power3.out', stagger: .12, delay: .5 });
+
+      // Proof line
+      gsap.to('#phd-proof', { opacity: 1, duration: .9, ease: 'power2.out', delay: .9 });
+
+      // Score bars + count-up
+      setTimeout(() => {
+        document.querySelectorAll('.score-bar-fill').forEach(bar => {
+          bar.style.width = bar.dataset.score + '%';
+        });
+        document.querySelectorAll('[data-dcard]').forEach(card => {
+          const bars = card.querySelectorAll('.score-bar-fill');
+          const aEl = card.querySelector('.score-val-a');
+          const bEl = card.querySelector('.score-val-b');
+          if (bars[0] && aEl) {
+            const target = parseInt(bars[0].dataset.score);
+            let v = 0;
+            const tick = () => { v = Math.min(v+2,target); aEl.textContent=v+'%'; if(v<target) requestAnimationFrame(tick); };
+            requestAnimationFrame(tick);
+          }
+          if (bars[1] && bEl) {
+            const target = parseInt(bars[1].dataset.score);
+            let v = 0;
+            const tick = () => { v = Math.min(v+2,target); bEl.textContent=v+'%'; if(v<target) requestAnimationFrame(tick); };
+            requestAnimationFrame(tick);
+          }
+        });
+      }, 800);
+    }
+  });
+})();
+</script>
+
+<!-- ── PHARMA THREE.JS SCENES ──────────────────────────────────────────────── -->
+<script>
+// ─── KNOWLEDGE GRAPH (cv-phgraph) ────────────────────────────────────────────
+(function knowledgeGraph() {
+  'use strict';
+  const canvas = document.getElementById('cv-phgraph');
+  if (!canvas) return;
+  const wrap = canvas.parentElement;
+
+  function resize() {
+    const W = wrap.clientWidth, H = wrap.clientHeight;
+    renderer.setSize(W, H);
+    camera.aspect = W / H;
+    camera.updateProjectionMatrix();
+  }
+
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.setClearColor(0x0d1117, 1);
+
+  const scene  = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(48, 1, 0.1, 100);
+  camera.position.z = 8;
+  resize();
+  window.addEventListener('resize', resize);
+
+  // Therapy areas: emerald, cyan, gold, purple, orange
+  const AREAS = [
+    { color: 0x4dbb77, name: 'oncology'   },
+    { color: 0x00d4c8, name: 'immuno'     },
+    { color: 0xc9a462, name: 'gene'       },
+    { color: 0xa78bfa, name: 'rare'       },
+    { color: 0xfb923c, name: 'neuro'      },
+  ];
+
+  const TICKERS = ['MRNA', 'NVO', 'BMY', 'REGN', 'ABBV', 'PFE'];
+  const N = 55;
+  const nodes = [];
+  const nodeGroup = new THREE.Group();
+  scene.add(nodeGroup);
+
+  // Highlighted node indices
+  const highlightIdx = [2, 9, 17, 28, 36, 48];
+
+  // Build nodes
+  for (let i = 0; i < N; i++) {
+    const areaIdx = Math.floor(Math.random() * AREAS.length);
+    const area = AREAS[areaIdx];
+    const isHL = highlightIdx.includes(i);
+    const r  = isHL ? 0.11 : 0.065 + Math.random() * 0.035;
+    const geo = new THREE.SphereGeometry(r, 10, 10);
+    const mat = new THREE.MeshBasicMaterial({
+      color: area.color,
+      transparent: true,
+      opacity: isHL ? 1.0 : 0.55 + Math.random() * 0.35
+    });
+    const mesh = new THREE.Mesh(geo, mat);
+
+    // Spread in 3D sphere volume
+    const theta = Math.random() * Math.PI * 2;
+    const phi   = Math.acos(2 * Math.random() - 1);
+    const rad   = 1.8 + Math.random() * 2.4;
+    mesh.position.set(
+      rad * Math.sin(phi) * Math.cos(theta),
+      rad * Math.sin(phi) * Math.sin(theta) * 0.72,
+      rad * Math.cos(phi) * 0.55
+    );
+    mesh.userData = {
+      area: areaIdx, isHL, r,
+      origOpacity: mat.opacity,
+      origColor: area.color,
+      phase: Math.random() * Math.PI * 2,
+    };
+    // Start at origin for entrance animation
+    mesh.userData.finalPos = mesh.position.clone();
+    mesh.position.set(0, 0, 0);
+
+    nodeGroup.add(mesh);
+    nodes.push(mesh);
+  }
+
+  // Build edges between nearby nodes
+  const edgeMat = new THREE.LineBasicMaterial({ color: 0x4dbb77, transparent: true, opacity: 0.10 });
+  const edges = [];
+  for (let i = 0; i < N; i++) {
+    for (let j = i + 1; j < N; j++) {
+      const fp1 = nodes[i].userData.finalPos;
+      const fp2 = nodes[j].userData.finalPos;
+      if (fp1.distanceTo(fp2) < 2.2) {
+        const geo  = new THREE.BufferGeometry().setFromPoints([fp1, fp2]);
+        const mat  = edgeMat.clone();
+        const line = new THREE.Line(geo, mat);
+        nodeGroup.add(line);
+        edges.push({ line, i, j, baseMat: mat });
+      }
+    }
+  }
+
+  // Entrance animation — nodes fly outward
+  nodes.forEach((n, idx) => {
+    gsap.to(n.position, {
+      x: n.userData.finalPos.x,
+      y: n.userData.finalPos.y,
+      z: n.userData.finalPos.z,
+      duration: 1.4 + Math.random() * 0.5,
+      ease: 'power3.out',
+      delay: 0.3 + idx * 0.018,
+    });
+  });
+
+  // Raycasting for hover
+  const raycaster = new THREE.Raycaster();
+  const mouse = new THREE.Vector2(-99, -99);
+  let hoveredIdx = -1;
+
+  canvas.addEventListener('mousemove', e => {
+    const r = canvas.getBoundingClientRect();
+    mouse.x =  ((e.clientX - r.left)  / r.width)  * 2 - 1;
+    mouse.y = -((e.clientY - r.top)   / r.height) * 2 + 1;
+  });
+  canvas.addEventListener('mouseleave', () => { mouse.set(-99, -99); });
+
+  // Ticker label overlay
+  const labelsDiv = document.getElementById('phg-labels');
+  const labelEls = [];
+  TICKERS.forEach((tk, i) => {
+    const div = document.createElement('div');
+    div.style.cssText = `position:absolute;font-family:Inter,sans-serif;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6);pointer-events:none;white-space:nowrap;opacity:0;transition:opacity .5s;`;
+    div.textContent = tk;
+    labelsDiv.appendChild(div);
+    labelEls.push(div);
+  });
+
+  const clk = new THREE.Clock();
+
+  (function loop() {
+    requestAnimationFrame(loop);
+    const t = clk.getElapsedTime();
+
+    // Slow Y-axis rotation
+    nodeGroup.rotation.y = t * 0.08;
+
+    // Hover detection
+    raycaster.setFromCamera(mouse, camera);
+    const meshNodes = nodes.map(n => n);
+    const hits = raycaster.intersectObjects(meshNodes);
+    const newHover = hits.length ? nodes.indexOf(hits[0].object) : -1;
+
+    if (newHover !== hoveredIdx) {
+      // Reset old
+      if (hoveredIdx >= 0) {
+        nodes[hoveredIdx].material.color.setHex(AREAS[nodes[hoveredIdx].userData.area].color);
+        nodes[hoveredIdx].material.opacity = nodes[hoveredIdx].userData.origOpacity;
+        edges.forEach(e => {
+          if (e.i === hoveredIdx || e.j === hoveredIdx) e.baseMat.opacity = 0.10;
+        });
+      }
+      hoveredIdx = newHover;
+      // Highlight new
+      if (hoveredIdx >= 0) {
+        nodes[hoveredIdx].material.color.setHex(0xc9a462);
+        nodes[hoveredIdx].material.opacity = 1.0;
+        edges.forEach(e => {
+          if (e.i === hoveredIdx || e.j === hoveredIdx) e.baseMat.opacity = 0.48;
+        });
+      }
+    }
+
+    // Pulse highlighted nodes
+    highlightIdx.forEach((idx, i) => {
+      const n = nodes[idx];
+      n.material.opacity = 0.82 + Math.sin(t * 1.8 + i * 1.2) * 0.18;
+    });
+
+    // Update ticker label positions
+    TICKERS.forEach((tk, i) => {
+      const nodeIdx = highlightIdx[i];
+      if (!nodes[nodeIdx]) return;
+      const pos = nodes[nodeIdx].userData.finalPos.clone();
+      // Apply group rotation
+      pos.applyEuler(new THREE.Euler(nodeGroup.rotation.x, nodeGroup.rotation.y, nodeGroup.rotation.z));
+      pos.y += 0.22;
+      const projected = pos.clone().project(camera);
+      const rect = canvas.getBoundingClientRect();
+      const px = (projected.x * 0.5 + 0.5) * rect.width;
+      const py = (-projected.y * 0.5 + 0.5) * rect.height;
+      const el = labelEls[i];
+      el.style.left = (px - 14) + 'px';
+      el.style.top  = (py - 16) + 'px';
+      el.style.opacity = projected.z < 1 ? '0.7' : '0';
+    });
+
+    renderer.render(scene, camera);
+  })();
+})();
+
+// Diamond chart removed — section is now all-white HTML/CSS
+</script>
+
+<!-- ── HERO: evidence network → signal ─────────────────────────────────────── -->
+<script>
+(function heroEvidenceSignal(){
+  const cv   = document.getElementById('hero-cv');
+  if(!cv) return;
+  const ctx  = cv.getContext('2d');
+  const wrap = document.getElementById('hero-wrap');
+  const pin  = document.getElementById('hero-pin');
+  const copy = document.getElementById('hero-copy');
+  const cue  = document.getElementById('hero-cue');
+  const domains = [...document.querySelectorAll('.hero-domain')];
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const N = 36;
+  const COLORS = [
+    [77,187,119],
+    [201,164,98],
+    [0,174,166]
+  ];
+  const INK = [34,38,42];
+  let W = 0, H = 0, dpr = 1;
+  let progress = 0;
+
+  const rnd = i => {
+    const x = Math.sin((i + 1) * 127.1) * 43758.5453;
+    return x - Math.floor(x);
+  };
+
+  const lerp  = (a,b,t)=>a+(b-a)*t;
+  const clamp = (v,a,b)=>Math.min(b,Math.max(a,v));
+  const smooth= (e0,e1,x)=>{const t=clamp((x-e0)/(e1-e0),0,1);return t*t*(3-2*t);};
+  const mix   = (c1,c2,t)=>[lerp(c1[0],c2[0],t),lerp(c1[1],c2[1],t),lerp(c1[2],c2[2],t)];
+  const rgba  = (c,a)=>`rgba(${c[0]|0},${c[1]|0},${c[2]|0},${a})`;
+
+  const nodes = Array.from({length:N},(_,i)=>{
+    const t = i/(N-1);
+    const wave = Math.sin(t*Math.PI*4.4)*0.055 + Math.sin(t*Math.PI*9.2)*0.018;
+    return {
+      x: .08 + rnd(i*2.3)*.84,
+      y: .49 + rnd(i*4.7)*.40,
+      tx: .09 + t*.82,
+      ty: .78 - t*.235 - wave,
+      r: 1.45 + rnd(i*8.1)*1.7,
+      group: i%3,
+      phase: rnd(i*11.2)*Math.PI*2
+    };
+  });
+
+  const edges = [];
+  nodes.forEach((a,i)=>{
+    const nearest = nodes
+      .map((b,j)=>({j,d:Math.hypot(a.x-b.x,a.y-b.y)}))
+      .filter(v=>v.j!==i)
+      .sort((p,q)=>p.d-q.d)
+      .slice(0,2);
+    nearest.forEach(({j,d})=>{
+      const key = i<j ? `${i}-${j}` : `${j}-${i}`;
+      if(d<.22 && !edges.some(e=>e.key===key)) edges.push({a:i,b:j,key,phase:rnd(i*17+j)*1});
+    });
+  });
+
+  function resize(){
+    dpr = Math.min(window.devicePixelRatio||1, 2);
+    W = pin.clientWidth; H = pin.clientHeight;
+    cv.width = W*dpr; cv.height = H*dpr;
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+  }
+
+  function point(node,u){
+    const ease = u*u*(3-2*u);
+    return {
+      x: lerp(node.x,node.tx,ease)*W,
+      y: lerp(node.y,node.ty,ease)*H
+    };
+  }
+
+  function dot(x,y,r,fill){
+    ctx.fillStyle=fill;
+    ctx.beginPath();
+    ctx.arc(x,y,r,0,Math.PI*2);
+    ctx.fill();
+  }
+
+  function draw(p, time){
+    ctx.clearRect(0,0,W,H);
+
+    const u = smooth(.08,.72,p);
+    const networkAlpha = 1-smooth(.28,.76,p);
+    const lineReveal = smooth(.44,.96,p);
+    const cycle = reduce ? 0 : Math.floor(time/2400)%3;
+    const pulseT = reduce ? .35 : (time%2400)/2400;
+
+    // Soft focus glow follows the currently processed evidence domain.
+    const activeNodes = nodes.filter(n=>n.group===cycle);
+    const focus = activeNodes.reduce((acc,n)=>{
+      const q=point(n,u);
+      acc.x+=q.x/activeNodes.length;
+      acc.y+=q.y/activeNodes.length;
+      return acc;
+    },{x:0,y:0});
+    const halo = ctx.createRadialGradient(focus.x,focus.y,0,focus.x,focus.y,Math.min(W,H)*.22);
+    halo.addColorStop(0,rgba(COLORS[cycle],.055*networkAlpha));
+    halo.addColorStop(1,rgba(COLORS[cycle],0));
+    ctx.fillStyle=halo;
+    ctx.fillRect(0,0,W,H);
+
+    // Fine evidence relationships.
+    edges.forEach((edge,idx)=>{
+      const a=point(nodes[edge.a],u), b=point(nodes[edge.b],u);
+      ctx.beginPath();
+      ctx.moveTo(a.x,a.y);
+      ctx.lineTo(b.x,b.y);
+      const sameDomain=nodes[edge.a].group===nodes[edge.b].group;
+      ctx.strokeStyle=rgba(sameDomain?COLORS[nodes[edge.a].group]:INK,(sameDomain?.16:.07)*networkAlpha);
+      ctx.lineWidth=sameDomain?1:.7;
+      ctx.stroke();
+
+      // A few quiet packets of evidence travel through the network.
+      if(!reduce && idx%5===cycle){
+        const t=(pulseT+edge.phase)%1;
+        dot(lerp(a.x,b.x,t),lerp(a.y,b.y,t),2.2,rgba(COLORS[cycle],.58*networkAlpha));
+      }
+    });
+
+    // Evidence nodes gather into the final signal.
+    nodes.forEach((node,i)=>{
+      const q=point(node,u);
+      const breathe=reduce?0:(Math.sin(time*.0015+node.phase)+1)*.5;
+      const isActive=node.group===cycle;
+      const alpha=lerp(isActive?.82:.34,.72,u);
+      if(isActive && networkAlpha>.04) dot(q.x,q.y,node.r+5+breathe*2,rgba(COLORS[node.group],.045*networkAlpha));
+      dot(q.x,q.y,node.r+(.55*breathe)*(1-u),rgba(COLORS[node.group],alpha));
+    });
+
+    // The network resolves into one readable market signal.
+    if(lineReveal>.001){
+      const grad=ctx.createLinearGradient(W*.09,0,W*.91,0);
+      grad.addColorStop(0,rgba(COLORS[0],.9));
+      grad.addColorStop(.52,rgba(COLORS[1],.95));
+      grad.addColorStop(1,rgba(COLORS[2],.9));
+      ctx.strokeStyle=grad;
+      ctx.lineWidth=1.7;
+      ctx.lineJoin='round';
+      ctx.beginPath();
+      const exact=(N-1)*lineReveal;
+      const whole=Math.floor(exact);
+      for(let i=0;i<=whole;i++){
+        const x=nodes[i].tx*W,y=nodes[i].ty*H;
+        i?ctx.lineTo(x,y):ctx.moveTo(x,y);
+      }
+      if(whole<N-1){
+        const f=exact-whole;
+        ctx.lineTo(lerp(nodes[whole].tx,nodes[whole+1].tx,f)*W,lerp(nodes[whole].ty,nodes[whole+1].ty,f)*H);
+      }
+      ctx.stroke();
+
+      const leadIndex=Math.min(N-2,whole);
+      const leadF=whole>=N-1?1:exact-whole;
+      const lx=lerp(nodes[leadIndex].tx,nodes[leadIndex+1].tx,leadF)*W;
+      const ly=lerp(nodes[leadIndex].ty,nodes[leadIndex+1].ty,leadF)*H;
+      dot(lx,ly,7,rgba(COLORS[2],.08));
+      dot(lx,ly,2.8,rgba(COLORS[2],.94));
+    }
+  }
+
+  function onScroll(){
+    const span = wrap.offsetHeight - window.innerHeight;
+    progress = span > 0 ? clamp(-wrap.getBoundingClientRect().top / span, 0, 1) : 0;
+    const f = smooth(.06,.36,progress);
+    copy.style.opacity   = String(1-f);
+    copy.style.transform = `translateY(${-f*46}px)`;
+    if(progress > 0.001) cue.style.animation = 'none';
+    cue.style.opacity    = String(Math.max(0, 1 - progress*6));
+  }
+
+  let shownDomain=-1;
+  function frame(ts){
+    const active=reduce?0:Math.floor(ts/2400)%3;
+    if(active!==shownDomain && progress<.06){
+      domains.forEach((el,i)=>el.classList.toggle('is-active',i===active));
+      shownDomain=active;
+    }
+    draw(progress,ts);
+    requestAnimationFrame(frame);
+  }
+
+  if('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  window.addEventListener('scroll', onScroll, {passive:true});
+  window.addEventListener('resize', ()=>{resize();onScroll();});
+  if(window.ResizeObserver) new ResizeObserver(()=>{resize();onScroll();}).observe(pin);
+
+  resize();
+  onScroll();
+  requestAnimationFrame(frame);
+
+  // entrance
+  requestAnimationFrame(()=>document.body.classList.add('hero-in'));
+  setTimeout(()=>{ cue.style.transition='opacity .8s ease'; cue.style.opacity='1'; }, 1400);
+})();
+</script>
+
+<!-- Keep the Products dropdown open for a few seconds after the mouse leaves -->
+
+</body>
+</html>
