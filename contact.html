@@ -7,9 +7,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" integrity="sha512-16esztaSRplJROstbIIdwX3N97V1+pZvV33ABoG1H2OyTttBxEGkTsoIVsiP1iaTtM8b3+hu2kB6pQ4Clr5yug==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" integrity="sha512-Ic9xkERjyZ1xgJ5svx3y0u3xrvfT/uPkV99LBwe68xjy/mGtO+4eURHZBW2xW4SZbFrF1Tf090XqB+EVgXnVjw==" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js" integrity="sha384-li4UtcFCH6QeUqR4JyV58/VgTprMuz9aauj+oWtew7V4Y7ZVjnvz5px9Y3UCG0Ea" crossorigin="anonymous"></script>
 <script>
   tailwind.config = {
     theme: { extend: { fontFamily: { display: ['Cormorant Garamond','serif'], sans: ['Inter','sans-serif'] } } }
@@ -198,7 +198,7 @@
 
       <!-- Right: form -->
       <div id="contact-form-wrap" style="opacity:0;background:#fafafa;border:1px solid rgba(0,0,0,.06);padding:2.8rem;">
-        <form id="cf-form" action="mailto:hello@sedgeventures.com" method="post" enctype="text/plain">
+        <form id="cf-form" method="post" enctype="text/plain">
           <div style="margin-bottom:1.4rem;">
             <label class="field-label" for="cf-name">Full name</label>
             <input class="field" type="text" id="cf-name" name="Name" placeholder="Jane Smith" required>
@@ -224,12 +224,7 @@
             <label for="cf-hp">Leave this field empty</label>
             <input type="text" id="cf-hp" name="Website" tabindex="-1" autocomplete="off">
           </div>
-          <div style="margin-bottom:1.8rem;">
-            <label class="field-label" for="cf-captcha">What is <span id="cf-captcha-q"></span>?</label>
-            <input class="field" type="text" inputmode="numeric" id="cf-captcha" name="_captcha" autocomplete="off" required>
-            <p id="cf-captcha-err" style="display:none;color:#b3452c;font-size:12px;margin-top:6px;">That's not quite right — try again.</p>
-          </div>
-          <button type="submit" class="border border-[var(--ink)] bg-[var(--ink)] text-white text-[12px] tracking-[.14em] uppercase px-6 py-3.5 font-medium hover:bg-transparent hover:text-[var(--ink)] transition-all duration-300 w-full">Request Demo</button>
+          <button type="submit" class="border border-[var(--ink)] bg-[var(--ink)] text-white text-[12px] tracking-[.14em] uppercase px-6 py-3.5 font-medium hover:bg-transparent hover:text-[var(--ink)] transition-all duration-300 w-full" style="margin-top:1.8rem;">Request Demo</button>
           <p class="text-[11px] text-[var(--muted)] font-light" style="margin-top:14px;">Submitting opens your email client, addressed to our research desk. We don't store anything typed here.</p>
         </form>
         <script>
@@ -237,19 +232,17 @@
           'use strict';
           var form = document.getElementById('cf-form');
           var honeypot = document.getElementById('cf-hp');
-          var qEl = document.getElementById('cf-captcha-q');
-          var answerEl = document.getElementById('cf-captcha');
-          var errEl = document.getElementById('cf-captcha-err');
-          var a = 2 + Math.floor(Math.random() * 8);   // 2-9
-          var b = 2 + Math.floor(Math.random() * 8);
-          qEl.textContent = a + ' + ' + b;
+          var loadedAt = Date.now();
+          // Recipients are assembled here rather than written as a plain mailto: in the
+          // HTML source, so a text/HTML scraper crawling for mailto: patterns can't
+          // harvest these addresses directly. Only runs (and only sets the form's
+          // action) once the checks below pass.
+          var users = ['janani.jayakumar', 'rashi.shah', 'clara.neveu'];
+          var domain = 'sedgeventures.ae';
           form.addEventListener('submit', function(e){
             if (honeypot.value.trim() !== '') { e.preventDefault(); return; }   // bot filled the hidden field
-            if (parseInt(answerEl.value, 10) !== a + b) {
-              e.preventDefault();
-              errEl.style.display = 'block';
-              answerEl.focus();
-            }
+            if (Date.now() - loadedAt < 3000) { e.preventDefault(); return; }   // filled out too fast to be human
+            form.action = 'mailto:' + users.map(function(u){ return u + '@' + domain; }).join(',');
           });
         })();
         </script>
