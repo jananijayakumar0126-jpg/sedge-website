@@ -1,0 +1,38 @@
+# This file is a request, not a lock: it stops well-behaved crawlers that
+# choose to honor it (search engines, the named AI-training bots below).
+# It does not and cannot block a scraper that ignores it — that requires
+# server-side controls (rate limiting, IP/UA blocking, a WAF), which this
+# static site does not have.
+
+User-agent: *
+Allow: /
+
+# AI-training crawlers that respect robots.txt — the usual way site content
+# ends up in a training corpus (e.g. via Common Crawl) rather than through a
+# targeted scrape. Blocked on request.
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: Applebot-Extended
+Disallow: /

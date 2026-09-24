@@ -62,6 +62,10 @@
   .ph-feature-tab { display:inline-flex; align-items:center; gap:8px; padding:10px 18px; border:1px solid rgba(0,0,0,.08); background:#fff; border-radius:8px; font-size:11px; font-weight:500; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); cursor:default; transition:border-color .3s,color .3s,background .3s; }
   .ph-feature-tab:hover { border-color:rgba(201,164,98,.4); color:var(--gold); background:rgba(201,164,98,.04); }
   .ph-feature-dot { width:6px; height:6px; border-radius:50%; background:var(--gold); flex-shrink:0; }
+  /* Diamond Hunter's marker is the diamond glyph itself, not a dot — same slot,
+     same gap as the other tabs' dot, just a glyph instead of a filled circle. */
+  .ph-feature-dot.diamond { width:auto; height:auto; border-radius:0; background:none !important;
+                             box-shadow:none !important; color:var(--gold); font-size:10px; line-height:1; }
   .diamond-card { border:1px solid rgba(77,187,119,.18); background:#fff; padding:1.5rem 1.6rem; border-left:3px solid #4dbb77; position:relative; overflow:hidden; box-shadow:0 4px 20px rgba(77,187,119,.06); transition:border-color .3s,box-shadow .3s,transform .3s; }
   .diamond-card:hover { border-color:rgba(77,187,119,.4); box-shadow:0 12px 40px rgba(77,187,119,.10); transform:translateY(-2px); }
   .diamond-card::after { content:''; position:absolute; top:-80%; left:-10%; width:120%; height:40%; background:linear-gradient(180deg,transparent 0%,rgba(77,187,119,.04) 50%,transparent 100%); animation:scan 3.6s ease-in-out infinite; pointer-events:none; }
@@ -98,7 +102,7 @@
   font-weight:500;color:#0a0a0a;text-decoration:none;border:1px solid #0a0a0a;padding:.65rem 1.25rem;
   white-space:nowrap;transition:background .3s,color .3s;line-height:1}
 #nav .nav-cta:hover{background:#0a0a0a;color:#fff}
-#nav .nav-dropdown{position:relative}
+#nav .nav-dropdown{position:relative;display:inline-flex;align-items:center}
 #nav .nav-dropdown-menu{position:absolute;top:calc(100% + 14px);left:50%;
   transform:translateX(-50%) translateY(-6px);background:#fff;border:1px solid rgba(0,0,0,.08);
   box-shadow:0 16px 48px rgba(0,0,0,.1);min-width:270px;padding:8px 0;opacity:0;pointer-events:none;
@@ -179,6 +183,7 @@
             <a href="pharma.html#ph-diamond"><span class="dd-dot"></span><span class="dd-label"><span class="dd-name">Diamond Hunter</span><span class="dd-sub">Early-stage biotech screen</span></span></a>
           </div>
         </div>
+        <a class="nav-link" href="pharma.html#ph-support">Support</a>
         <a class="nav-link" href="research.html">Blogs</a>
         <a class="nav-link" href="about.html">About</a>
       </div>
@@ -431,7 +436,7 @@
         <button class="ph-feature-tab" onclick="document.getElementById('ph-graph').scrollIntoView({behavior:'smooth'})"><span class="ph-feature-dot" style="background:#4dbb77;"></span>Knowledge Graph</button>
         <button class="ph-feature-tab" onclick="document.getElementById('ph-fda').scrollIntoView({behavior:'smooth'})"><span class="ph-feature-dot" style="background:#00d4c8;"></span>FDA Calendar</button>
         <button class="ph-feature-tab" onclick="document.getElementById('ph-research').scrollIntoView({behavior:'smooth'})"><span class="ph-feature-dot" style="background:var(--gold);"></span>Deep Research</button>
-        <button class="ph-feature-tab" onclick="document.getElementById('ph-diamond').scrollIntoView({behavior:'smooth'})" style="background:rgba(201,164,98,.08);border-color:var(--gold);color:var(--gold);font-weight:600;box-shadow:0 0 0 1px rgba(201,164,98,.2),0 4px 16px rgba(201,164,98,.12);"><span class="ph-feature-dot" style="background:var(--gold);box-shadow:0 0 6px rgba(201,164,98,.6);"></span>◆ Diamond Hunter</button>
+        <button class="ph-feature-tab" onclick="document.getElementById('ph-diamond').scrollIntoView({behavior:'smooth'})" style="background:rgba(201,164,98,.08);border-color:var(--gold);color:var(--gold);font-weight:600;box-shadow:0 0 0 1px rgba(201,164,98,.2),0 4px 16px rgba(201,164,98,.12);"><span class="ph-feature-dot diamond">&#9670;</span>Diamond Hunter</button>
       </div>
     </div>
   </div>
@@ -646,6 +651,41 @@
   </div>
 </section>
 
+<!-- PH-SUPPORT — an analyst is available, not just the tools -->
+<section id="ph-support" class="relative z-10 py-32 px-8" style="background:#fff;">
+  <div class="max-w-screen-xl mx-auto">
+    <div class="mb-16 max-w-[640px]">
+      <div class="flex items-center gap-4 mb-8">
+        <span class="g-rule w-10"></span>
+        <span class="text-[11px] tracking-[.28em] uppercase font-medium gold-text">Beyond The Platform</span>
+      </div>
+      <h2 class="font-display font-light text-[clamp(32px,3.6vw,52px)] leading-[1.08] tracking-[-0.02em] mb-6">
+        The platform gets you close.<br><em class="gold-text">An analyst closes the gap.</em>
+      </h2>
+      <p class="text-[15px] leading-[1.85] text-[var(--muted)] font-light">
+        None of this is meant to run unattended. If a read raises more questions than it answers, or the question is bigger than the platform's standard output, someone on the desk picks it up.
+      </p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div style="border:1px solid rgba(0,0,0,.08);border-radius:10px;padding:1.8rem 1.7rem;">
+        <p class="font-display font-light text-[1.5rem] leading-tight mb-3">Get unstuck.</p>
+        <p class="text-[13px] text-[var(--muted)] leading-relaxed">An analyst is available to walk through a signal, a screen result or a report — not a support ticket queue.</p>
+      </div>
+      <div style="border:1px solid rgba(0,0,0,.08);border-radius:10px;padding:1.8rem 1.7rem;">
+        <p class="font-display font-light text-[1.5rem] leading-tight mb-3">A plan built to your risk.</p>
+        <p class="text-[13px] text-[var(--muted)] leading-relaxed">Not a generic model portfolio. An allocation across the coverage sized to the risk appetite you actually have.</p>
+      </div>
+      <div style="border:1px solid rgba(0,0,0,.08);border-radius:10px;padding:1.8rem 1.7rem;">
+        <p class="font-display font-light text-[1.5rem] leading-tight mb-3">One name, fully worked.</p>
+        <p class="text-[13px] text-[var(--muted)] leading-relaxed">Point us at a single company and get the full research process run on it alone — mechanism to valuation.</p>
+      </div>
+    </div>
+    <p class="text-[13px] text-[var(--muted)] font-light mt-10">
+      <a href="contact.html" class="gold-text" style="text-decoration:underline;text-underline-offset:3px;">Talk to an analyst →</a>
+    </p>
+  </div>
+</section>
+
 <!-- CTA — BOOK A DEMO -->
 <section class="relative z-10 py-24 px-8" style="background:var(--ink);text-align:center;">
   <div class="max-w-screen-xl mx-auto" style="max-width:640px;">
@@ -843,6 +883,37 @@ ScrollTrigger.create({ trigger:'#ph-graph', start:'top 74%', onEnter(){
       });
     },800);
   }});
+})();
+</script>
+
+<!-- NAV SPY — the gold nav item tracks which section is on screen: "Pharma
+     Research" by default, "Capabilities" through the capability sections
+     (Diamond Hunter → Deep Research), "Support" through the analyst section —
+     so the header always reflects where on the page you are. -->
+<script>
+(function navSpy(){
+  'use strict';
+  const pharmaLink = document.querySelector('.nav-link[href="pharma.html"]');
+  const capBtn = document.querySelector('.nav-link-btn');
+  const supportLink = document.querySelector('.nav-link[href="pharma.html#ph-support"]');
+  if (!pharmaLink || !capBtn || !supportLink || typeof ScrollTrigger === 'undefined') return;
+
+  let inCapabilities = false, inSupport = false;
+  function apply() {
+    capBtn.classList.toggle('is-active', inCapabilities);
+    supportLink.classList.toggle('is-active', inSupport);
+    pharmaLink.classList.toggle('is-active', !inCapabilities && !inSupport);
+  }
+
+  ScrollTrigger.create({
+    trigger: '#ph-diamond', start: 'top 100',
+    endTrigger: '#ph-research', end: 'bottom 100',
+    onToggle(self) { inCapabilities = self.isActive; apply(); }
+  });
+  ScrollTrigger.create({
+    trigger: '#ph-support', start: 'top 100', end: 'bottom 100',
+    onToggle(self) { inSupport = self.isActive; apply(); }
+  });
 })();
 </script>
 

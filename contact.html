@@ -69,7 +69,7 @@
   font-weight:500;color:#0a0a0a;text-decoration:none;border:1px solid #0a0a0a;padding:.65rem 1.25rem;
   white-space:nowrap;transition:background .3s,color .3s;line-height:1}
 #nav .nav-cta:hover{background:#0a0a0a;color:#fff}
-#nav .nav-dropdown{position:relative}
+#nav .nav-dropdown{position:relative;display:inline-flex;align-items:center}
 #nav .nav-dropdown-menu{position:absolute;top:calc(100% + 14px);left:50%;
   transform:translateX(-50%) translateY(-6px);background:#fff;border:1px solid rgba(0,0,0,.08);
   box-shadow:0 16px 48px rgba(0,0,0,.1);min-width:270px;padding:8px 0;opacity:0;pointer-events:none;
@@ -150,6 +150,7 @@
             <a href="pharma.html#ph-diamond"><span class="dd-dot"></span><span class="dd-label"><span class="dd-name">Diamond Hunter</span><span class="dd-sub">Early-stage biotech screen</span></span></a>
           </div>
         </div>
+        <a class="nav-link" href="pharma.html#ph-support">Support</a>
         <a class="nav-link" href="research.html">Blogs</a>
         <a class="nav-link" href="about.html">About</a>
       </div>
@@ -197,7 +198,7 @@
 
       <!-- Right: form -->
       <div id="contact-form-wrap" style="opacity:0;background:#fafafa;border:1px solid rgba(0,0,0,.06);padding:2.8rem;">
-        <form action="mailto:hello@sedgeventures.com" method="post" enctype="text/plain">
+        <form id="cf-form" action="mailto:hello@sedgeventures.com" method="post" enctype="text/plain">
           <div style="margin-bottom:1.4rem;">
             <label class="field-label" for="cf-name">Full name</label>
             <input class="field" type="text" id="cf-name" name="Name" placeholder="Jane Smith" required>
@@ -210,13 +211,48 @@
             <label class="field-label" for="cf-firm">Firm</label>
             <input class="field" type="text" id="cf-firm" name="Firm" placeholder="Fund or firm name">
           </div>
-          <div style="margin-bottom:1.8rem;">
+          <div style="margin-bottom:1.4rem;">
             <label class="field-label" for="cf-msg">What would you like to see?</label>
             <textarea class="field" id="cf-msg" name="Message" rows="4" placeholder="Coverage universe, use case, timing..."></textarea>
+          </div>
+          <!-- Honeypot: hidden from sighted users via off-screen placement (not
+               display:none, which some bots skip when deciding what to fill),
+               left in the tab order but out of reach of a mouse. Legitimate
+               visitors never touch it; scripted fillers usually populate every
+               field they find. -->
+          <div aria-hidden="true" style="position:absolute;left:-9999px;top:-9999px;" tabindex="-1">
+            <label for="cf-hp">Leave this field empty</label>
+            <input type="text" id="cf-hp" name="Website" tabindex="-1" autocomplete="off">
+          </div>
+          <div style="margin-bottom:1.8rem;">
+            <label class="field-label" for="cf-captcha">What is <span id="cf-captcha-q"></span>?</label>
+            <input class="field" type="text" inputmode="numeric" id="cf-captcha" name="_captcha" autocomplete="off" required>
+            <p id="cf-captcha-err" style="display:none;color:#b3452c;font-size:12px;margin-top:6px;">That's not quite right — try again.</p>
           </div>
           <button type="submit" class="border border-[var(--ink)] bg-[var(--ink)] text-white text-[12px] tracking-[.14em] uppercase px-6 py-3.5 font-medium hover:bg-transparent hover:text-[var(--ink)] transition-all duration-300 w-full">Request Demo</button>
           <p class="text-[11px] text-[var(--muted)] font-light" style="margin-top:14px;">Submitting opens your email client, addressed to our research desk. We don't store anything typed here.</p>
         </form>
+        <script>
+        (function(){
+          'use strict';
+          var form = document.getElementById('cf-form');
+          var honeypot = document.getElementById('cf-hp');
+          var qEl = document.getElementById('cf-captcha-q');
+          var answerEl = document.getElementById('cf-captcha');
+          var errEl = document.getElementById('cf-captcha-err');
+          var a = 2 + Math.floor(Math.random() * 8);   // 2-9
+          var b = 2 + Math.floor(Math.random() * 8);
+          qEl.textContent = a + ' + ' + b;
+          form.addEventListener('submit', function(e){
+            if (honeypot.value.trim() !== '') { e.preventDefault(); return; }   // bot filled the hidden field
+            if (parseInt(answerEl.value, 10) !== a + b) {
+              e.preventDefault();
+              errEl.style.display = 'block';
+              answerEl.focus();
+            }
+          });
+        })();
+        </script>
       </div>
 
     </div>

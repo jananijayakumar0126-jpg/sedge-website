@@ -277,9 +277,14 @@
     .omni-grid { grid-template-columns:1fr; gap:2.4rem; }
     .cov-wrap { max-width:520px; }
     #globe-container { height:400px; }
+    /* The globe band sits absolutely positioned over the top of the hero at
+       this width (see #globe-container above) — without this, the statement
+       below starts at y:0 too and renders straight through it. */
+    .omni-grid { padding-top:420px; }
   }
   @media (max-width:560px){
     #globe-container { height:330px; }
+    .omni-grid { padding-top:350px; }
     .orb-label { font-size:14px; }
   }
 
@@ -525,7 +530,7 @@
   font-weight:500;color:#0a0a0a;text-decoration:none;border:1px solid #0a0a0a;padding:.65rem 1.25rem;
   white-space:nowrap;transition:background .3s,color .3s;line-height:1}
 #nav .nav-cta:hover{background:#0a0a0a;color:#fff}
-#nav .nav-dropdown{position:relative}
+#nav .nav-dropdown{position:relative;display:inline-flex;align-items:center}
 #nav .nav-dropdown-menu{position:absolute;top:calc(100% + 14px);left:50%;
   transform:translateX(-50%) translateY(-6px);background:#fff;border:1px solid rgba(0,0,0,.08);
   box-shadow:0 16px 48px rgba(0,0,0,.1);min-width:270px;padding:8px 0;opacity:0;pointer-events:none;
@@ -613,6 +618,11 @@
                 flex-shrink:0; transition:box-shadow .35s ease; }
   .cap-pill.is-on { background:var(--ink); border-color:var(--ink); color:#f4efe4; }
   .cap-pill.is-on i { box-shadow:0 0 9px 1px var(--c); }
+  /* Diamond Hunter's marker is the diamond glyph itself, not a dot — same slot,
+     same gap as the other pills' dot, just a glyph instead of a filled circle. */
+  .cap-pill i.diamond { width:auto; height:auto; border-radius:0; background:none;
+                         color:var(--c); font-size:10px; line-height:1; font-style:normal; }
+  .cap-pill.is-on i.diamond { box-shadow:none; text-shadow:0 0 6px var(--c); }
 
   /* The gap below a card is exactly how long it stays fully readable before the
      next one starts sliding over it — 2rem was a blink. The tail spacer buys the
@@ -634,6 +644,8 @@
     padding:0 1.7rem; background:#faf7f1; border-bottom:1px solid rgba(0,0,0,.06);
   }
   .cap-bar i { width:7px; height:7px; border-radius:50%; background:var(--c); flex-shrink:0; }
+  .cap-bar i.diamond { width:auto; height:auto; border-radius:0; background:none;
+                        color:var(--c); font-size:11px; line-height:1; font-style:normal; }
   .cap-bar b { font-size:10px; letter-spacing:.2em; text-transform:uppercase;
                font-weight:600; color:#6b6458; }
   .cap-no { margin-left:auto; font-family:'Cormorant Garamond',serif; font-size:15px;
@@ -786,6 +798,7 @@
             <a href="pharma.html#ph-diamond"><span class="dd-dot"></span><span class="dd-label"><span class="dd-name">Diamond Hunter</span><span class="dd-sub">Early-stage biotech screen</span></span></a>
           </div>
         </div>
+        <a class="nav-link" href="pharma.html#ph-support">Support</a>
         <a class="nav-link" href="research.html">Blogs</a>
         <a class="nav-link" href="about.html">About</a>
       </div>
@@ -849,16 +862,16 @@
       <div id="omni-copy">
         <div id="omni-eyebrow" class="hero-eyebrow mb-8">Investment Research · Dubai</div>
 
-        <h1 id="omni-h2" class="font-display font-light text-[clamp(48px,6.1vw,94px)] leading-[1.03] tracking-[-0.028em]">
+        <h1 id="omni-h2" class="font-display font-light text-[clamp(36px,4.4vw,63px)] leading-[1.08] tracking-[-0.028em]">
           <span class="rline"><span class="omni-rinner">Equity research.</span></span>
-          <span class="rline"><span class="omni-rinner gold-text">All of it pharma.</span></span>
+          <span class="rline"><span class="omni-rinner gold-text">Grounded in the science.</span></span>
         </h1>
 
         <div class="hero-rule"></div>
 
         <p id="omni-p" class="text-[16.5px] leading-[1.85] text-[var(--muted)] max-w-[500px] font-light tracking-[0.01em]">
-          Every position starts with the clinical evidence and ends with a valuation we
-          can defend. Pharmaceutical and biotech research is the whole of the firm — one
+          Trial data, regulatory timing and a valuation we can defend, held in one
+          process. Pharmaceutical and biotech research is the whole of the firm — one
           sector, studied at the depth it actually takes.
         </p>
 
@@ -902,7 +915,7 @@
         <span class="text-[11px] tracking-[.28em] uppercase font-medium gold-text">What We Do</span>
       </div>
       <h2 class="font-display font-light text-[clamp(2.4rem,4vw,3.6rem)] leading-[1.12] mb-6">
-        We only cover pharma.<br>So we go <em class="gold-text" style="font-style:normal;">all the way down.</em>
+        One sector. Total depth.<br>Every claim, <em class="gold-text" style="font-style:normal;">evidence-backed.</em>
       </h2>
       <p class="text-[15px] text-[var(--muted)] leading-relaxed max-w-[560px]">
         Clinical evidence, regulatory timing and the investment case, held in one system.
@@ -915,7 +928,7 @@
       <button class="cap-pill is-on" type="button" style="--c:#4dbb77;"><i></i>Knowledge Graph</button>
       <button class="cap-pill" type="button" style="--c:#00d4c8;"><i></i>FDA Calendar</button>
       <button class="cap-pill" type="button" style="--c:#a78bfa;"><i></i>Deep Research</button>
-      <button class="cap-pill" type="button" style="--c:#c9a462;"><i></i>&#9670; Diamond Hunter</button>
+      <button class="cap-pill" type="button" style="--c:#c9a462;"><i class="diamond">&#9670;</i>Diamond Hunter</button>
     </div>
 
     <div class="cap-stack">
@@ -1099,7 +1112,7 @@
 
       <!-- 04 — DIAMOND HUNTER -->
       <article class="cap-card is-flag" style="--i:3;--c:#c9a462;">
-        <div class="cap-bar"><i></i><b>&#9670; Diamond Hunter</b><span class="cap-no">04</span></div>
+        <div class="cap-bar"><i class="diamond">&#9670;</i><b>Diamond Hunter</b><span class="cap-no">04</span></div>
         <div class="cap-body">
           <div class="cap-copy">
             <h3>The signals that showed up<br><em>before the multi-baggers did.</em></h3>
@@ -1827,9 +1840,12 @@ gsap.set(['#phg-title','#phg-body','#phg-badges'], { y: 20 });
   // WebGL context creation can fail (blocked GPU, disabled hardware accel, etc.).
   // The background line animation is decorative — the typing engine below must
   // keep running even if WebGL is unavailable, so this is isolated in a try/catch.
-  let hasWebGL = true;
+  // Decorative background waveform removed from the hero (2026-09-23). The canvas
+  // and this IIFE stay because the hero entrance animation lives at the bottom of
+  // it; every line-drawing block below is already gated on hasWebGL.
+  let hasWebGL = false;
   let renderer, scene, camera;
-  try {
+  if (hasWebGL) try {
     renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
     renderer.setClearColor(0x000000, 0);   // transparent: the cream/blob/arc CSS stack shows through
     renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
@@ -2043,6 +2059,40 @@ gsap.set(['#phg-title','#phg-body','#phg-badges'], { y: 20 });
   camera.position.set(0, 0.4, 16.5);
   camera.lookAt(0, 0, 0);
 
+  // ── Rest framing, derived from the viewport rather than hard-coded ──────────
+  // The sphere's full extent is the outer ring (r 3.3) plus the halo and the
+  // HTML label that hangs off each node. GLOBE_R is that extent; everything
+  // below keeps it inside the frame and clear of the statement at any window
+  // size, which is what the old fixed z=16.5 / cap-at-4.1 pair could not do.
+  const FOV_RAD  = 40 * Math.PI / 180;
+  const GLOBE_R  = 3.9;
+  // Breathing room between the sphere's outer edge and the right edge of the
+  // screen, kept in CSS pixels (~2cm) and converted to world units per frame so
+  // it stays the same visual gap whatever the window size.
+  const EDGE_PAD_PX = 76;
+  // Half the visible width needs to hold the statement column on the left and
+  // the whole sphere on the right; short of that, walk the camera back until it
+  // does, so a narrow window shrinks the sphere instead of clipping it.
+  const MIN_HALF_W = 8.4;
+  let REST_Z = 16.5, REST_X = 4.1;
+  function frameAtRest() {
+    // Below 1000px (see the matching CSS breakpoint) the globe stops sitting
+    // beside the statement and becomes a fixed-height band above it instead —
+    // there's no text to dodge, and the band is usually far wider than it is
+    // tall, so fit the sphere inside whichever axis is tighter and centre it.
+    if (W <= 1000) {
+      const perUnitX = Math.tan(FOV_RAD / 2) * (W / H);
+      const perUnitY = Math.tan(FOV_RAD / 2);
+      REST_Z = Math.max((GLOBE_R + 0.3) / perUnitX, (GLOBE_R + 0.3) / perUnitY);
+      REST_X = 0;
+      return;
+    }
+    const perUnit = Math.tan(FOV_RAD / 2) * (W / H);   // half-width per unit of z
+    REST_Z = Math.max(16.5, MIN_HALF_W / perUnit);
+    const halfW = REST_Z * perUnit;
+    REST_X = Math.max(0, halfW - GLOBE_R - (EDGE_PAD_PX / (W / 2)) * halfW);
+  }
+
   scene.add(new THREE.AmbientLight(0xffffff, 0.9));
   const sun = new THREE.DirectionalLight(0xd4af6e, 0.85);
   sun.position.set(4, 6, 3); scene.add(sun);
@@ -2052,11 +2102,8 @@ gsap.set(['#phg-title','#phg-body','#phg-badges'], { y: 20 });
   const outer = new THREE.Group();
   scene.add(outer);
 
-  // Push the sphere into the right-hand third at rest. Half the visible width at
-  // the camera's distance is z * tan(fov/2) * aspect; 0.42 of that lands it clear
-  // of the statement on the left without falling off the edge on narrow screens.
-  const halfW = camera.position.z * Math.tan((40 * Math.PI / 180) / 2) * (W / H);
-  const REST_X = Math.min(halfW * 0.43, 4.1);
+  frameAtRest();
+  camera.position.z = REST_Z;
 
   // core
   const core = new THREE.Group();
@@ -2172,12 +2219,31 @@ gsap.set(['#phg-title','#phg-body','#phg-badges'], { y: 20 });
     placeLabels();
   })();
 
-  window.addEventListener('resize', () => {
+  // Filled in below once the pinned-scroll timeline exists (still null on
+  // screens too narrow for it, and on the `still` no-JS-animation path).
+  let scrollTl = null;
+
+  function onGlobeResize() {
     W = container.clientWidth; H = container.clientHeight;
     camera.aspect = W / H;
     camera.updateProjectionMatrix();
     renderer.setSize(W, H);
-  });
+    frameAtRest();
+    if (scrollTl && scrollTl.scrollTrigger) {
+      // The pin timeline owns camera.position.z / outer.position.x while it's
+      // active. ScrollTrigger.refresh() recalculates the pin's scroll range for
+      // the new size and — because the timeline was built with
+      // invalidateOnRefresh — re-samples REST_Z/REST_X and re-applies the
+      // tween at the CURRENT scroll progress, so a resize mid-scroll can't
+      // strand the sphere at a stale position the way a manual snap-to-rest
+      // would for every progress value except 0.
+      ScrollTrigger.refresh();
+    } else {
+      camera.position.z = REST_Z;
+      outer.position.x = REST_X;
+    }
+  }
+  window.addEventListener('resize', onGlobeResize);
 
   // Scrubbed dolly: the sphere grows as the pinned hero is scrolled. Moving the
   // camera rather than CSS-scaling the canvas keeps it sharp at every step and
@@ -2192,10 +2258,13 @@ gsap.set(['#phg-title','#phg-body','#phg-badges'], { y: 20 });
   // travel to centre and the copy perfectly in step — three separate triggers
   // on the same pinned element end up with degenerate scroll ranges.
   if (!still && window.gsap && window.ScrollTrigger && window.innerWidth >= 900) {
-    const tl = gsap.timeline({
+    const tl = scrollTl = gsap.timeline({
       scrollTrigger: {
         trigger: '#omni', start: 'top top', end: '+=190%',
         pin: true, pinSpacing: true, anticipatePin: 1, scrub: 0.6,
+        // Rest framing depends on the viewport, so the tweens below must re-read
+        // their start values whenever ScrollTrigger refreshes after a resize.
+        invalidateOnRefresh: true,
       }
     });
 
@@ -2209,7 +2278,7 @@ gsap.set(['#phg-title','#phg-body','#phg-badges'], { y: 20 });
     tl.to('#omni-scroll-cue', { opacity: 0, duration: .3 }, 0)
 
     // the sphere comes forward and slides to centre across the whole scrub
-      .to(camera.position, { z: 10.8, ease: 'none', duration: 3 }, 0)
+      .to(camera.position, { z: () => REST_Z * 0.655, ease: 'none', duration: 3 }, 0)
       .to(outer.position,  { x: 0,   ease: 'none', duration: 3 }, 0)
 
     // three scroll steps, one word each
