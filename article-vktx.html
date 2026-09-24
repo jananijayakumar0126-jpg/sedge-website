@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Viking Therapeutics Just Made Two $500 Million Bets — In Opposite Directions — SEDGE Ventures</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = { theme: { extend: { fontFamily: { display:['Cormorant Garamond','serif'], sans:['Inter','sans-serif'] } } } }
+</script>
+<style>
+  :root { --gold:#c9a462; --gold-l:#e2bc79; --ink:#0a0a0a; --muted:#5a5a5a; }
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Inter',sans-serif; background:#fff; color:var(--ink); overflow-x:hidden; }
+  body::before {
+    content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
+    background-image:
+      linear-gradient(rgba(0,0,0,0.032) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,0,0,0.032) 1px, transparent 1px);
+    background-size:44px 44px;
+  }
+
+  /* Reading progress */
+  #progress { position:fixed; top:0; left:0; height:2px; width:0; z-index:950; background:linear-gradient(90deg,var(--gold),var(--gold-l)); transition:width .1s linear; }
+
+  .gold-text { color:var(--gold); }
+  .g-rule { display:block; height:1px; background:linear-gradient(90deg, var(--gold), transparent); }
+  .tag { display:inline-block; font-size:10px; letter-spacing:.18em; text-transform:uppercase; padding:4px 11px; border:1px solid rgba(201,164,98,.32); color:var(--gold); }
+  .meta { font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:#9a9a9a; font-weight:500; }
+
+  /* Article body */
+  .prose { max-width:700px; margin:0 auto; }
+  .prose p { font-size:16.5px; line-height:1.95; color:#2b2b2b; font-weight:300; margin-bottom:1.7rem; letter-spacing:.002em; }
+  .prose p strong { font-weight:600; color:var(--ink); }
+  .prose h2 {
+    font-family:'Cormorant Garamond',serif; font-weight:300;
+    font-size:clamp(1.9rem,3vw,2.5rem); line-height:1.2;
+    margin:4.2rem 0 1.6rem; letter-spacing:-.015em;
+  }
+  .prose h2::before { content:''; display:block; width:38px; height:1px; background:var(--gold); margin-bottom:1.4rem; }
+  .prose h3 { font-size:13px; letter-spacing:.16em; text-transform:uppercase; font-weight:600; color:var(--ink); margin:2.6rem 0 1rem; }
+  .prose .lede { font-size:19px; line-height:1.8; color:#1c1c1c; font-weight:300; }
+  .prose .dropcap::first-letter {
+    font-family:'Cormorant Garamond',serif; float:left; font-size:64px; line-height:.86;
+    padding:6px 14px 0 0; font-weight:300; color:var(--gold);
+  }
+
+  /* Pull quote */
+  .pq {
+    margin:3.2rem 0; padding:0 0 0 2rem; border-left:2px solid var(--gold);
+  }
+  .pq p { font-family:'Cormorant Garamond',serif; font-size:clamp(1.5rem,2.4vw,1.95rem); line-height:1.42; font-weight:300; color:var(--ink); font-style:italic; margin:0; }
+
+  /* Figures */
+  figure { margin:3.2rem 0; }
+  figure img { width:100%; display:block; border:1px solid rgba(0,0,0,.07); }
+  figcaption { font-size:12px; line-height:1.7; color:#8e8e8e; margin-top:.9rem; font-weight:300; }
+  .wide { max-width:940px; margin-left:auto; margin-right:auto; }
+
+  /* Stat strip */
+  .stat-strip { display:grid; gap:1px; background:rgba(0,0,0,.08); border:1px solid rgba(0,0,0,.08); margin:3rem 0; }
+  .stat-cell { background:#fff; padding:1.9rem 1.5rem; }
+  .stat-n { font-family:'Cormorant Garamond',serif; font-weight:300; font-size:clamp(2rem,3.4vw,2.9rem); line-height:1; letter-spacing:-.03em; }
+  .stat-l { font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); margin-top:.7rem; font-weight:500; }
+  .stat-d { font-size:11.5px; color:#9a9a9a; margin-top:.35rem; font-weight:300; line-height:1.5; }
+
+  /* Callout card */
+  .callout { border:1px solid rgba(0,0,0,.08); background:#fbfaf8; padding:2rem 2.1rem; margin:2.8rem 0; }
+  .callout .kicker { font-size:10px; letter-spacing:.22em; text-transform:uppercase; font-weight:600; color:var(--gold); margin-bottom:.9rem; }
+  .callout p { font-size:14.5px; line-height:1.85; color:#3a3a3a; margin:0; font-weight:300; }
+  .callout p + p { margin-top:.9rem; }
+
+  /* Pipeline rows */
+  .pipe-row { display:grid; grid-template-columns:1fr auto; gap:1.5rem; align-items:baseline; padding:1rem 0; border-bottom:1px solid rgba(0,0,0,.07); }
+  .pipe-row:first-child { border-top:1px solid rgba(0,0,0,.07); }
+  .pipe-name { font-size:14.5px; font-weight:400; }
+  .pipe-name span { color:var(--muted); font-weight:300; font-size:13px; }
+  .pipe-status { font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; font-weight:500; white-space:nowrap; }
+  .st-done { color:#3f9e63; } .st-live { color:var(--gold); } .st-plan { color:#9a9a9a; }
+
+  /* Verdict block */
+  .verdict { border:1px solid rgba(201,164,98,.35); background:linear-gradient(180deg,rgba(201,164,98,.05),rgba(201,164,98,0)); padding:2.6rem 2.4rem; margin:3.4rem 0; }
+
+  .disclosure { font-size:11.5px; line-height:1.85; color:#9a9a9a; font-weight:300; border-top:1px solid rgba(0,0,0,.08); padding-top:1.6rem; margin-top:4rem; }
+
+  .rv { opacity:0; transform:translateY(20px); transition:opacity .9s cubic-bezier(.22,1,.36,1), transform .9s cubic-bezier(.22,1,.36,1); }
+  .rv.in { opacity:1; transform:none; }
+
+  @media (min-width:760px) { .stat-strip { grid-template-columns:repeat(4,1fr); } }
+  @media (max-width:1000px) { .nav-links { display:none !important; } }
+
+  .nav-dropdown.open > .nav-dropdown-menu{opacity:1 !important;pointer-events:all !important;transform:translateX(-50%) translateY(0) !important}
+
+/* ══ CANONICAL SITE HEADER (identical on every page) ══ */
+#nav{position:fixed;top:0;left:0;right:0;z-index:900;border-bottom:1px solid transparent;
+  background:transparent;transition:background .45s ease,border-color .45s ease,backdrop-filter .45s ease}
+#nav.stuck{background:rgba(255,255,255,.94);backdrop-filter:blur(22px);border-bottom-color:rgba(0,0,0,.07)}
+#nav .nav-in{max-width:1280px;margin:0 auto;padding:1.25rem 2rem;height:auto;display:flex;align-items:center;
+  justify-content:space-between;gap:3rem;position:relative;z-index:10}
+#nav .nav-brand{display:flex;align-items:center;gap:.5rem;text-decoration:none}
+#nav .nav-brand span{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:17px;
+  letter-spacing:.22em;text-transform:uppercase;color:#0a0a0a;line-height:1}
+#nav .nav-brand span.g{color:#c9a462}
+#nav .nav-right{display:flex;align-items:center;gap:2.25rem}
+#nav .nav-links{display:flex;align-items:center;gap:2.25rem}
+#nav .nav-link{font-family:'Inter',sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  font-weight:500;color:#5a5a5a;text-decoration:none;white-space:nowrap;transition:color .2s;
+  display:inline-flex;align-items:center;line-height:1}
+#nav .nav-link:hover{color:#0a0a0a}
+#nav .nav-link.is-active{color:#c9a462}
+#nav .nav-link-btn{cursor:pointer;user-select:none}
+#nav .nav-link-btn::after{content:'';display:inline-block;width:5px;height:5px;
+  border-right:1px solid currentColor;border-bottom:1px solid currentColor;
+  transform:rotate(45deg) translateY(-2px);margin-left:6px}
+#nav .nav-cta{font-family:'Inter',sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  font-weight:500;color:#0a0a0a;text-decoration:none;border:1px solid #0a0a0a;padding:.65rem 1.25rem;
+  white-space:nowrap;transition:background .3s,color .3s;line-height:1}
+#nav .nav-cta:hover{background:#0a0a0a;color:#fff}
+#nav .nav-dropdown{position:relative;display:inline-flex;align-items:center}
+#nav .nav-dropdown-menu{position:absolute;top:calc(100% + 14px);left:50%;
+  transform:translateX(-50%) translateY(-6px);background:#fff;border:1px solid rgba(0,0,0,.08);
+  box-shadow:0 16px 48px rgba(0,0,0,.1);min-width:270px;padding:8px 0;opacity:0;pointer-events:none;
+  transition:opacity .2s ease .22s,transform .2s ease .22s}
+#nav .nav-dropdown-menu::before{content:'';position:absolute;left:0;right:0;top:-16px;height:16px}
+#nav .nav-dropdown::after{content:'';position:absolute;left:0;right:0;top:100%;height:16px}
+#nav .nav-dropdown:hover .nav-dropdown-menu,
+#nav .nav-dropdown:focus-within .nav-dropdown-menu{opacity:1;pointer-events:all;
+  transform:translateX(-50%) translateY(0);transition-delay:0s}
+#nav .nav-dropdown-menu a{display:flex;align-items:flex-start;gap:10px;padding:11px 20px;
+  font-family:'Inter',sans-serif;font-size:11px;letter-spacing:.13em;text-transform:uppercase;
+  font-weight:500;color:#5a5a5a;text-decoration:none;transition:background .2s,color .2s}
+#nav .nav-dropdown-menu a:hover{background:#fafafa;color:#0a0a0a}
+#nav .nav-dropdown-menu a.is-active{color:#c9a462}
+#nav .nav-dropdown-menu .dd-dot{width:5px;height:5px;border-radius:50%;background:#c9a462;
+  flex-shrink:0;margin-top:5px}
+#nav .dd-label{display:flex;flex-direction:column;gap:2px}
+#nav .dd-sub{font-size:9.5px;letter-spacing:.04em;text-transform:none;color:#9a9a9a;
+  font-weight:400;opacity:.85}
+@media (max-width:1000px){#nav .nav-links{display:none}}
+@media (max-width:560px){#nav .nav-in{padding:1rem 1.25rem;gap:1rem}}
+</style>
+
+<style>
+  /* ── SITE FOOTER (shared) ── */
+  .sf { position:relative; z-index:10; background:#fafaf8; border-top:1px solid rgba(0,0,0,.08);
+        padding:4.5rem 2rem 2.2rem; font-family:'Inter',sans-serif; }
+  .sf-in { max-width:1280px; margin:0 auto; }
+  .sf-top { display:grid; grid-template-columns:1.6fr 1fr 1fr 1.15fr; gap:3rem;
+            padding-bottom:2.8rem; border-bottom:1px solid rgba(0,0,0,.07); }
+  .sf-logo { display:flex; align-items:center; gap:.5rem; margin-bottom:.9rem; }
+  .sf-logo span { font-family:'Cormorant Garamond',serif; font-weight:300; letter-spacing:.22em;
+                  font-size:16px; text-transform:uppercase; color:#0a0a0a; }
+  .sf-logo span.g { color:#c9a462; }
+  .sf-tag { font-size:12px; letter-spacing:.06em; color:#5a5a5a; font-weight:300; margin-bottom:1.6rem; }
+  .sf-entity { font-size:11.5px; line-height:1.85; color:#8a8a8a; font-weight:300; }
+  .sf-entity b { color:#5a5a5a; font-weight:500; }
+  .sf-h { font-size:9.5px; letter-spacing:.2em; text-transform:uppercase; color:#0a0a0a;
+          font-weight:600; margin-bottom:1.1rem; }
+  .sf-col a { display:block; font-size:12.5px; line-height:1.5; color:#5a5a5a; text-decoration:none;
+              font-weight:300; margin-bottom:.72rem; transition:color .2s; }
+  .sf-col a:hover { color:#c9a462; }
+  .sf-disc { padding:2.2rem 0; border-bottom:1px solid rgba(0,0,0,.07); }
+  .sf-disc p { font-size:11px; line-height:1.95; color:#8a8a8a; font-weight:300; max-width:1100px; }
+  .sf-disc b { color:#5a5a5a; font-weight:600; }
+  .sf-disc a { color:#5a5a5a; text-decoration:none; border-bottom:1px solid rgba(201,164,98,.5); }
+  .sf-disc a:hover { color:#c9a462; }
+  .sf-bot { display:flex; align-items:center; justify-content:space-between; gap:1.5rem;
+            flex-wrap:wrap; padding-top:1.6rem; }
+  .sf-copy { font-size:11px; letter-spacing:.06em; color:#8a8a8a; font-weight:300; }
+  .sf-legal { display:flex; gap:1.5rem; flex-wrap:wrap; }
+  .sf-legal a { font-size:11px; letter-spacing:.06em; color:#8a8a8a; text-decoration:none;
+                font-weight:400; transition:color .2s; }
+  .sf-legal a:hover { color:#c9a462; }
+  @media (max-width:900px) { .sf-top { grid-template-columns:1fr 1fr; gap:2.4rem; } }
+  @media (max-width:560px) { .sf-top { grid-template-columns:1fr; } .sf { padding:3.2rem 1.5rem 2rem; } }
+</style>
+
+</head>
+<body>
+
+<div id="progress"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-in">
+    <a class="nav-brand" href="index.html"><span>SEDGE</span><span class="g">Ventures</span></a>
+    <div class="nav-right">
+      <div class="nav-links">
+        <a class="nav-link" href="pharma.html">Pharma Research</a>
+        <div class="nav-dropdown">
+          <span class="nav-link nav-link-btn">Capabilities</span>
+          <div class="nav-dropdown-menu">
+            <a href="pharma.html#ph-graph"><span class="dd-dot"></span><span class="dd-label"><span class="dd-name">Knowledge Graph</span><span class="dd-sub">2,000+ companies and pipelines</span></span></a>
+            <a href="pharma.html#ph-fda"><span class="dd-dot"></span><span class="dd-label"><span class="dd-name">FDA Calendar</span><span class="dd-sub">PDUFA, BLA &amp; AdCom, scored</span></span></a>
+            <a href="pharma.html#ph-research"><span class="dd-dot"></span><span class="dd-label"><span class="dd-name">Deep Research</span><span class="dd-sub">Structured company reports</span></span></a>
+            <a href="pharma.html#ph-diamond"><span class="dd-dot"></span><span class="dd-label"><span class="dd-name">Diamond Hunter</span><span class="dd-sub">Early-stage biotech screen</span></span></a>
+          </div>
+        </div>
+        <a class="nav-link" href="pharma.html#ph-support">Support</a>
+        <a class="nav-link is-active" href="research.html">Blogs</a>
+        <a class="nav-link" href="about.html">About</a>
+      </div>
+      <a class="nav-cta" href="contact.html">Book a Demo</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ARTICLE HEADER -->
+<article class="relative z-10 px-8" style="padding-top:9.5rem;">
+  <div class="prose">
+    <a href="research.html" style="display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;color:var(--muted);text-decoration:none;margin-bottom:2.6rem;">
+      ← Research
+    </a>
+
+    <div class="flex flex-wrap gap-2 mb-7">
+      <span class="tag">Biotech</span>
+      <span class="tag">Capital Markets</span>
+      <span class="tag">Investing</span>
+    </div>
+
+    <h1 class="font-display font-light text-[clamp(2.4rem,4.6vw,3.7rem)] leading-[1.08] tracking-[-.022em] mb-5">
+      Viking Therapeutics Just Made Two $500 Million Bets — In Opposite Directions
+    </h1>
+    <p class="font-display font-light text-[clamp(1.15rem,2vw,1.5rem)] leading-[1.45] text-[var(--muted)] italic mb-9">
+      A doubled cash burn, a Phase 3 readout still a year away, and two half-billion-dollar moves pointing in opposite directions.
+    </p>
+
+    <div class="flex items-center gap-4 pb-10 mb-12" style="border-bottom:1px solid rgba(0,0,0,.08);">
+      <span class="meta">SEDGE Research Desk</span>
+      <span style="width:3px;height:3px;border-radius:50%;background:#ccc;"></span>
+      <span class="meta">24 Sep 2026</span>
+      <span style="width:3px;height:3px;border-radius:50%;background:#ccc;"></span>
+      <span class="meta">10 Min Read</span>
+    </div>
+  </div>
+
+  <!-- Hero figure: two moves, opposite directions -->
+  <figure class="wide rv" style="margin-top:0;">
+    <img src="assets/research/vktx-01.png" alt="Viking Therapeutics: $500 million ATM issuance versus $500 million stock buyback, weighed on opposite sides of a scale">
+    <figcaption class="prose" style="max-width:700px;">Two half-billion-dollar decisions, 48 hours apart, pulling in opposite directions — against an operating burn that more than doubled.</figcaption>
+  </figure>
+
+  <!-- BODY -->
+  <div class="prose">
+
+    <p class="lede">A doubled cash burn. A Phase 3 readout still roughly a year away. And two half-billion-dollar moves, 48 hours apart, pointing in opposite directions.</p>
+
+    <p class="dropcap">On July 29, Viking Therapeutics let a $200 million fundraising facility expire — with $40 million of it still unused — and replaced it, the same day, with one more than four times the size: $500 million. The next day, its board went the other way, authorizing a separate $500 million buyback of its own stock. Two half-billion-dollar decisions, 48 hours apart, pulling in opposite directions, at a company burning cash more than twice as fast as it was a year ago and still roughly a year out from the Phase 3 results that will actually decide its future. Untangling the two tells you more about what Viking's management believes than either headline number does on its own.</p>
+
+    <p>Read quickly, this looks like housekeeping. Read carefully, it is a company expanding its capacity to raise capital and its capacity to spend capital buying its own stock back, in the same week. Those aren't contradictory instincts, but they are worth sitting with, because Viking is not a company with money to spare in the ordinary sense. It has no product on the market, no revenue, and a defining clinical readout that its own filings put more than a year away.</p>
+
+    <div class="callout">
+      <div class="kicker">Summary</div>
+      <p>On 29–30 July 2026, Viking retired its old at-the-market facility and replaced it same-day with a new $500 million ATM, then authorized a separate $500 million buyback the next day — two $500 million actions, 48 hours apart, doing opposite things.</p>
+      <p>The prior buyback authorization, $250 million, was never used. Zero shares were repurchased in 2025 or the first half of 2026.</p>
+      <p>Net cash used in operating activities was $239.1 million in H1 2026, more than double the $99.4 million used in H1 2025.</p>
+      <p>Management states its $501.9 million in cash and short-term investments is sufficient to fund operations "through at least September 30, 2027" — but the VANQUISH trials are only guided to complete "in 2027," with no quarter attached.</p>
+      <p>VKTX fell more than 3% in the days after the new ATM was disclosed, on its way to its worst month since January 2025. None of this is dilution yet, and none of it is a funding crisis — it is a specific question about what a company does with capital when its defining data is still roughly a year away.</p>
+    </div>
+
+    <h2>What actually happened, in order</h2>
+
+    <p>Start with the ATM, because the mechanics matter and because the company's own quarterly filing undersold what it was about to do.</p>
+
+    <p>Since 2023, Viking had an at-the-market facility authorizing the sale of up to $200 million in shares. By June 30, 2026, it had sold $159.6 million worth — 4,591,231 shares — leaving $40.4 million of capacity. On July 29, with that capacity still available, Viking terminated the agreement. There was no penalty for doing so; the agreement was terminable at will.</p>
+
+    <p>That same day, Viking signed a new at-the-market agreement with five banks — Stifel, Piper Sandler, Cantor Fitzgerald, Oppenheimer and Canaccord Genuity. The Form 10-Q, filed that same day, described the new agreement cautiously: the company "may not sell any shares under the New ATM Offering unless and until it has filed a new registration statement" — language that reads as forward-looking and unresolved. It wasn't unresolved for long. Also on July 29, Viking filed an automatic shelf registration statement (Form S-3ASR) — a filing that, for a company with Viking's filer status, becomes effective immediately on filing, with no waiting period. That shelf registers the New ATM Offering at a disclosed size: up to $500 million.</p>
+
+    <p>So within about 24 hours, Viking retired a facility with $40.4 million of remaining capacity and replaced it with one sized at more than twelve times that. The market noticed: VKTX shares fell more than 3% in the days after the filing became public, part of what one report called the stock's worst month since January 2025.</p>
+
+    <h2>Two $500 million actions, not one</h2>
+
+    <p>The at-the-market facility is a capital-raising tool — a way to sell shares into the market over time. Confusingly, a second and completely different $500 million figure appears in the same filing window, and it's worth being precise about which is which, since some secondary coverage has blurred the two together.</p>
+
+    <div class="pq">
+      <p>"In July 2026, our board of directors terminated the 2025 Repurchase Program, and authorized a new stock repurchase program… Under the New Repurchase Program, we may purchase up to $500.0 million in shares of our common stock over a period of up to three years."</p>
+    </div>
+
+    <p>A buyback runs in the opposite direction from an ATM — cash out, share count down — and authorizing one is generally read as a management signal that the stock is undervalued relative to where the company would rather deploy its own capital.</p>
+
+    <p>Except Viking has been here before, and did nothing. The prior repurchase program, authorized in February 2025 for up to $250 million, sat entirely unused. Not one share was repurchased during 2025 or the first half of 2026. The company's own risk factors are candid about why this new one might follow the same path: "The Repurchase Program may be suspended, modified or discontinued at any time, and we have no obligation to repurchase any amount of our common stock under the Repurchase Program." No repurchases under the new program have been disclosed as of this writing.</p>
+
+    <p>So the honest description is this: in the space of 48 hours, Viking activated a genuinely new $500 million capacity to raise capital, and separately authorized — without yet using — a $500 million capacity to spend capital buying its own stock. Both are real. Neither cancels the other out. A company can be simultaneously more able to dilute and more inclined to buy back, and the fact that it positioned itself to do both at once, in the same week, against an accelerating cash burn, is the actual story here.</p>
+
+    <h2>What the burn actually looks like</h2>
+
+    <p>Whatever the buyback signals, it is being authorized against a real and accelerating cash outflow. Net operating cash burn more than doubled year over year, while R&amp;D expenses surged as Phase 3 trials scaled up.</p>
+
+    <div class="stat-strip">
+      <div class="stat-cell">
+        <div class="stat-n gold-text">$239.1M</div>
+        <div class="stat-l">Operating Cash Used</div>
+        <div class="stat-d">H1 2026, up 140.5% YoY</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-n gold-text">$265.9M</div>
+        <div class="stat-l">R&amp;D Expense</div>
+        <div class="stat-d">Six months, up 162.0% YoY</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-n gold-text">$115.8M</div>
+        <div class="stat-l">R&amp;D Expense</div>
+        <div class="stat-d">Q2 alone, up 92.4% YoY</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-n gold-text">$501.9M</div>
+        <div class="stat-l">Cash On Hand</div>
+        <div class="stat-d">Cash, equivalents &amp; short-term investments</div>
+      </div>
+    </div>
+
+    <p>Of the $55.6 million increase in Q2 R&amp;D spending alone, the company attributes $67.5 million specifically to higher clinical trial costs — meaning the underlying trial-cost increase was even larger before being partly offset by lower manufacturing and preclinical spending that quarter. A further $163.6 million came in from investing activities, but that is not new money: it is the company's own investment portfolio maturing and being drawn down to fund operations, a normal move for a cash-rich clinical company, but not a capital source in the way an ATM or a buyback is.</p>
+
+    <p>Against this, Viking held $501.9 million in cash, cash equivalents, restricted cash and short-term investments at quarter end. Management is explicit about what that buys:</p>
+
+    <div class="pq">
+      <p>"We believe our cash, cash equivalents and short-term investments will be sufficient to fund our operations through at least September 30, 2027, which is more than one year after the date of our filing of this Form 10-Q."</p>
+    </div>
+
+    <p>That is a real, specific, filed statement, and it is more comfortable than the picture the burn rate alone would paint. It matters for anyone modeling this stock, because it is management's own legal representation of solvency, not a market estimate.</p>
+
+    <h2>Where the runway meets the trial calendar</h2>
+
+    <p>The reason the runway question matters at all is the trial design. Both Phase 3 VANQUISH studies measure body weight change against placebo at week 78.</p>
+
+    <div style="margin:2.4rem 0;">
+      <div class="pipe-row">
+        <div class="pipe-name">VANQUISH-1 <span>— enrollment complete</span></div>
+        <div class="pipe-status st-done">Nov 2025</div>
+      </div>
+      <div class="pipe-row">
+        <div class="pipe-name">VANQUISH-2 <span>— enrollment complete</span></div>
+        <div class="pipe-status st-done">Mar 2026</div>
+      </div>
+      <div class="pipe-row">
+        <div class="pipe-name">Old ATM closed / new $500M ATM active</div>
+        <div class="pipe-status st-done">Jul 29, 2026</div>
+      </div>
+      <div class="pipe-row">
+        <div class="pipe-name">New $500M buyback authorized</div>
+        <div class="pipe-status st-done">Jul 30, 2026</div>
+      </div>
+      <div class="pipe-row">
+        <div class="pipe-name">Expected Phase 3 completion &amp; topline data</div>
+        <div class="pipe-status st-live">"2027" · no quarter given</div>
+      </div>
+      <div class="pipe-row">
+        <div class="pipe-name">Stated cash runway expiration</div>
+        <div class="pipe-status st-plan">Sep 30, 2027</div>
+      </div>
+    </div>
+
+    <p>VANQUISH-1 finished enrolling in November 2025; VANQUISH-2 finished in March 2026. Add the treatment period, then database lock and analysis, and the studies complete sometime in 2027 — consistent with Viking's own language elsewhere that it looks forward to "completing the VANQUISH studies in 2027."</p>
+
+    <p>Put the two statements side by side. Management says cash lasts through September 30, 2027. Management separately says the trials complete "in 2027," without a quarter attached. If VANQUISH data lands in the first three quarters of 2027, the stated runway covers it comfortably. If it lands in the fourth quarter or slips into 2028 — and Phase 3 obesity trials of this design have not historically finished early — the margin narrows to something much tighter than "more than one year," and the company would be leaning on the now-active $500 million ATM, or some other financing, before the defining readout arrives.</p>
+
+    <p>That doesn't make the funding picture urgent. It does make the specific timing of "2027" — a word Viking has used in press releases but not committed to a quarter for — the single most financially consequential piece of information about this stock that has not yet been disclosed.</p>
+
+    <h2>The part worth remembering if you're counting on a takeout</h2>
+
+    <p>A meaningful share of the bull case for Viking rests on the idea that a larger pharmaceutical company eventually acquires it. That may happen. But it's worth knowing what Viking's own charter says about how hard that would be to force.</p>
+
+    <p>The company's amended and restated certificate of incorporation includes a classified board, no ability for stockholders to act by written consent, no ability for stockholders to call a special meeting, authorization for the board to issue "blank check" preferred stock without a shareholder vote, and a requirement that at least 66⅔% of stockholders approve amendments to several of these provisions. Delaware's Section 203 business-combination statute applies as well.</p>
+
+    <p>None of this prevents a deal Viking's own board wants to do. It does mean that a shareholder holding the stock specifically because "someone will have to buy them eventually" is relying on a board-initiated transaction, not outside pressure — because the charter is built to make outside pressure difficult. That is a meaningfully different bet than the one many holders think they're making.</p>
+
+    <h2>Two changes at the top, worth noting without overreading</h2>
+
+    <p>Two personnel items landed in the same filing window. Chief Operating Officer Marianne Mancini is retiring effective July 31, 2026, transitioning into a consulting role focused on clinical operations. And on August 1, Dorothy Kelly-Gemmell joined the board — a director whose background is specifically commercial: prior roles include Chief Commercial Officer and President at GoodRx, and commercial leadership at Capsule and AbleTo.</p>
+
+    <p>A single board appointment is thin evidence for anything. But a commercialization-focused director joining a company whose lead product is not expected to file for approval before 2027 at the earliest is at least consistent with a board thinking ahead to a launch, and it's the kind of detail that's easy to miss inside a filing dominated by trial and financing news.</p>
+
+    <div class="callout">
+      <div class="kicker">What Would Change This Read</div>
+      <p>A specific quarter for VANQUISH topline, rather than "2027." This single disclosure would resolve most of the uncertainty here.</p>
+      <p>Actual repurchase activity under the New Repurchase Program in the next two quarters, which would distinguish this authorization from the unused one that preceded it.</p>
+      <p>Confirmation of what the H1 2025 comparison implies going forward — if clinical costs continue rising at anything close to the current pace once the oral Phase 3 begins in Q4, the September 2027 guidance itself may need to be revisited before investors get there on their own.</p>
+    </div>
+
+    <h2>Conclusion</h2>
+
+    <p>Viking Therapeutics spent 48 hours in late July doing two things that pull in opposite directions. It let a working ATM lapse with $40.4 million of capacity left, then activated a replacement sized at $500 million — a genuine, immediately effective expansion of its ability to sell stock. Separately, it authorized a $500 million buyback that its own risk factors describe as something it may never use, exactly as the $250 million authorization before it went unused. Those are two different signals, from the same management team, in the same 48 hours, and they don't resolve into a single clean story.</p>
+
+    <p>What is worth sitting with is the ambiguity itself. A company with a defining readout still roughly a year out, burning cash at an accelerating rate, chose in the same week to expand both its capacity to raise capital and its capacity to return it. Whichever one it actually uses will tell you more about what management believes than either announcement did on its own.</p>
+
+    <div class="disclosure">
+      <strong style="color:var(--muted);font-weight:600;">Disclosure.</strong>
+      The desk holds no stock, option or similar derivative position in any of the companies mentioned,
+      and has no plans to initiate any such position within the next 72 hours. This note was written
+      in-house and expresses our own opinions. No compensation was received for it, and we have no
+      business relationship with any company whose stock is mentioned. Research published by SEDGE
+      Ventures is for informational purposes and is not investment advice.
+    </div>
+  </div>
+</article>
+
+<!-- MORE RESEARCH -->
+<section class="relative z-10 px-8 pt-24 pb-6">
+  <div class="prose">
+    <a href="research.html" style="text-decoration:none;color:inherit;display:block;border:1px solid rgba(0,0,0,.08);padding:2.2rem;transition:border-color .3s, transform .3s;" onmouseover="this.style.borderColor='rgba(201,164,98,.4)';this.style.transform='translateY(-3px)'" onmouseout="this.style.borderColor='rgba(0,0,0,.08)';this.style.transform='none'">
+      <div class="meta mb-3">More From The Desk</div>
+      <div class="font-display font-light text-[1.8rem] leading-tight mb-2">Back to all research</div>
+      <p class="text-[13.5px] text-[var(--muted)] leading-relaxed">Read the rest of the desk's published notes.</p>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="sf">
+  <div class="sf-in">
+    <div class="sf-top">
+      <div>
+        <div class="sf-logo"><span>SEDGE</span><span class="g">Ventures</span></div>
+        <p class="sf-tag">Systematic Equity Investment Management</p>
+        <p class="sf-entity">
+          <b>SEDGE Ventures FZ-LLC</b><br>
+          SO-15, Shed no-18, TP Al Hamra Freezone<br>
+          Al Hamra Industrial Freezone<br>
+          Ras Al Khaimah, United Arab Emirates
+        </p>
+      </div>
+      <div class="sf-col">
+        <div class="sf-h">Research</div>
+        <a href="pharma.html">Pharma Research</a>
+        <a href="pharma.html#ph-graph">Knowledge Graph</a>
+        <a href="pharma.html#ph-fda">FDA Calendar</a>
+        <a href="pharma.html#ph-diamond">Diamond Hunter</a>
+      </div>
+      <div class="sf-col">
+        <div class="sf-h">Company</div>
+        <a href="research.html">Blogs</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="sf-col">
+        <div class="sf-h">Legal</div>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Use</a>
+        <a href="cookies.html">Cookie Policy</a>
+        <a href="disclaimer.html">Disclaimer &amp; Risk Disclosure</a>
+      </div>
+    </div>
+
+    <div class="sf-disc">
+      <p>
+        <b>Important disclosure.</b> SEDGE Ventures FZ-LLC is a proprietary research and trading firm. It is not a
+        licensed or regulated investment adviser, broker or fund manager, and does not manage external capital.
+        Nothing on this website is investment advice, a personal recommendation, or an offer or solicitation to buy
+        or sell any security or financial instrument. <b>All company names, tickers, prices, entry and watch ranges,
+        scores, probabilities, screen output, research extracts and performance figures shown anywhere on this site
+        are illustrative and are used only to demonstrate methodology — they are not recommendations and must not be
+        relied upon.</b> SEDGE Ventures and its personnel may hold positions in securities mentioned. Past performance
+        is not indicative of future results, and all investment involves risk including the loss of principal. Always
+        conduct your own due diligence and consult a qualified financial professional before making any investment
+        decision. See our full <a href="disclaimer.html">Disclaimer &amp; Risk Disclosure</a>.
+      </p>
+    </div>
+
+    <div class="sf-bot">
+      <p class="sf-copy">© 2026 SEDGE Ventures FZ-LLC. All rights reserved.</p>
+      <div class="sf-legal">
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+        <a href="cookies.html">Cookies</a>
+        <a href="disclaimer.html">Disclaimer</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const bar = document.getElementById('progress');
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + '%';
+    nav.classList.toggle('stuck', window.scrollY > 50);
+  });
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold:.1 });
+  document.querySelectorAll('.rv').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>

@@ -1,0 +1,364 @@
+<!--
+  ARTICLE TEMPLATE — do not publish this file directly.
+  Copy it to article-<slug>.html and fill in every {{PLACEHOLDER}}.
+  See CLAUDE.md → "Publishing a weekly research article" for the full process.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{HEADLINE_PLAIN}} — SEDGE Ventures</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = { theme: { extend: { fontFamily: { display:['Cormorant Garamond','serif'], sans:['Inter','sans-serif'] } } } }
+</script>
+<style>
+  :root { --gold:#c9a462; --gold-l:#e2bc79; --ink:#0a0a0a; --muted:#5a5a5a; }
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Inter',sans-serif; background:#fff; color:var(--ink); overflow-x:hidden; }
+  body::before {
+    content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
+    background-image:
+      linear-gradient(rgba(0,0,0,0.032) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,0,0,0.032) 1px, transparent 1px);
+    background-size:44px 44px;
+  }
+
+  /* Reading progress */
+  #progress { position:fixed; top:0; left:0; height:2px; width:0; z-index:950; background:linear-gradient(90deg,var(--gold),var(--gold-l)); transition:width .1s linear; }
+
+  .gold-text { color:var(--gold); }
+  .g-rule { display:block; height:1px; background:linear-gradient(90deg, var(--gold), transparent); }
+  .tag { display:inline-block; font-size:10px; letter-spacing:.18em; text-transform:uppercase; padding:4px 11px; border:1px solid rgba(201,164,98,.32); color:var(--gold); }
+  .meta { font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:#9a9a9a; font-weight:500; }
+
+  /* Article body */
+  .prose { max-width:700px; margin:0 auto; }
+  .prose p { font-size:16.5px; line-height:1.95; color:#2b2b2b; font-weight:300; margin-bottom:1.7rem; letter-spacing:.002em; }
+  .prose p strong { font-weight:600; color:var(--ink); }
+  .prose h2 {
+    font-family:'Cormorant Garamond',serif; font-weight:300;
+    font-size:clamp(1.9rem,3vw,2.5rem); line-height:1.2;
+    margin:4.2rem 0 1.6rem; letter-spacing:-.015em;
+  }
+  .prose h2::before { content:''; display:block; width:38px; height:1px; background:var(--gold); margin-bottom:1.4rem; }
+  .prose h3 { font-size:13px; letter-spacing:.16em; text-transform:uppercase; font-weight:600; color:var(--ink); margin:2.6rem 0 1rem; }
+  .prose .lede { font-size:19px; line-height:1.8; color:#1c1c1c; font-weight:300; }
+  .prose .dropcap::first-letter {
+    font-family:'Cormorant Garamond',serif; float:left; font-size:64px; line-height:.86;
+    padding:6px 14px 0 0; font-weight:300; color:var(--gold);
+  }
+
+  /* Pull quote */
+  .pq {
+    margin:3.2rem 0; padding:0 0 0 2rem; border-left:2px solid var(--gold);
+  }
+  .pq p { font-family:'Cormorant Garamond',serif; font-size:clamp(1.5rem,2.4vw,1.95rem); line-height:1.42; font-weight:300; color:var(--ink); font-style:italic; margin:0; }
+
+  /* Figures */
+  figure { margin:3.2rem 0; }
+  figure img { width:100%; display:block; border:1px solid rgba(0,0,0,.07); }
+  figcaption { font-size:12px; line-height:1.7; color:#8e8e8e; margin-top:.9rem; font-weight:300; }
+  .wide { max-width:940px; margin-left:auto; margin-right:auto; }
+
+  /* Stat strip */
+  .stat-strip { display:grid; gap:1px; background:rgba(0,0,0,.08); border:1px solid rgba(0,0,0,.08); margin:3rem 0; }
+  .stat-cell { background:#fff; padding:1.9rem 1.5rem; }
+  .stat-n { font-family:'Cormorant Garamond',serif; font-weight:300; font-size:clamp(2rem,3.4vw,2.9rem); line-height:1; letter-spacing:-.03em; }
+  .stat-l { font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); margin-top:.7rem; font-weight:500; }
+  .stat-d { font-size:11.5px; color:#9a9a9a; margin-top:.35rem; font-weight:300; line-height:1.5; }
+
+  /* Callout card */
+  .callout { border:1px solid rgba(0,0,0,.08); background:#fbfaf8; padding:2rem 2.1rem; margin:2.8rem 0; }
+  .callout .kicker { font-size:10px; letter-spacing:.22em; text-transform:uppercase; font-weight:600; color:var(--gold); margin-bottom:.9rem; }
+  .callout p { font-size:14.5px; line-height:1.85; color:#3a3a3a; margin:0; font-weight:300; }
+  .callout p + p { margin-top:.9rem; }
+
+  /* Pipeline rows */
+  .pipe-row { display:grid; grid-template-columns:1fr auto; gap:1.5rem; align-items:baseline; padding:1rem 0; border-bottom:1px solid rgba(0,0,0,.07); }
+  .pipe-row:first-child { border-top:1px solid rgba(0,0,0,.07); }
+  .pipe-name { font-size:14.5px; font-weight:400; }
+  .pipe-name span { color:var(--muted); font-weight:300; font-size:13px; }
+  .pipe-status { font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; font-weight:500; white-space:nowrap; }
+  .st-done { color:#3f9e63; } .st-live { color:var(--gold); } .st-plan { color:#9a9a9a; }
+
+  /* Verdict block */
+  .verdict { border:1px solid rgba(201,164,98,.35); background:linear-gradient(180deg,rgba(201,164,98,.05),rgba(201,164,98,0)); padding:2.6rem 2.4rem; margin:3.4rem 0; }
+
+  .disclosure { font-size:11.5px; line-height:1.85; color:#9a9a9a; font-weight:300; border-top:1px solid rgba(0,0,0,.08); padding-top:1.6rem; margin-top:4rem; }
+
+  .rv { opacity:0; transform:translateY(20px); transition:opacity .9s cubic-bezier(.22,1,.36,1), transform .9s cubic-bezier(.22,1,.36,1); }
+  .rv.in { opacity:1; transform:none; }
+
+  @media (min-width:760px) { .stat-strip { grid-template-columns:repeat(4,1fr); } }
+  @media (max-width:1000px) { .nav-links { display:none !important; } }
+
+  .nav-dropdown.open > .nav-dropdown-menu{opacity:1 !important;pointer-events:all !important;transform:translateX(-50%) translateY(0) !important}
+
+/* ══ CANONICAL SITE HEADER (identical on every page) ══ */
+#nav{position:fixed;top:0;left:0;right:0;z-index:900;border-bottom:1px solid transparent;
+  background:transparent;transition:background .45s ease,border-color .45s ease,backdrop-filter .45s ease}
+#nav.stuck{background:rgba(255,255,255,.94);backdrop-filter:blur(22px);border-bottom-color:rgba(0,0,0,.07)}
+#nav .nav-in{max-width:1280px;margin:0 auto;padding:1.25rem 2rem;height:auto;display:flex;align-items:center;
+  justify-content:space-between;gap:3rem;position:relative;z-index:10}
+#nav .nav-brand{display:flex;align-items:center;gap:.5rem;text-decoration:none}
+#nav .nav-brand span{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:17px;
+  letter-spacing:.22em;text-transform:uppercase;color:#0a0a0a;line-height:1}
+#nav .nav-brand span.g{color:#c9a462}
+#nav .nav-right{display:flex;align-items:center;gap:2.25rem}
+#nav .nav-links{display:flex;align-items:center;gap:2.25rem}
+#nav .nav-link{font-family:'Inter',sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  font-weight:500;color:#5a5a5a;text-decoration:none;white-space:nowrap;transition:color .2s;
+  display:inline-flex;align-items:center;line-height:1}
+#nav .nav-link:hover{color:#0a0a0a}
+#nav .nav-link.is-active{color:#c9a462}
+#nav .nav-link-btn{cursor:pointer;user-select:none}
+#nav .nav-link-btn::after{content:'';display:inline-block;width:5px;height:5px;
+  border-right:1px solid currentColor;border-bottom:1px solid currentColor;
+  transform:rotate(45deg) translateY(-2px);margin-left:6px}
+#nav .nav-cta{font-family:'Inter',sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  font-weight:500;color:#0a0a0a;text-decoration:none;border:1px solid #0a0a0a;padding:.65rem 1.25rem;
+  white-space:nowrap;transition:background .3s,color .3s;line-height:1}
+#nav .nav-cta:hover{background:#0a0a0a;color:#fff}
+#nav .nav-dropdown{position:relative;display:inline-flex;align-items:center}
+#nav .nav-dropdown-menu{position:absolute;top:calc(100% + 14px);left:50%;
+  transform:translateX(-50%) translateY(-6px);background:#fff;border:1px solid rgba(0,0,0,.08);
+  box-shadow:0 16px 48px rgba(0,0,0,.1);min-width:270px;padding:8px 0;opacity:0;pointer-events:none;
+  transition:opacity .2s ease .22s,transform .2s ease .22s}
+#nav .nav-dropdown-menu::before{content:'';position:absolute;left:0;right:0;top:-16px;height:16px}
+#nav .nav-dropdown::after{content:'';position:absolute;left:0;right:0;top:100%;height:16px}
+#nav .nav-dropdown:hover .nav-dropdown-menu,
+#nav .nav-dropdown:focus-within .nav-dropdown-menu{opacity:1;pointer-events:all;
+  transform:translateX(-50%) translateY(0);transition-delay:0s}
+#nav .nav-dropdown-menu a{display:flex;align-items:flex-start;gap:10px;padding:11px 20px;
+  font-family:'Inter',sans-serif;font-size:11px;letter-spacing:.13em;text-transform:uppercase;
+  font-weight:500;color:#5a5a5a;text-decoration:none;transition:background .2s,color .2s}
+#nav .nav-dropdown-menu a:hover{background:#fafafa;color:#0a0a0a}
+#nav .nav-dropdown-menu a.is-active{color:#c9a462}
+#nav .nav-dropdown-menu .dd-dot{width:5px;height:5px;border-radius:50%;background:#c9a462;
+  flex-shrink:0;margin-top:5px}
+#nav .dd-label{display:flex;flex-direction:column;gap:2px}
+#nav .dd-sub{font-size:9.5px;letter-spacing:.04em;text-transform:none;color:#9a9a9a;
+  font-weight:400;opacity:.85}
+@media (max-width:1000px){#nav .nav-links{display:none}}
+@media (max-width:560px){#nav .nav-in{padding:1rem 1.25rem;gap:1rem}}
+</style>
+
+<style>
+  /* ── SITE FOOTER (shared) ── */
+  .sf { position:relative; z-index:10; background:#fafaf8; border-top:1px solid rgba(0,0,0,.08);
+        padding:4.5rem 2rem 2.2rem; font-family:'Inter',sans-serif; }
+  .sf-in { max-width:1280px; margin:0 auto; }
+  .sf-top { display:grid; grid-template-columns:1.6fr 1fr 1fr 1.15fr; gap:3rem;
+            padding-bottom:2.8rem; border-bottom:1px solid rgba(0,0,0,.07); }
+  .sf-logo { display:flex; align-items:center; gap:.5rem; margin-bottom:.9rem; }
+  .sf-logo span { font-family:'Cormorant Garamond',serif; font-weight:300; letter-spacing:.22em;
+                  font-size:16px; text-transform:uppercase; color:#0a0a0a; }
+  .sf-logo span.g { color:#c9a462; }
+  .sf-tag { font-size:12px; letter-spacing:.06em; color:#5a5a5a; font-weight:300; margin-bottom:1.6rem; }
+  .sf-entity { font-size:11.5px; line-height:1.85; color:#8a8a8a; font-weight:300; }
+  .sf-entity b { color:#5a5a5a; font-weight:500; }
+  .sf-h { font-size:9.5px; letter-spacing:.2em; text-transform:uppercase; color:#0a0a0a;
+          font-weight:600; margin-bottom:1.1rem; }
+  .sf-col a { display:block; font-size:12.5px; line-height:1.5; color:#5a5a5a; text-decoration:none;
+              font-weight:300; margin-bottom:.72rem; transition:color .2s; }
+  .sf-col a:hover { color:#c9a462; }
+  .sf-disc { padding:2.2rem 0; border-bottom:1px solid rgba(0,0,0,.07); }
+  .sf-disc p { font-size:11px; line-height:1.95; color:#8a8a8a; font-weight:300; max-width:1100px; }
+  .sf-disc b { color:#5a5a5a; font-weight:600; }
+  .sf-disc a { color:#5a5a5a; text-decoration:none; border-bottom:1px solid rgba(201,164,98,.5); }
+  .sf-disc a:hover { color:#c9a462; }
+  .sf-bot { display:flex; align-items:center; justify-content:space-between; gap:1.5rem;
+            flex-wrap:wrap; padding-top:1.6rem; }
+  .sf-copy { font-size:11px; letter-spacing:.06em; color:#8a8a8a; font-weight:300; }
+  .sf-legal { display:flex; gap:1.5rem; flex-wrap:wrap; }
+  .sf-legal a { font-size:11px; letter-spacing:.06em; color:#8a8a8a; text-decoration:none;
+                font-weight:400; transition:color .2s; }
+  .sf-legal a:hover { color:#c9a462; }
+  @media (max-width:900px) { .sf-top { grid-template-columns:1fr 1fr; gap:2.4rem; } }
+  @media (max-width:560px) { .sf-top { grid-template-columns:1fr; } .sf { padding:3.2rem 1.5rem 2rem; } }
+</style>
+
+</head>
+<body>
+
+<div id="progress"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-in">
+    <a class="nav-brand" href="index.html"><span>SEDGE</span><span class="g">Ventures</span></a>
+    <div class="nav-right">
+      <div class="nav-links">
+        <a class="nav-link" href="pharma.html">Pharma Research</a>
+        <div class="nav-dropdown">
+          <span class="nav-link nav-link-btn">Capabilities</span>
+          <div class="nav-dropdown-menu">
+            <a href="pharma.html#ph-graph"><span class="dd-dot"></span><span class="dd-label"><span class="dd-name">Knowledge Graph</span><span class="dd-sub">2,000+ companies and pipelines</span></span></a>
+            <a href="pharma.html#ph-fda"><span class="dd-dot"></span><span class="dd-label"><span class="dd-name">FDA Calendar</span><span class="dd-sub">PDUFA, BLA &amp; AdCom, scored</span></span></a>
+            <a href="pharma.html#ph-research"><span class="dd-dot"></span><span class="dd-label"><span class="dd-name">Deep Research</span><span class="dd-sub">Structured company reports</span></span></a>
+            <a href="pharma.html#ph-diamond"><span class="dd-dot"></span><span class="dd-label"><span class="dd-name">Diamond Hunter</span><span class="dd-sub">Early-stage biotech screen</span></span></a>
+          </div>
+        </div>
+        <a class="nav-link" href="pharma.html#ph-support">Support</a>
+        <a class="nav-link is-active" href="research.html">Blogs</a>
+        <a class="nav-link" href="about.html">About</a>
+      </div>
+      <a class="nav-cta" href="contact.html">Book a Demo</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ARTICLE HEADER -->
+<article class="relative z-10 px-8" style="padding-top:9.5rem;">
+  <div class="prose">
+    <a href="research.html" style="display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;color:var(--muted);text-decoration:none;margin-bottom:2.6rem;">
+      ← Research
+    </a>
+
+    <div class="flex flex-wrap gap-2 mb-7">
+      <span class="tag">{{TAG_1}}</span>
+      <span class="tag">{{TAG_2}}</span>
+      <span class="tag">{{TAG_3}}</span>
+    </div>
+
+    <h1 class="font-display font-light text-[clamp(2.4rem,4.6vw,3.7rem)] leading-[1.08] tracking-[-.022em] mb-5">
+      {{HEADLINE_HTML}}
+    </h1>
+    <p class="font-display font-light text-[clamp(1.15rem,2vw,1.5rem)] leading-[1.45] text-[var(--muted)] italic mb-9">
+      {{SUBHEAD}}
+    </p>
+
+    <div class="flex items-center gap-4 pb-10 mb-12" style="border-bottom:1px solid rgba(0,0,0,.08);">
+      <span class="meta">SEDGE Research Desk</span>
+      <span style="width:3px;height:3px;border-radius:50%;background:#ccc;"></span>
+      <span class="meta">{{DATE}}</span>
+      <span style="width:3px;height:3px;border-radius:50%;background:#ccc;"></span>
+      <span class="meta">{{READ_TIME}}</span>
+    </div>
+  </div>
+
+  <!-- Hero image -->
+  <figure class="wide rv" style="margin-top:0;">
+    <img src="{{HERO_IMG}}" alt="{{HERO_ALT}}">
+    <figcaption class="prose" style="max-width:700px;">{{HERO_CAPTION}}</figcaption>
+  </figure>
+
+  <!-- BODY —
+       Write the article body here using the components already styled above:
+       <p class="lede">…</p>            opening paragraphs, larger type
+       <p class="dropcap">…</p>         first body paragraph, drop-cap first letter
+       <p>…</p>                         regular paragraphs (<strong> for emphasis)
+       <h2>…</h2>                       section headings
+       <div class="pq"><p>…</p></div>   pull quote
+       <figure><img …><figcaption>…</figcaption></figure>   inline image
+       <div class="stat-strip">…</div>  4-up stat grid (see article-dt120.html for markup)
+       <div class="callout">…</div>     boxed callout
+       <div class="verdict">…</div>     bottom-line / rating block
+  -->
+  <div class="prose">
+
+    {{BODY_HTML}}
+
+    <div class="disclosure">
+      <strong style="color:var(--muted);font-weight:600;">Disclosure.</strong>
+      The desk holds no stock, option or similar derivative position in any of the companies mentioned,
+      and has no plans to initiate any such position within the next 72 hours. This note was written
+      in-house and expresses our own opinions. No compensation was received for it, and we have no
+      business relationship with any company whose stock is mentioned. Research published by SEDGE
+      Ventures is for informational purposes and is not investment advice.
+    </div>
+  </div>
+</article>
+
+<!-- MORE RESEARCH -->
+<section class="relative z-10 px-8 pt-24 pb-6">
+  <div class="prose">
+    <a href="research.html" style="text-decoration:none;color:inherit;display:block;border:1px solid rgba(0,0,0,.08);padding:2.2rem;transition:border-color .3s, transform .3s;" onmouseover="this.style.borderColor='rgba(201,164,98,.4)';this.style.transform='translateY(-3px)'" onmouseout="this.style.borderColor='rgba(0,0,0,.08)';this.style.transform='none'">
+      <div class="meta mb-3">More From The Desk</div>
+      <div class="font-display font-light text-[1.8rem] leading-tight mb-2">Back to all research</div>
+      <p class="text-[13.5px] text-[var(--muted)] leading-relaxed">Read the rest of the desk's published notes.</p>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="sf">
+  <div class="sf-in">
+    <div class="sf-top">
+      <div>
+        <div class="sf-logo"><span>SEDGE</span><span class="g">Ventures</span></div>
+        <p class="sf-tag">Systematic Equity Investment Management</p>
+        <p class="sf-entity">
+          <b>SEDGE Ventures FZ-LLC</b><br>
+          SO-15, Shed no-18, TP Al Hamra Freezone<br>
+          Al Hamra Industrial Freezone<br>
+          Ras Al Khaimah, United Arab Emirates
+        </p>
+      </div>
+      <div class="sf-col">
+        <div class="sf-h">Research</div>
+        <a href="pharma.html">Pharma Research</a>
+        <a href="pharma.html#ph-graph">Knowledge Graph</a>
+        <a href="pharma.html#ph-fda">FDA Calendar</a>
+        <a href="pharma.html#ph-diamond">Diamond Hunter</a>
+      </div>
+      <div class="sf-col">
+        <div class="sf-h">Company</div>
+        <a href="research.html">Blogs</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="sf-col">
+        <div class="sf-h">Legal</div>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Use</a>
+        <a href="cookies.html">Cookie Policy</a>
+        <a href="disclaimer.html">Disclaimer &amp; Risk Disclosure</a>
+      </div>
+    </div>
+
+    <div class="sf-disc">
+      <p>
+        <b>Important disclosure.</b> SEDGE Ventures FZ-LLC is a proprietary research and trading firm. It is not a
+        licensed or regulated investment adviser, broker or fund manager, and does not manage external capital.
+        Nothing on this website is investment advice, a personal recommendation, or an offer or solicitation to buy
+        or sell any security or financial instrument. <b>All company names, tickers, prices, entry and watch ranges,
+        scores, probabilities, screen output, research extracts and performance figures shown anywhere on this site
+        are illustrative and are used only to demonstrate methodology — they are not recommendations and must not be
+        relied upon.</b> SEDGE Ventures and its personnel may hold positions in securities mentioned. Past performance
+        is not indicative of future results, and all investment involves risk including the loss of principal. Always
+        conduct your own due diligence and consult a qualified financial professional before making any investment
+        decision. See our full <a href="disclaimer.html">Disclaimer &amp; Risk Disclosure</a>.
+      </p>
+    </div>
+
+    <div class="sf-bot">
+      <p class="sf-copy">© 2026 SEDGE Ventures FZ-LLC. All rights reserved.</p>
+      <div class="sf-legal">
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+        <a href="cookies.html">Cookies</a>
+        <a href="disclaimer.html">Disclaimer</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const bar = document.getElementById('progress');
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + '%';
+    nav.classList.toggle('stuck', window.scrollY > 50);
+  });
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold:.1 });
+  document.querySelectorAll('.rv').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
