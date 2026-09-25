@@ -6,7 +6,6 @@
 <title>Not One Drug, One Platform — SEDGE Ventures</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/nav-mobile.css">
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
   tailwind.config = { theme: { extend: { fontFamily: { display:['Cormorant Garamond','serif'], sans:['Inter','sans-serif'] } } } }
@@ -215,7 +214,6 @@
     </div>
   </div>
 </nav>
-<script src="assets/nav-mobile.js" defer></script>
 
 <article class="relative z-10 px-8" style="padding-top:9.5rem;">
   <div class="prose">
@@ -245,19 +243,9 @@
     </div>
   </div>
 
-  <!-- Hero figure: the Bedford map. The diagram's text is sized in SVG user
-       units, so it scales down with the container — fine on desktop, but on a
-       phone-width container it shrinks to a few px and becomes unreadable. Below
-       640px the container scrolls horizontally instead, at a fixed width that
-       keeps the labels legible. -->
-  <style>
-    @media (max-width:640px){
-      .bedford-map-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; }
-      .bedford-map-wrap svg { width:640px; max-width:none; }
-    }
-  </style>
+  <!-- Hero figure: the Bedford map -->
   <figure class="wide rv" style="margin-top:0;">
-    <div class="bedford-map-wrap" style="background:#0e0e11;border:1px solid rgba(0,0,0,.08);padding:3rem 2rem;">
+    <div style="background:#0e0e11;border:1px solid rgba(0,0,0,.08);padding:3rem 2rem;">
       <svg viewBox="0 0 900 380" width="100%" style="display:block;">
         <defs>
           <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1">

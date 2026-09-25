@@ -6,7 +6,6 @@
 <title>SEDGE Ventures — Pharmaceutical Investment Research</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/nav-mobile.css">
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="assets/vendor/three.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" integrity="sha512-16esztaSRplJROstbIIdwX3N97V1+pZvV33ABoG1H2OyTttBxEGkTsoIVsiP1iaTtM8b3+hu2kB6pQ4Clr5yug==" crossorigin="anonymous"></script>
@@ -268,31 +267,24 @@
   .ow-1 { left:3.5%;  top:21%; }
   .ow-2 { right:3.5%; top:49%; }
   .ow-3 { left:3.5%;  top:77%; }
-  /* Below 1000px .omni-words lives inside #globe-container itself (see the
-     markup), which is just the 400/330px band at this width — so these are
-     plain percentages of that band, not the 18/50/82% split tuned for the
-     full-hero finale framing that only ever runs at >=900px. */
   @media (max-width:1000px){
-    .ow-1 { left:4%;  top:10%; }
-    .ow-2 { right:4%; top:44%; }
-    .ow-3 { left:4%;  top:78%; }
+    .ow-1 { left:4%;  top:18%; }
+    .ow-2 { right:4%; top:50%; }
+    .ow-3 { left:4%;  top:82%; }
   }
 
   @media (max-width:1000px){
     .omni-grid { grid-template-columns:1fr; gap:2.4rem; }
     .cov-wrap { max-width:520px; }
-    /* Landing on the page should show the statement, not the globe — so below
-       1000px the globe stops being a full-bleed overlay the statement has to
-       dodge (via padding-top) and becomes a normal, second block the statement
-       scrolls down to instead. order swaps which renders first without
-       touching the DOM (the JS that positions the globe doesn't care either
-       way, since it measures #globe-container's own box, not its place in
-       #omni). */
-    #omni-copy-wrap { order:1; }
-    #globe-container { position:relative; inset:auto; height:400px; order:2; margin-top:3rem; }
+    #globe-container { height:400px; }
+    /* The globe band sits absolutely positioned over the top of the hero at
+       this width (see #globe-container above) — without this, the statement
+       below starts at y:0 too and renders straight through it. */
+    .omni-grid { padding-top:420px; }
   }
   @media (max-width:560px){
     #globe-container { height:330px; }
+    .omni-grid { padding-top:350px; }
     .orb-label { font-size:14px; }
   }
 
@@ -814,7 +806,6 @@
     </div>
   </div>
 </nav>
-<script src="assets/nav-mobile.js" defer></script>
 
 <!-- ══════════════════════════════════════════════════════════
      SECTION 1 — HERO (SEDGE AI TERMINAL)
@@ -850,21 +841,17 @@
 
   <div class="omni-grain" aria-hidden="true"></div>
 
-  <!-- the sphere: full-bleed behind everything, sized by the camera.
-       Below 1000px this also holds .omni-words (see the CSS media query on
-       #globe-container): the band becomes a normal-flow block instead of a
-       full-bleed overlay, so nesting the words inside it means "top:" on them
-       is relative to the band itself, not to the whole (much taller) hero. -->
-  <div id="globe-container">
-    <!-- what we do, in three words — revealed one per scroll step -->
-    <div class="omni-words" aria-hidden="true">
-      <span class="ow ow-1">Evidence-led</span>
-      <span class="ow ow-2">Independent</span>
-      <span class="ow ow-3">Repeatable</span>
-    </div>
+  <!-- the sphere: full-bleed behind everything, sized by the camera -->
+  <div id="globe-container"></div>
+
+  <!-- what we do, in three words — revealed one per scroll step -->
+  <div class="omni-words" aria-hidden="true">
+    <span class="ow ow-1">Evidence-led</span>
+    <span class="ow ow-2">Independent</span>
+    <span class="ow ow-3">Repeatable</span>
   </div>
 
-  <div id="omni-copy-wrap" class="relative z-10 max-w-screen-xl mx-auto w-full">
+  <div class="relative z-10 max-w-screen-xl mx-auto w-full">
     <div class="omni-grid">
 
       <!-- LEFT — the statement.
@@ -1332,16 +1319,12 @@ gsap.ticker.lagSmoothing(0);
 // sphere is still centre-screen puts a hard panel across a full-bleed scene and
 // breaks it. It only solidifies once the four product cards arrive, which is
 // also the first point there is real content behind it to separate from.
-// Below 900px the hero isn't pinned (see the ScrollTrigger guard further down),
-// so the hero heading scrolls normally — a transparent bar this whole way would
-// let that text scroll right under it. Mobile just gets the standard early threshold.
 (function navState() {
   const nav = document.getElementById('nav');
   if (!nav) return;
 
   let threshold = 50;
   const measure = () => {
-    if (window.innerWidth < 900) { threshold = 50; return; }
     const wwd = document.getElementById('what-we-do');
     // -90 so it settles just before the cards slide under the bar
     threshold = wwd ? Math.max(50, wwd.offsetTop - 90) : 50;
@@ -2307,30 +2290,6 @@ gsap.set(['#phg-title','#phg-body','#phg-badges'], { y: 20 });
       .fromTo('#omni-copy', { opacity: 1, y: 0 },
                             { opacity: 0, y: -26, duration: .7, ...HOLD }, 1.95)
       .fromTo('.cov-foot', { opacity: 0 }, { opacity: 1, duration: .45, ...HOLD }, 2.45);
-  }
-
-  // Mobile: no pin (the camera dolly + copy hand-off above only runs >=900px),
-  // so the hero would otherwise just sit there static while you scroll past it.
-  // The globe is now a normal block *after* the statement (see the CSS order
-  // swap on #omni-copy-wrap / #globe-container), so — unlike the words and
-  // closing line ever were before that change — everything here starts
-  // genuinely below the fold and can just use the standard enter-the-viewport
-  // scrub, same recipe as the rest of the page's reveals.
-  if (!still && window.gsap && window.ScrollTrigger && window.innerWidth < 900) {
-    gsap.to('.scroll-cue', {
-      opacity: 0, ease: 'none',
-      scrollTrigger: { trigger: '#globe-container', start: 'top 90%', end: 'top 50%', scrub: 0.4 }
-    });
-    ['.ow-1', '.ow-2', '.ow-3'].forEach((sel, i) => {
-      gsap.fromTo(sel, { opacity: 0 }, {
-        opacity: 1, ease: 'none',
-        scrollTrigger: { trigger: sel, start: 'top 85%', end: 'top 45%', scrub: 0.4 }
-      });
-    });
-    gsap.fromTo('.cov-foot', { opacity: 0 }, {
-      opacity: 1, ease: 'none',
-      scrollTrigger: { trigger: '.cov-foot', start: 'top 92%', end: 'top 60%', scrub: 0.4 }
-    });
   }
 })();
 </script>
