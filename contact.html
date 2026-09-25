@@ -131,6 +131,8 @@
   @media (max-width:560px) { .sf-top { grid-template-columns:1fr; } .sf { padding:3.2rem 1.5rem 2rem; } }
 </style>
 
+<link rel="stylesheet" href="assets/css/mobile.css">
+<script src="assets/js/mobile.js" defer></script>
 </head>
 <body>
 
@@ -139,7 +141,8 @@
   <div class="nav-in">
     <a class="nav-brand" href="index.html"><span>SEDGE</span><span class="g">Ventures</span></a>
     <div class="nav-right">
-      <div class="nav-links">
+      <button class="mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="site-navigation" aria-label="Open navigation"><span></span><span></span><span></span></button>
+      <div class="nav-links" id="site-navigation">
         <a class="nav-link" href="pharma.html">Pharma Research</a>
         <div class="nav-dropdown">
           <span class="nav-link nav-link-btn">Capabilities</span>
@@ -165,7 +168,7 @@
   <div class="max-w-screen-xl mx-auto">
     <a href="pharma.html" id="contact-breadcrumb" style="display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;color:var(--muted);text-decoration:none;margin-bottom:3rem;transition:color .2s;opacity:0;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--muted)'">← Pharma Research</a>
 
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;">
+    <div class="mobile-stack" style="display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;">
 
       <!-- Left: pitch -->
       <div>

@@ -164,6 +164,8 @@
   @media (max-width:560px) { .sf-top { grid-template-columns:1fr; } .sf { padding:3.2rem 1.5rem 2rem; } }
 </style>
 
+<link rel="stylesheet" href="assets/css/mobile.css">
+<script src="assets/js/mobile.js" defer></script>
 </head>
 <body>
 
@@ -172,7 +174,8 @@
   <div class="nav-in">
     <a class="nav-brand" href="index.html"><span>SEDGE</span><span class="g">Ventures</span></a>
     <div class="nav-right">
-      <div class="nav-links">
+      <button class="mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="site-navigation" aria-label="Open navigation"><span></span><span></span><span></span></button>
+      <div class="nav-links" id="site-navigation">
         <a class="nav-link is-active" href="pharma.html">Pharma Research</a>
         <div class="nav-dropdown">
           <span class="nav-link nav-link-btn">Capabilities</span>
@@ -621,7 +624,7 @@
             <div style="width:11px;height:11px;border-radius:50%;background:#28C840;flex-shrink:0;"></div>
             <div style="flex:1;text-align:center;"><span style="font-size:11px;color:rgba(255,255,255,.22);letter-spacing:.06em;">sedge.ventures/research</span></div>
           </div>
-          <div style="display:flex;align-items:flex-end;gap:2px;padding:10px 18px 0;background:#111115;border-bottom:1px solid rgba(255,255,255,.06);">
+          <div class="research-preview-tabs" style="display:flex;align-items:flex-end;gap:2px;padding:10px 18px 0;background:#111115;border-bottom:1px solid rgba(255,255,255,.06);">
             <div class="phr-tab phr-tab-active" id="tab0">Overview</div>
             <div class="phr-tab" id="tab1">Pipeline</div>
             <div class="phr-tab" id="tab2">Financials</div>

@@ -779,6 +779,8 @@
   }
 </style>
 
+<link rel="stylesheet" href="assets/css/mobile.css">
+<script src="assets/js/mobile.js" defer></script>
 </head>
 <body>
 
@@ -787,7 +789,8 @@
   <div class="nav-in">
     <a class="nav-brand" href="index.html"><span>SEDGE</span><span class="g">Ventures</span></a>
     <div class="nav-right">
-      <div class="nav-links">
+      <button class="mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="site-navigation" aria-label="Open navigation"><span></span><span></span><span></span></button>
+      <div class="nav-links" id="site-navigation">
         <a class="nav-link" href="pharma.html">Pharma Research</a>
         <div class="nav-dropdown">
           <span class="nav-link nav-link-btn">Capabilities</span>
@@ -2257,7 +2260,8 @@ gsap.set(['#phg-title','#phg-body','#phg-badges'], { y: 20 });
   // live. One timeline on one ScrollTrigger keeps the camera, the sphere's
   // travel to centre and the copy perfectly in step — three separate triggers
   // on the same pinned element end up with degenerate scroll ranges.
-  if (!still && window.gsap && window.ScrollTrigger && window.innerWidth >= 900) {
+  if (!still && window.gsap && window.ScrollTrigger) {
+    gsap.matchMedia().add('(min-width: 1001px)', () => {
     const tl = scrollTl = gsap.timeline({
       scrollTrigger: {
         trigger: '#omni', start: 'top top', end: '+=190%',
@@ -2290,6 +2294,13 @@ gsap.set(['#phg-title','#phg-body','#phg-badges'], { y: 20 });
       .fromTo('#omni-copy', { opacity: 1, y: 0 },
                             { opacity: 0, y: -26, duration: .7, ...HOLD }, 1.95)
       .fromTo('.cov-foot', { opacity: 0 }, { opacity: 1, duration: .45, ...HOLD }, 2.45);
+    return () => {
+      scrollTl = null;
+      frameAtRest();
+      camera.position.z = REST_Z;
+      outer.position.x = REST_X;
+    };
+    });
   }
 })();
 </script>
