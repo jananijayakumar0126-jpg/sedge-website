@@ -1,0 +1,42 @@
+/* ══ Mobile nav drawer (shared across every page) ══
+   The canonical #nav header hides .nav-links below 1000px with no
+   replacement — this file + nav-mobile.js add the missing hamburger + panel. */
+
+.nav-mobile-toggle{display:none;background:none;border:none;padding:8px;margin-left:.5rem;
+  cursor:pointer;position:relative;z-index:950}
+.nav-mobile-toggle span{display:block;width:22px;height:1.5px;background:#0a0a0a;margin:5px 0;
+  transition:transform .25s ease,opacity .25s ease}
+body.nav-mobile-open .nav-mobile-toggle span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+body.nav-mobile-open .nav-mobile-toggle span:nth-child(2){opacity:0}
+body.nav-mobile-open .nav-mobile-toggle span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+
+.nav-mobile-panel{position:fixed;left:0;right:0;background:#fff;z-index:899;
+  padding:1.5rem 1.5rem 2rem;max-height:calc(100vh - 60px);overflow-y:auto;
+  transform:translateY(-8px);opacity:0;pointer-events:none;
+  transition:transform .3s ease,opacity .25s ease;
+  border-bottom:1px solid rgba(0,0,0,.08);box-shadow:0 20px 60px rgba(0,0,0,.12)}
+body.nav-mobile-open .nav-mobile-panel{transform:translateY(0);opacity:1;pointer-events:all}
+body.nav-mobile-open{overflow:hidden}
+
+.nav-mobile-panel a.nav-link{display:block !important;font-family:'Inter',sans-serif;font-size:13px;
+  letter-spacing:.1em;text-transform:uppercase;font-weight:500;color:#0a0a0a;
+  text-decoration:none;padding:14px 0;border-bottom:1px solid rgba(0,0,0,.06)}
+.nav-mobile-panel a.nav-link.is-active{color:#c9a462}
+.nav-mobile-group-label{font-family:'Inter',sans-serif;font-size:11px;letter-spacing:.14em;
+  text-transform:uppercase;font-weight:500;color:#9a9a9a;padding:14px 0 4px}
+.nav-mobile-sub{padding-left:1rem}
+.nav-mobile-sub a{display:block !important;text-decoration:none;padding:10px 0;font-family:'Inter',sans-serif;
+  font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:500;color:#5a5a5a}
+.nav-mobile-sub a.is-active{color:#c9a462}
+.nav-mobile-sub .dd-sub{display:block;font-size:9.5px;color:#9a9a9a;text-transform:none;
+  letter-spacing:.04em;font-weight:400;margin-top:2px}
+
+.nav-mobile-panel a.nav-mobile-cta{display:block !important;border:1px solid #0a0a0a !important;
+  text-align:center;margin-top:16px;padding:.85rem 1rem !important}
+
+/* header has no slack for logo + CTA + hamburger at once, so the CTA moves into the drawer */
+@media (max-width:1000px){
+  .nav-mobile-toggle{display:block}
+  #nav .nav-cta{display:none}
+}
+@media (min-width:1001px){.nav-mobile-panel{display:none !important}}
