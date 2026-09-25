@@ -198,7 +198,7 @@
 
       <!-- Right: form -->
       <div id="contact-form-wrap" style="opacity:0;background:#fafafa;border:1px solid rgba(0,0,0,.06);padding:2.8rem;">
-        <form id="cf-form" method="post" enctype="text/plain">
+        <form id="cf-form">
           <div style="margin-bottom:1.4rem;">
             <label class="field-label" for="cf-name">Full name</label>
             <input class="field" type="text" id="cf-name" name="Name" placeholder="Jane Smith" required>
@@ -240,9 +240,17 @@
           var users = ['janani.jayakumar', 'rashi.shah', 'clara.neveu'];
           var domain = 'sedgeventures.ae';
           form.addEventListener('submit', function(e){
-            if (honeypot.value.trim() !== '') { e.preventDefault(); return; }   // bot filled the hidden field
-            if (Date.now() - loadedAt < 3000) { e.preventDefault(); return; }   // filled out too fast to be human
-            form.action = 'mailto:' + users.map(function(u){ return u + '@' + domain; }).join(',');
+            e.preventDefault();
+            if (honeypot.value.trim() !== '') return;
+            if (Date.now() - loadedAt < 3000) return;
+            var to = users.map(function(u){ return u + '@' + domain; }).join(',');
+            var name = document.getElementById('cf-name').value;
+            var email = document.getElementById('cf-email').value;
+            var firm = document.getElementById('cf-firm').value;
+            var msg = document.getElementById('cf-msg').value;
+            var subject = 'Demo Request from ' + name;
+            var body = 'Name: ' + name + '\nEmail: ' + email + '\nFirm: ' + firm + '\n\n' + msg;
+            window.location.href = 'mailto:' + to + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
           });
         })();
         </script>
